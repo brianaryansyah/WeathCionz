@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useNow } from '../hooks/useNow'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
+import { hasLiveApi } from '../services/weatherApi'
 
 /**
  * Floating top navigation: brand mark, a realtime location clock and
@@ -10,9 +11,10 @@ import { useWeatherData } from '../hooks/useWeatherData'
 export default function HeaderBar() {
   const coords = useWeatherStore((s) => s.coords)
   const locationName = useWeatherStore((s) => s.locationName)
-  const { current, refetch, isFetching } = useWeatherData(coords)
+  const { current, refetch, isFetching, isDemo } = useWeatherData(coords)
   const tzOffset = current?.timezone
   const { time, date } = useNow(tzOffset)
+  const live = hasLiveApi()
 
   return (
     <motion.header
@@ -37,9 +39,16 @@ export default function HeaderBar() {
 
         <div className="hidden items-center gap-2 sm:flex">
           <span className="flex items-center gap-1.5">
-            <span className="live-dot" aria-hidden="true" />
-            <span className="text-[11px] font-medium uppercase tracking-wider text-emerald-300">
-              Live
+            <span
+              className={isDemo && !live ? 'live-dot !bg-amber-400' : 'live-dot'}
+              aria-hidden="true"
+            />
+            <span
+              className={`text-[11px] font-medium uppercase tracking-wider ${
+                isDemo && !live ? 'text-amber-300' : 'text-emerald-300'
+              }`}
+            >
+              {isDemo && !live ? 'Demo' : 'Live'}
             </span>
           </span>
           <span className="text-[11px] text-slate-400">{date}</span>
