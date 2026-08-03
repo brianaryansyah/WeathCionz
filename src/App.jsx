@@ -13,20 +13,20 @@ import { useGeolocation } from './hooks/useGeolocation'
 
 const MapCanvas = lazy(() => import('./components/MapCanvas'))
 
-/** Maps an OWM weather-group to an ambient glow color. */
+/** Maps an OWM weather-group to an ambient sky-tinted glow. */
 const GLOW = {
-  Clear: '#3b82f6',
-  Clouds: '#64748b',
-  Rain: '#06b6d4',
-  Drizzle: '#14b8a6',
+  Clear: '#fb923c',
+  Clouds: '#93c5fd',
+  Rain: '#38bdf8',
+  Drizzle: '#22d3ee',
   Thunderstorm: '#8b5cf6',
-  Snow: '#60a5fa',
-  Mist: '#94a3b8',
+  Snow: '#a5c9e8',
+  Mist: '#cbd5e1',
 }
 
 /**
- * Application shell: fullscreen map with floating glass overlays
- * and an ambient glow that reflects the live weather condition.
+ * Application shell: a bright, colorful weather map with floating glass
+ * overlays and a soft, condition-reactive ambient glow.
  */
 export default function App() {
   const coords = useWeatherStore((s) => s.coords)
@@ -35,32 +35,24 @@ export default function App() {
   useGeolocation()
 
   const group = current?.weather?.[0]?.main
-  const glow = GLOW[group] || '#334155'
+  const glow = GLOW[group] || '#38bdf8'
 
   return (
     <div className="relative h-screen w-screen overflow-hidden">
       <Suspense
-        fallback={<div className="absolute inset-0 bg-ink-950 animate-pulse" />}
+        fallback={<div className="absolute inset-0 animate-pulse bg-sky-100" />}
       >
         <MapCanvas />
       </Suspense>
 
-      {/* Reactive ambient glow */}
+      {/* Soft, condition-reactive ambient glow */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-[5]"
         animate={{
-          background: `radial-gradient(70% 55% at 28% 38%, ${glow}38 0%, transparent 65%), rgba(5,7,15,0) 100%`,
+          background: `radial-gradient(75% 60% at 30% 35%, ${glow}40 0%, rgba(224,242,254,0) 60%)`,
         }}
         transition={{ duration: 1.2 }}
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              'linear-gradient(to bottom, rgba(3,6,12,0.15) 0%, rgba(3,6,12,0.35) 100%)',
-          }}
-        />
-      </motion.div>
+      />
 
       <HeaderBar />
       <FloatingSidebar />
