@@ -5,7 +5,8 @@ import { groupForecastByDay, formatDay, formatTemp, iconUrl } from '../utils/wea
 
 /**
  * Horizontal 5-day outlook strip rendered as floating glass cards.
- * Groups the 3-hour forecast into daily high/low summaries.
+ * Groups the 3-hour forecast into daily high/low summaries and shows a
+ * precipitation probability bar for the day.
  */
 export default function DailyForecast() {
   const coords = useWeatherStore((s) => s.coords)
@@ -13,6 +14,9 @@ export default function DailyForecast() {
   const days = groupForecastByDay(forecast?.list || []).slice(0, 5)
 
   if (days.length === 0) return null
+
+  const dayPop = (entries) =>
+    Math.round(Math.max(...entries.map((e) => e.pop ?? 0)) * 100)
 
   return (
     <motion.div
@@ -28,6 +32,7 @@ export default function DailyForecast() {
         <ul className="flex flex-col gap-1">
           {days.map((day) => {
             const isToday = day.label === formatDay(Date.now() / 1000)
+            const pop = dayPop(day.entries)
             return (
               <li
                 key={day.key}
@@ -42,10 +47,25 @@ export default function DailyForecast() {
                   className="h-6 w-6"
                   loading="lazy"
                 />
-                <span className="flex-1 truncate text-right text-xs text-slate-400">
-                  H <span className="text-white">{formatTemp(day.max)}°</span> · L{' '}
-                  <span className="text-white">{formatTemp(day.min)}°</span>
-                </span>
+                <div className="flex-1">
+                  <div className="flex justify-end gap-2 text-xs">
+                    <span className="text-slate-500">L {formatTemp(day.min)}°</span>
+                    <span className="font-semibold text-white">{formatTemp(day.max)}°</span>
+                  </div>
+                  {pop > 0 && (
+                    <div className="mt-1 flex items-center gap-1.5">
+                      <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/10">
+                        <motion.div
+                          initial={{ width: 0 }}
+                          animate={{ width: `${pop}%` }}
+                          transition={{ duration: 0.8, delay: 0.3 }}
+                          className="h-full rounded-full bg-aurora-400/70"
+                        />
+                      </div>
+                      <span className="text-[10px] text-aurora-300">{pop}%</span>
+                    </div>
+                  )}
+                </div>
               </li>
             )
           })}
