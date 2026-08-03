@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background: #070b16;
+    color: #e7ecf6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  /* Signature glassmorphism panel */
+  .glass {
+    background: linear-gradient(
+      145deg,
+      rgba(23, 30, 51, 0.72),
+      rgba(12, 17, 31, 0.6)
+    );
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow:
+      0 24px 60px -20px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  /* Inner sub-panel */
+  .glass-inner {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(8px);
+  }
+
+  /* Custom scrollbar for the timeline rail (WebKit) */
+  ::-webkit-scrollbar {
+    height: 4px;
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 999px;
+  }
+
+  /* Leaflet attribution is hidden; keep interactive map on top of nothing */
+  .leaflet-container {
+    background: #0b1222;
+    font-family: var(--font-sans);
+  }
+  .leaflet-popup-content-wrapper {
+    background: rgba(15, 20, 36, 0.9);
+    color: #fff;
+    border-radius: 14px;
+    backdrop-filter: blur(12px);
+  }
+  .leaflet-popup-tip {
+    background: rgba(15, 20, 36, 0.9);
+  }
+}
