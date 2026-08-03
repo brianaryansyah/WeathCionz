@@ -25,37 +25,37 @@ export default function HeaderBar() {
     >
       <nav className="glass flex items-center gap-3 rounded-full py-2 pl-3 pr-2" aria-label="Primary">
         <div className="flex items-center gap-2.5 pl-1">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-aurora-400 to-orchid-400">
-            <svg className="h-4 w-4 text-ink-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-orchid-400">
+            <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 2.7S5.5 9.4 5.5 14.5a6.5 6.5 0 0 0 13 0C18.5 9.4 12 2.7 12 2.7z" />
             </svg>
           </span>
-          <span className="font-display text-sm font-semibold tracking-tight text-white">
+          <span className="font-display text-sm font-semibold tracking-tight text-ink-950">
             WeathCionz
           </span>
         </div>
 
-        <span className="h-5 w-px bg-white/10" aria-hidden="true" />
+        <span className="h-5 w-px bg-ink-950/10" aria-hidden="true" />
 
         <div className="hidden items-center gap-2 sm:flex">
           <span className="flex items-center gap-1.5">
             <span
-              className={isDemo && !live ? 'live-dot !bg-amber-400' : 'live-dot'}
+              className={isDemo && !live ? 'live-dot !bg-sun-400' : 'live-dot'}
               aria-hidden="true"
             />
             <span
               className={`text-[11px] font-medium uppercase tracking-wider ${
-                isDemo && !live ? 'text-amber-300' : 'text-emerald-300'
+                isDemo && !live ? 'text-sun-500' : 'text-emerald-600'
               }`}
             >
               {isDemo && !live ? 'Demo' : 'Live'}
             </span>
           </span>
-          <span className="text-[11px] text-slate-400">{date}</span>
-          <span className="font-display text-sm font-semibold tabular-nums text-white">{time}</span>
+          <span className="text-[11px] text-ink-600">{date}</span>
+          <span className="font-display text-sm font-semibold tabular-nums text-ink-950">{time}</span>
         </div>
 
-        <span className="h-5 w-px bg-white/10 sm:hidden" aria-hidden="true" />
+        <span className="h-5 w-px bg-ink-950/10 sm:hidden" aria-hidden="true" />
 
         <button
           onClick={refetch}
@@ -78,7 +78,7 @@ export default function HeaderBar() {
         </button>
       </nav>
 
-      <p className="mt-1.5 text-center text-[11px] text-slate-400">
+      <p className="mt-1.5 text-center text-[11px] font-medium text-ink-600">
         {locationName}
       </p>
     </motion.header>
