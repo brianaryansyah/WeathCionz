@@ -3,6 +3,16 @@ const API_BASE = import.meta.env.VITE_API_BASE || ''
 const OWM_HOST = 'https://api.openweathermap.org'
 
 /**
+ * Whether live weather is available in this build. When false the app
+ * falls back to demo data so the interface still renders fully.
+ *
+ * @returns {boolean} true when a key or backend proxy is configured
+ */
+export function hasLiveApi() {
+  return Boolean(API_BASE || API_KEY)
+}
+
+/**
  * Builds a proxied or direct OpenWeatherMap URL.
  * When VITE_API_BASE is set, requests are routed through the backend
  * so the API key never reaches the client bundle.
