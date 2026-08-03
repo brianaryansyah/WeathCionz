@@ -6,8 +6,8 @@ import { formatHour, formatDay, formatTemp, iconUrl } from '../utils/weatherUtil
 
 /**
  * Horizontal floating timeline for scrubbing the 3-hour forecast.
- * The active slot is tracked in the global store so the ambient glow
- * can react to whatever hour is currently selected.
+ * Day boundaries are surfaced as labelled separators and the active
+ * slot is tracked in the global store.
  */
 export default function TimelineSlider() {
   const coords = useWeatherStore((s) => s.coords)
@@ -25,6 +25,8 @@ export default function TimelineSlider() {
 
   if (list.length === 0) return null
 
+  let lastDay = ''
+
   return (
     <motion.div
       initial={{ y: 80, opacity: 0 }}
@@ -33,50 +35,61 @@ export default function TimelineSlider() {
       className="absolute bottom-4 left-1/2 z-20 w-[min(52rem,92vw)] -translate-x-1/2"
     >
       <div className="glass rounded-3xl px-4 py-3">
+        <div className="mb-2 flex items-center justify-between px-1">
+          <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+            Hourly forecast
+          </span>
+          <span className="text-[11px] text-slate-500">Tap an hour to preview</span>
+        </div>
         <div
           ref={railRef}
-          className="flex gap-2 overflow-x-auto scroll-smooth pb-1"
+          className="flex gap-1 overflow-x-auto scroll-smooth pb-1"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {list.map((item, i) => {
             const isActive = i === selectedIndex
             const hour = formatHour(item.dt)
             const label = i === 0 ? 'Now' : hour
-            const isMidnight = new Date(item.dt * 1000).getHours() === 0
+            const day = formatDay(item.dt)
+            const showDay = day !== lastDay
+            lastDay = day
+
             return (
               <button
                 key={item.dt}
                 data-index={i}
                 onClick={() => setSelectedIndex(i)}
-                className="relative flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-4 py-2.5 transition-colors"
+                aria-pressed={isActive}
+                aria-label={`${label} ${formatTemp(item.main.temp)} degrees`}
+                className="group relative flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-3.5 py-2.5 transition-transform hover:-translate-y-0.5"
               >
+                {showDay && (
+                  <span className="pointer-events-none absolute -top-2.5 left-0 whitespace-nowrap text-[10px] font-semibold uppercase tracking-wider text-aurora-400">
+                    {day}
+                  </span>
+                )}
                 {isActive && (
                   <motion.span
                     layoutId="timeline-active"
-                    className="absolute inset-0 rounded-2xl bg-white/15 ring-1 ring-white/20"
+                    className="absolute inset-0 rounded-2xl border border-aurora-400/40 bg-gradient-to-b from-aurora-400/20 to-transparent shadow-[0_0_24px_-6px_rgba(125,227,255,0.5)]"
                     transition={{ type: 'spring', stiffness: 300, damping: 28 }}
                   />
                 )}
                 <span
-                  className={`text-[11px] font-medium ${
+                  className={`relative text-[11px] font-medium ${
                     isActive ? 'text-white' : 'text-slate-400'
-                  } ${isMidnight && !isActive ? 'text-slate-300' : ''}`}
+                  }`}
                 >
                   {label}
                 </span>
-                {isMidnight && !isActive && (
-                  <span className="text-[10px] uppercase text-slate-500">
-                    {formatDay(item.dt)}
-                  </span>
-                )}
                 <img
                   src={iconUrl(item.weather[0].icon)}
                   alt=""
-                  className="h-7 w-7"
+                  className="relative h-7 w-7"
                   loading="lazy"
                 />
                 <span
-                  className={`font-display text-sm font-semibold ${
+                  className={`relative font-display text-sm font-semibold tabular-nums ${
                     isActive ? 'text-white' : 'text-slate-300'
                   }`}
                 >
