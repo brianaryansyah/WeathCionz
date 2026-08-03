@@ -6,6 +6,7 @@ import TimelineSlider from './components/TimelineSlider'
 import DailyForecast from './components/DailyForecast'
 import MapLegend from './components/MapLegend'
 import DataFreshness from './components/DataFreshness'
+import DemoBanner from './components/DemoBanner'
 import { useWeatherStore } from './store/useWeatherStore'
 import { useWeatherData } from './hooks/useWeatherData'
 import { useGeolocation } from './hooks/useGeolocation'
@@ -47,14 +48,16 @@ export default function App() {
       {/* Reactive ambient glow */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-[5]"
-        animate={{ backgroundColor: `${glow}1a` }}
+        animate={{
+          background: `radial-gradient(70% 55% at 28% 38%, ${glow}38 0%, transparent 65%), rgba(5,7,15,0) 100%`,
+        }}
         transition={{ duration: 1.2 }}
       >
         <div
           className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(60% 60% at 25% 60%, transparent 0%, rgba(3,6,12,0.55) 100%)',
+              'linear-gradient(to bottom, rgba(3,6,12,0.15) 0%, rgba(3,6,12,0.35) 100%)',
           }}
         />
       </motion.div>
@@ -65,21 +68,7 @@ export default function App() {
       <DailyForecast />
       <MapLegend />
       <DataFreshness />
-
-      {/* Null-state hint when the API key is missing */}
-      {!import.meta.env.VITE_OWM_KEY && !import.meta.env.VITE_API_BASE && (
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="absolute top-16 left-1/2 z-30 w-[min(24rem,90vw)] -translate-x-1/2 text-center"
-        >
-          <div className="glass rounded-2xl px-4 py-2.5 text-xs text-slate-300">
-            Add your OpenWeatherMap key to <code className="text-white">.env</code> to render
-            live data — check <code className="text-white">.env.example</code>.
-          </div>
-        </motion.div>
-      )}
+      <DemoBanner />
     </div>
   )
 }
