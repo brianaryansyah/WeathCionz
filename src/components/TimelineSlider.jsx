@@ -36,10 +36,10 @@ export default function TimelineSlider() {
     >
       <div className="glass rounded-3xl px-4 py-3">
         <div className="mb-2 flex items-center justify-between px-1">
-          <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+          <span className="text-[11px] font-medium uppercase tracking-wide text-ink-600">
             Hourly forecast
           </span>
-          <span className="text-[11px] text-slate-500">Tap an hour to preview</span>
+          <span className="text-[11px] text-ink-600/80">Tap an hour to preview</span>
         </div>
         <div
           ref={railRef}
@@ -64,20 +64,20 @@ export default function TimelineSlider() {
                 className="group relative flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-3.5 py-2.5 transition-transform hover:-translate-y-0.5"
               >
                 {showDay && (
-                  <span className="pointer-events-none absolute -top-2.5 left-0 whitespace-nowrap text-[10px] font-semibold uppercase tracking-wider text-aurora-400">
+                  <span className="pointer-events-none absolute -top-2.5 left-0 whitespace-nowrap text-[10px] font-semibold uppercase tracking-wider text-sky-700">
                     {day}
                   </span>
                 )}
                 {isActive && (
                   <motion.span
                     layoutId="timeline-active"
-                    className="absolute inset-0 rounded-2xl border border-aurora-400/40 bg-gradient-to-b from-aurora-400/20 to-transparent shadow-[0_0_24px_-6px_rgba(125,227,255,0.5)]"
+                    className="absolute inset-0 rounded-2xl border border-sky-400/60 bg-gradient-to-b from-sky-200/70 to-white/40 shadow-[0_8px_24px_-6px_rgba(2,132,199,0.4)]"
                     transition={{ type: 'spring', stiffness: 300, damping: 28 }}
                   />
                 )}
                 <span
                   className={`relative text-[11px] font-medium ${
-                    isActive ? 'text-white' : 'text-slate-400'
+                    isActive ? 'text-sky-900' : 'text-ink-600'
                   }`}
                 >
                   {label}
@@ -90,7 +90,7 @@ export default function TimelineSlider() {
                 />
                 <span
                   className={`relative font-display text-sm font-semibold tabular-nums ${
-                    isActive ? 'text-white' : 'text-slate-300'
+                    isActive ? 'text-ink-950' : 'text-ink-800'
                   }`}
                 >
                   {formatTemp(item.main.temp)}°

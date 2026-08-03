@@ -26,7 +26,7 @@ export default function DailyForecast() {
       className="absolute bottom-4 left-4 z-10 hidden w-[19rem] lg:block"
     >
       <div className="glass rounded-3xl p-4">
-        <p className="mb-2.5 px-1 text-[11px] font-medium uppercase tracking-wide text-slate-400">
+        <p className="mb-2.5 px-1 text-[11px] font-medium uppercase tracking-wide text-ink-600">
           Next 5 days
         </p>
         <ul className="flex flex-col gap-1">
@@ -36,9 +36,9 @@ export default function DailyForecast() {
             return (
               <li
                 key={day.key}
-                className="flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-white/5"
+                className="flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-sky-100/60"
               >
-                <span className="w-10 text-sm font-medium text-white">
+                <span className="w-10 text-sm font-medium text-ink-950">
                   {isToday ? 'Today' : day.label}
                 </span>
                 <img
@@ -49,20 +49,20 @@ export default function DailyForecast() {
                 />
                 <div className="flex-1">
                   <div className="flex justify-end gap-2 text-xs">
-                    <span className="text-slate-500">L {formatTemp(day.min)}°</span>
-                    <span className="font-semibold text-white">{formatTemp(day.max)}°</span>
+                    <span className="text-ink-600">L {formatTemp(day.min)}°</span>
+                    <span className="font-semibold text-ink-950">{formatTemp(day.max)}°</span>
                   </div>
                   {pop > 0 && (
                     <div className="mt-1 flex items-center gap-1.5">
-                      <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/10">
+                      <div className="h-1 flex-1 overflow-hidden rounded-full bg-sky-200/70">
                         <motion.div
                           initial={{ width: 0 }}
                           animate={{ width: `${pop}%` }}
                           transition={{ duration: 0.8, delay: 0.3 }}
-                          className="h-full rounded-full bg-aurora-400/70"
+                          className="h-full rounded-full bg-sky-500/80"
                         />
                       </div>
-                      <span className="text-[10px] text-aurora-300">{pop}%</span>
+                      <span className="text-[10px] font-medium text-sky-700">{pop}%</span>
                     </div>
                   )}
                 </div>
