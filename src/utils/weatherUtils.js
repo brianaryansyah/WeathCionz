@@ -154,6 +154,24 @@ export function formatTime12(dt) {
 }
 
 /**
+ * Computes the dew point from temperature and relative humidity
+ * using the Magnus formula approximation.
+ *
+ * @param {number} temp temperature in Celsius
+ * @param {number} humidity relative humidity in percent (0–100)
+ * @returns {number} dew point in Celsius, rounded to one decimal
+ */
+export function dewPoint(temp, humidity) {
+  if (temp === null || temp === undefined || Number.isNaN(temp)) return 0
+  if (humidity === null || humidity === undefined) return Math.round(temp)
+  const a = 17.625
+  const b = 243.04
+  const gamma = Math.log(Math.max(0.01, humidity) / 100) + (a * temp) / (b + temp)
+  const dp = (b * gamma) / (a - gamma)
+  return Math.round(dp * 10) / 10
+}
+
+/**
  * Resolves the correct weather icon URL for a given OWM icon code.
  * OpenWeather icons do not include the `.png` extension in some payloads.
  *
