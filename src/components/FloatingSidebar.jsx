@@ -229,7 +229,7 @@ export default function FloatingSidebar() {
                 accent="text-sky-700"
                 label="Wind"
                 value={`${formatWind(current.wind.speed)} m/s`}
-                sub={`${windDegToCardinal(current.wind.deg)} wind`}
+                sub={`${windDegToCardinal(current.wind.deg)} · gust ${formatWind(current.wind.gust)} m/s`}
               />
               <Metric
                 icon={<Visibility />}
