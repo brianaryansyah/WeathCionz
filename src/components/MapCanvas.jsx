@@ -9,7 +9,7 @@ import {
 } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useWeatherStore, MAP_LAYERS } from '../store/useWeatherStore'
-import { buildTileUrl } from '../services/weatherApi'
+import { buildTileUrl, hasLiveApi } from '../services/weatherApi'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { formatTemp } from '../utils/weatherUtils'
 
@@ -63,15 +63,17 @@ function LiveMarker({ position, current }) {
 }
 
 /**
- * Fullscreen interactive map: dark basemap with a configurable
+ * Fullscreen interactive map: a richer dark basemap with a configurable
  * OpenWeatherMap overlay layer. Reads the active layer + coordinates
- * from the global store.
+ * from the global store. Weather tiles only render when a live API is
+ * configured, so the map never shows broken requests in demo mode.
  */
 export default function MapCanvas() {
   const coords = useWeatherStore((s) => s.coords)
   const activeLayer = useWeatherStore((s) => s.activeLayer)
   const layer = MAP_LAYERS.find((l) => l.id === activeLayer)
   const { current } = useWeatherData(coords)
+  const live = hasLiveApi()
 
   return (
     <div className="absolute inset-0 bg-ink-900" role="region" aria-label="Interactive weather map">
@@ -87,11 +89,8 @@ export default function MapCanvas() {
           maxZoom={19}
           attribution="&copy; OpenStreetMap &copy; CARTO"
         />
-        <AttributionControl
-          position="bottomright"
-          prefix=""
-        />
-        {layer && (
+        <AttributionControl position="bottomright" prefix="" />
+        {live && layer && (
           <TileLayer
             key={layer.id}
             url={buildTileUrl(layer.tile)}
@@ -103,6 +102,15 @@ export default function MapCanvas() {
         <LiveMarker position={[coords.lat, coords.lon]} current={current} />
         <FlyTo coords={coords} />
       </MapContainer>
+
+      {/* Soft vignette so the dark base has depth rather than flat black */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(85% 85% at 30% 35%, rgba(18, 32, 66, 0.25) 0%, rgba(5, 7, 15, 0.05) 45%, rgba(5, 7, 15, 0.55) 100%)',
+        }}
+      />
     </div>
   )
 }
