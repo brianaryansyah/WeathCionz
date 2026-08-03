@@ -4,26 +4,31 @@ import { useDebounce } from '../hooks/useDebounce'
 import { useSearchCities } from '../hooks/useSearchCities'
 import { useWeatherStore, MAP_LAYERS } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
+import { hasLiveApi } from '../services/weatherApi'
 import {
   formatTemp,
   formatWind,
   windDegToCardinal,
   formatTime,
   formatTime12,
+  dewPoint,
 } from '../utils/weatherUtils'
 import WeatherIcon from './WeatherIcon'
 
 function SearchBar() {
   const [query, setQuery] = useState('')
+  const [focused, setFocused] = useState(false)
   const debounced = useDebounce(query, 500)
   const { cities, isFetching } = useSearchCities(debounced)
   const locate = useWeatherStore((s) => s.locate)
-  const active = cities.length > 0 && query.trim().length >= 3
+  const live = hasLiveApi()
+  const showResults = focused && cities.length > 0 && (live ? query.trim().length >= 3 : true)
 
   const pick = (city) => {
     const name = [city.name, city.state, city.country].filter(Boolean).join(', ')
     locate({ lat: city.lat, lon: city.lon }, name)
     setQuery('')
+    setFocused(false)
   }
 
   return (
@@ -36,7 +41,9 @@ function SearchBar() {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search a city…"
+          onFocus={() => setFocused(true)}
+          onBlur={() => window.setTimeout(() => setFocused(false), 150)}
+          placeholder={live ? 'Search a city…' : 'Pick a city to explore…'}
           className="w-full bg-transparent text-sm text-white placeholder:text-slate-500 focus:outline-none"
           aria-label="Search city"
         />
@@ -46,12 +53,12 @@ function SearchBar() {
       </div>
 
       <AnimatePresence>
-        {active && (
+        {showResults && (
           <motion.ul
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
-            className="glass absolute z-30 mt-2 w-full overflow-hidden rounded-2xl"
+            className="glass absolute z-30 mt-2 max-h-72 w-full overflow-y-auto rounded-2xl"
           >
             {cities.map((city, i) => (
               <motion.li
@@ -129,7 +136,7 @@ export default function FloatingSidebar() {
   const locationName = useWeatherStore((s) => s.locationName)
   const activeLayer = useWeatherStore((s) => s.activeLayer)
   const setActiveLayer = useWeatherStore((s) => s.setActiveLayer)
-  const { current, isLoading } = useWeatherData(coords)
+  const { current, isLoading, isDemo } = useWeatherData(coords)
 
   const temp = formatTemp(current?.main?.temp)
   const feels = formatTemp(current?.main?.feels_like)
@@ -147,7 +154,7 @@ export default function FloatingSidebar() {
       <SearchBar />
 
       <div className="glass glass-hover rounded-3xl p-6">
-        {isLoading || !current ? (
+        {isLoading && !current ? (
           <div className="flex h-64 animate-pulse flex-col justify-between">
             <div className="h-4 w-24 rounded bg-white/10" />
             <div className="h-20 w-40 rounded-2xl bg-white/10" />
@@ -157,7 +164,14 @@ export default function FloatingSidebar() {
           <div className="flex flex-col gap-5">
             <div className="flex items-start justify-between">
               <div>
-                <h2 className="font-display text-base font-semibold text-white">{locationName}</h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="font-display text-base font-semibold text-white">{locationName}</h2>
+                  {isDemo && (
+                    <span className="rounded-full bg-amber-400/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-amber-300">
+                      Demo
+                    </span>
+                  )}
+                </div>
                 <p className="text-xs text-slate-400">
                   {formatTime(current.dt)} · {current.weather[0].description}
                 </p>
@@ -193,6 +207,16 @@ export default function FloatingSidebar() {
                 icon={<Droplet />}
                 label="Humidity"
                 value={`${current.main.humidity}%`}
+              />
+              <Metric
+                icon={<Cloud />}
+                label="Clouds"
+                value={`${current.clouds?.all ?? 0}%`}
+              />
+              <Metric
+                icon={<Dew />}
+                label="Dew point"
+                value={`${dewPoint(current.main.temp, current.main.humidity)}°`}
               />
               <Metric
                 icon={<Gauge />}
@@ -255,6 +279,24 @@ function Gauge() {
       <path d="M12 15l4-6" />
       <circle cx="12" cy="13" r="8" />
       <circle cx="12" cy="13" r="2.2" />
+    </svg>
+  )
+}
+function Cloud() {
+  return (
+    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7.5 18a4 4 0 0 1-.7-7.96A6 6 0 0 1 17 8.7 3.8 3.8 0 0 1 16.5 18z" />
+    </svg>
+  )
+}
+function Dew() {
+  return (
+    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3v2" />
+      <path d="M12 19v2" />
+      <path d="M5 12H3" />
+      <path d="M21 12h-2" />
+      <circle cx="12" cy="12" r="3.4" />
     </svg>
   )
 }
