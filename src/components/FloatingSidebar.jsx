@@ -9,10 +9,12 @@ import {
   formatWind,
   windDegToCardinal,
   formatTime,
+  formatTime12,
 } from '../utils/weatherUtils'
 import WeatherIcon from './WeatherIcon'
 
-function SearchBar() {  const [query, setQuery] = useState('')
+function SearchBar() {
+  const [query, setQuery] = useState('')
   const debounced = useDebounce(query, 500)
   const { cities, isFetching } = useSearchCities(debounced)
   const locate = useWeatherStore((s) => s.locate)
@@ -94,6 +96,30 @@ function Metric({ icon, label, value, sub }) {
   )
 }
 
+function SunRow({ sunrise, sunset }) {
+  return (
+    <div className="glass-inner flex items-center justify-around rounded-2xl px-3 py-3">
+      <div className="flex flex-col items-center gap-1">
+        <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+          Sunrise
+        </span>
+        <span className="font-display text-sm font-semibold text-white">
+          {formatTime12(sunrise)}
+        </span>
+      </div>
+      <span className="h-8 w-px bg-white/10" aria-hidden="true" />
+      <div className="flex flex-col items-center gap-1">
+        <span className="text-[11px] font-medium uppercase tracking-wide text-slate-400">
+          Sunset
+        </span>
+        <span className="font-display text-sm font-semibold text-white">
+          {formatTime12(sunset)}
+        </span>
+      </div>
+    </div>
+  )
+}
+
 /**
  * Floating glass sidebar: city search, headline temperature and
  * live humidity / wind / pressure metrics for the active coordinates.
@@ -108,19 +134,21 @@ export default function FloatingSidebar() {
   const temp = formatTemp(current?.main?.temp)
   const feels = formatTemp(current?.main?.feels_like)
   const icon = current?.weather?.[0]?.icon
+  const high = formatTemp(current?.main?.temp_max)
+  const low = formatTemp(current?.main?.temp_min)
 
   return (
     <motion.aside
       initial={{ x: -420, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 60, damping: 16 }}
-      className="absolute left-4 top-4 z-20 flex w-[19rem] flex-col gap-4"
+      className="absolute left-4 top-20 z-20 flex w-[19rem] flex-col gap-4"
     >
       <SearchBar />
 
-      <div className="glass rounded-3xl p-6">
+      <div className="glass glass-hover rounded-3xl p-6">
         {isLoading || !current ? (
-          <div className="flex h-56 animate-pulse flex-col justify-between">
+          <div className="flex h-64 animate-pulse flex-col justify-between">
             <div className="h-4 w-24 rounded bg-white/10" />
             <div className="h-20 w-40 rounded-2xl bg-white/10" />
             <div className="h-3 w-32 rounded bg-white/10" />
@@ -136,17 +164,29 @@ export default function FloatingSidebar() {
               </div>
               <WeatherIcon
                 code={icon}
-                className="h-14 w-14 text-[#7de3ff] drop-shadow-[0_0_12px_rgba(125,227,255,0.35)]"
+                className="h-14 w-14 text-aurora-400 drop-shadow-[0_0_14px_rgba(125,227,255,0.4)]"
               />
             </div>
 
             <div className="flex items-end gap-2">
-              <span className="font-display text-7xl font-bold leading-none text-white">
+              <span className="font-display text-8xl font-bold leading-none text-white">
                 {temp}°
               </span>
               <span className="mb-1.5 text-sm text-slate-400">C</span>
             </div>
-            <p className="text-xs text-slate-400">Feels like {feels}°C</p>
+
+            <div className="flex items-center justify-between text-xs">
+              <p className="text-slate-400">Feels like {feels}°C</p>
+              <p className="font-medium text-slate-300">
+                H: <span className="text-white">{high}°</span> · L:{' '}
+                <span className="text-white">{low}°</span>
+              </p>
+            </div>
+
+            <SunRow
+              sunrise={current.sys?.sunrise}
+              sunset={current.sys?.sunset}
+            />
 
             <div className="grid grid-cols-2 gap-2.5">
               <Metric
@@ -188,7 +228,7 @@ export default function FloatingSidebar() {
                 onClick={() => setActiveLayer(l.id)}
                 className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-white text-slate-900 shadow-lg'
+                    ? 'bg-white text-ink-950 shadow-lg'
                     : 'glass-inner text-slate-300 hover:text-white'
                 }`}
               >

@@ -138,6 +138,22 @@ export function flattenHourly(list = []) {
 }
 
 /**
+ * Formats a unix timestamp to a 12-hour clock with meridiem.
+ *
+ * @param {number} dt unix seconds
+ * @returns {string} e.g. "6:24 AM"
+ */
+export function formatTime12(dt) {
+  if (!dt) return '—'
+  const date = new Date(dt * 1000)
+  let h = date.getHours()
+  const m = String(date.getMinutes()).padStart(2, '0')
+  const meridiem = h >= 12 ? 'PM' : 'AM'
+  h = h % 12 || 12
+  return `${h}:${m} ${meridiem}`
+}
+
+/**
  * Resolves the correct weather icon URL for a given OWM icon code.
  * OpenWeather icons do not include the `.png` extension in some payloads.
  *
