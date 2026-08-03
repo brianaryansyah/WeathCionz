@@ -23,36 +23,36 @@ function FlyTo({ coords, zoom = 6 }) {
   return null
 }
 
-/** Dual-circle marker: static core + slow pulsing halo. */
+/** Dual-circle marker: static core + soft halo. */
 function LiveMarker({ position, current }) {
   const temp = current ? `${formatTemp(current.main.temp)}°` : '…'
   return (
     <>
       <CircleMarker
         center={position}
-        radius={14}
+        radius={16}
         pathOptions={{
-          color: 'rgba(125, 227, 255, 0.35)',
+          color: 'rgba(14, 165, 233, 0.3)',
           weight: 1,
-          fillColor: 'rgba(125, 227, 255, 0.12)',
+          fillColor: 'rgba(14, 165, 233, 0.12)',
           fillOpacity: 1,
         }}
         interactive={false}
       />
       <CircleMarker
         center={position}
-        radius={7}
+        radius={8}
         pathOptions={{
-          color: '#7de3ff',
-          weight: 2,
-          fillColor: '#0a0e1c',
+          color: '#ffffff',
+          weight: 3,
+          fillColor: '#0ea5e9',
           fillOpacity: 1,
         }}
       >
         <Popup>
-          <div className="font-display text-center text-sm font-semibold text-white">
+          <div className="font-display text-center text-sm font-semibold text-ink-950">
             {temp}
-            <span className="mt-0.5 block text-[10px] font-medium uppercase tracking-wide text-slate-400">
+            <span className="mt-0.5 block text-[10px] font-medium uppercase tracking-wide text-ink-600">
               Current
             </span>
           </div>
@@ -63,10 +63,10 @@ function LiveMarker({ position, current }) {
 }
 
 /**
- * Fullscreen interactive map: a richer dark basemap with a configurable
- * OpenWeatherMap overlay layer. Reads the active layer + coordinates
- * from the global store. Weather tiles only render when a live API is
- * configured, so the map never shows broken requests in demo mode.
+ * Fullscreen interactive map: a bright, colorful basemap with a
+ * configurable OpenWeatherMap overlay layer. Reads the active layer +
+ * coordinates from the global store. Weather tiles only render when a
+ * live API is configured, so the map never shows broken requests.
  */
 export default function MapCanvas() {
   const coords = useWeatherStore((s) => s.coords)
@@ -76,7 +76,7 @@ export default function MapCanvas() {
   const live = hasLiveApi()
 
   return (
-    <div className="absolute inset-0 bg-ink-900" role="region" aria-label="Interactive weather map">
+    <div className="absolute inset-0" role="region" aria-label="Interactive weather map">
       <MapContainer
         center={[coords.lat, coords.lon]}
         zoom={6}
@@ -84,7 +84,7 @@ export default function MapCanvas() {
         className="h-full w-full"
       >
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
           subdomains="abcd"
           maxZoom={19}
           attribution="&copy; OpenStreetMap &copy; CARTO"
@@ -94,7 +94,7 @@ export default function MapCanvas() {
           <TileLayer
             key={layer.id}
             url={buildTileUrl(layer.tile)}
-            opacity={0.55}
+            opacity={0.65}
             maxZoom={19}
             attribution="Weather data &copy; OpenWeatherMap"
           />
@@ -103,12 +103,12 @@ export default function MapCanvas() {
         <FlyTo coords={coords} />
       </MapContainer>
 
-      {/* Soft vignette so the dark base has depth rather than flat black */}
+      {/* Soft sky vignette: keeps the edges airy, never flat black */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(85% 85% at 30% 35%, rgba(18, 32, 66, 0.25) 0%, rgba(5, 7, 15, 0.05) 45%, rgba(5, 7, 15, 0.55) 100%)',
+            'linear-gradient(180deg, rgba(186,230,253,0.15) 0%, rgba(255,255,255,0) 45%, rgba(224,242,254,0.35) 100%)',
         }}
       />
     </div>
