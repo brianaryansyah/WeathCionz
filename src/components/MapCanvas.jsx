@@ -23,6 +23,45 @@ function FlyTo({ coords, zoom = 6 }) {
   return null
 }
 
+/** Dual-circle marker: static core + slow pulsing halo. */
+function LiveMarker({ position, current }) {
+  const temp = current ? `${formatTemp(current.main.temp)}°` : '…'
+  return (
+    <>
+      <CircleMarker
+        center={position}
+        radius={14}
+        pathOptions={{
+          color: 'rgba(125, 227, 255, 0.35)',
+          weight: 1,
+          fillColor: 'rgba(125, 227, 255, 0.12)',
+          fillOpacity: 1,
+        }}
+        interactive={false}
+      />
+      <CircleMarker
+        center={position}
+        radius={7}
+        pathOptions={{
+          color: '#7de3ff',
+          weight: 2,
+          fillColor: '#0a0e1c',
+          fillOpacity: 1,
+        }}
+      >
+        <Popup>
+          <div className="font-display text-center text-sm font-semibold text-white">
+            {temp}
+            <span className="mt-0.5 block text-[10px] font-medium uppercase tracking-wide text-slate-400">
+              Current
+            </span>
+          </div>
+        </Popup>
+      </CircleMarker>
+    </>
+  )
+}
+
 /**
  * Fullscreen interactive map: dark basemap with a configurable
  * OpenWeatherMap overlay layer. Reads the active layer + coordinates
@@ -35,7 +74,7 @@ export default function MapCanvas() {
   const { current } = useWeatherData(coords)
 
   return (
-    <div className="absolute inset-0 bg-[#070b16]">
+    <div className="absolute inset-0 bg-ink-900" role="region" aria-label="Interactive weather map">
       <MapContainer
         center={[coords.lat, coords.lon]}
         zoom={6}
@@ -51,7 +90,6 @@ export default function MapCanvas() {
         <AttributionControl
           position="bottomright"
           prefix=""
-          className="!z-30 !border-none !bg-transparent !text-[10px] !text-slate-500"
         />
         {layer && (
           <TileLayer
@@ -62,17 +100,7 @@ export default function MapCanvas() {
             attribution="Weather data &copy; OpenWeatherMap"
           />
         )}
-        <CircleMarker
-          center={[coords.lat, coords.lon]}
-          radius={10}
-          pathOptions={{ color: '#7de3ff', weight: 2, fillColor: '#7de3ff', fillOpacity: 0.25 }}
-        >
-          <Popup>
-            <span className="text-sm font-medium text-slate-900">
-              {current ? `${formatTemp(current.main.temp)}°C` : '…'}
-            </span>
-          </Popup>
-        </CircleMarker>
+        <LiveMarker position={[coords.lat, coords.lon]} current={current} />
         <FlyTo coords={coords} />
       </MapContainer>
     </div>
