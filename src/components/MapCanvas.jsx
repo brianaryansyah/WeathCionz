@@ -4,6 +4,7 @@ import {
   TileLayer,
   CircleMarker,
   Popup,
+  AttributionControl,
   useMap,
 } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -39,13 +40,18 @@ export default function MapCanvas() {
         center={[coords.lat, coords.lon]}
         zoom={6}
         zoomControl={false}
-        attributionControl={false}
         className="h-full w-full"
       >
         <TileLayer
           url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
           subdomains="abcd"
           maxZoom={19}
+          attribution="&copy; OpenStreetMap &copy; CARTO"
+        />
+        <AttributionControl
+          position="bottomright"
+          prefix=""
+          className="!z-30 !border-none !bg-transparent !text-[10px] !text-slate-500"
         />
         {layer && (
           <TileLayer
@@ -53,6 +59,7 @@ export default function MapCanvas() {
             url={buildTileUrl(layer.tile)}
             opacity={0.55}
             maxZoom={19}
+            attribution="Weather data &copy; OpenWeatherMap"
           />
         )}
         <CircleMarker
