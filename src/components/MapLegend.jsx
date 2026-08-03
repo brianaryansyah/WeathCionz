@@ -3,11 +3,11 @@ import { useWeatherStore, MAP_LAYERS } from '../store/useWeatherStore'
 
 /** Shared legend gradients per layer type. */
 const GRADIENTS = {
-  temp: 'linear-gradient(90deg, #2f6df6, #41c9f2, #8ce88a, #f5e27a, #f5a44a, #e8584f)',
-  precip: 'linear-gradient(90deg, #1a2f6b, #2f6df6, #41c9f2, #b6ecff)',
-  clouds: 'linear-gradient(90deg, #3a4658, #6b7a92, #b9c4d6, #f3f6fb)',
-  wind: 'linear-gradient(90deg, #2a1f5e, #5b46b5, #a78bfa, #e4dbff)',
-  pressure: 'linear-gradient(90deg, #4a3a10, #9c7a1f, #f5c542, #fff3c2)',
+  temp: 'linear-gradient(90deg, #1d4ed8, #38bdf8, #86efac, #fde047, #fb923c, #ef4444)',
+  precip: 'linear-gradient(90deg, #1e40af, #2563eb, #38bdf8, #7dd3fc)',
+  clouds: 'linear-gradient(90deg, #94a3b8, #cbd5e1, #e2e8f0, #f8fafc)',
+  wind: 'linear-gradient(90deg, #4c1d95, #7c3aed, #a78bfa, #ddd6fe)',
+  pressure: 'linear-gradient(90deg, #b45309, #d97706, #f59e0b, #fde68a)',
 }
 
 /** Ticks rendered under each layer gradient. */
@@ -38,11 +38,11 @@ export default function MapLegend() {
       className="absolute right-4 bottom-14 z-20"
     >
       <div className="glass rounded-2xl px-4 py-3">
-        <p className="mb-2 text-[11px] font-medium uppercase tracking-wide text-slate-400">
+        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-600">
           {layer.label}
         </p>
-        <div className="h-2 w-36 rounded-full" style={{ background: GRADIENTS[layer.id] }} />
-        <div className="mt-1 flex w-36 justify-between text-[10px] text-slate-500">
+        <div className="h-2.5 w-36 rounded-full" style={{ background: GRADIENTS[layer.id] }} />
+        <div className="mt-1 flex w-36 justify-between text-[10px] text-ink-600">
           {ticks.map((tick) => (
             <span key={tick}>{tick}</span>
           ))}

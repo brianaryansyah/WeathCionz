@@ -1,14 +1,28 @@
 /**
  * Inline SVG weather icons keyed by OWM icon code group.
  * Lightweight, dependency-free and crisply rendered at any size.
+ * Each condition carries its own vivid color when none is supplied.
  */
+const CONDITION_COLORS = {
+  '01': '#fbbf24',
+  '02': '#f59e0b',
+  '03': '#64748b',
+  '04': '#475569',
+  '09': '#0ea5e9',
+  '10': '#0284c7',
+  '11': '#8b5cf6',
+  '13': '#38bdf8',
+  '50': '#94a3b8',
+}
+
 export default function WeatherIcon({ code, className = 'h-16 w-16' }) {
   if (!code) return null
   const group = String(code).replace(/\d$/, '')
   const isDay = String(code).endsWith('d')
+  const color = CONDITION_COLORS[group] || '#0ea5e9'
   const common = {
     fill: 'none',
-    stroke: 'currentColor',
+    stroke: color,
     strokeWidth: 1.8,
     strokeLinecap: 'round',
     strokeLinejoin: 'round',
