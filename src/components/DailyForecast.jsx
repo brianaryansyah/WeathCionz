@@ -25,7 +25,7 @@ export default function DailyForecast() {
       transition={{ type: 'spring', stiffness: 70, damping: 17, delay: 0.25 }}
       className="absolute top-6 right-6 z-10 hidden w-[19rem] lg:block"
     >
-      <div className="glass rounded-3xl p-4">
+      <div className="glass rounded-3xl p-5">
         <p className="mb-2.5 px-1 text-[11px] font-medium uppercase tracking-wide text-ink-600">
           Next 5 days
         </p>

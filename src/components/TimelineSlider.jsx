@@ -34,7 +34,7 @@ export default function TimelineSlider() {
       transition={{ type: 'spring', stiffness: 60, damping: 16, delay: 0.15 }}
       className="absolute bottom-8 left-1/2 z-20 w-[min(52rem,92vw)] -translate-x-1/2"
     >
-      <div className="glass rounded-3xl px-4 py-3">
+      <div className="glass rounded-3xl px-5 py-4">
         <div className="mb-2 flex items-center justify-between px-1">
           <span className="text-[11px] font-medium uppercase tracking-wide text-ink-600">
             Hourly forecast
