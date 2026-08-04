@@ -24,7 +24,7 @@ export const useWeatherStore = create((set) => ({
   locate: (coords, name) =>
     set({
       coords,
-      locationName: name || DEFAULT_CITY.name,
+      locationName: name || (coords.lat === DEFAULT_CITY.lat && coords.lon === DEFAULT_CITY.lon ? DEFAULT_CITY.name : 'Your Location'),
       selectedIndex: 0,
     }),
 }))
