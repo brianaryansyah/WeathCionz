@@ -45,13 +45,14 @@ export default function App() {
         <MapCanvas />
       </Suspense>
 
-      {/* Soft, condition-reactive ambient glow */}
+      {/* Soft, condition-reactive ambient glow with breathing animation */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-[5]"
         animate={{
           background: `radial-gradient(75% 60% at 30% 35%, ${glow}40 0%, rgba(224,242,254,0) 60%)`,
+          opacity: [0.8, 1, 0.8],
         }}
-        transition={{ duration: 1.2 }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       <div className="absolute inset-0 z-50 pointer-events-none [&>*]:pointer-events-auto">
