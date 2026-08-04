@@ -41,6 +41,8 @@ export default function MapCanvas() {
           longitude: coords.lon,
           latitude: coords.lat,
           zoom: 1.5,
+          pitch: 30, // Adds 3D perspective
+          bearing: 15,
         }}
         mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
         projection="globe"
