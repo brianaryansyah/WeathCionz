@@ -6,16 +6,16 @@ import { buildTileUrl, hasLiveApi } from '../services/weatherApi'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { formatTemp } from '../utils/weatherUtils'
 
-const DARK_STYLE = {
+const LIGHT_STYLE = {
   version: 8,
   sources: {
-    'carto-dark': {
+    'carto-light': {
       type: 'raster',
       tiles: [
-        'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-        'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-        'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-        'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+        'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+        'https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+        'https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+        'https://d.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
       ],
       tileSize: 256,
       attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
@@ -23,9 +23,9 @@ const DARK_STYLE = {
   },
   layers: [
     {
-      id: 'carto-dark-layer',
+      id: 'carto-light-layer',
       type: 'raster',
-      source: 'carto-dark',
+      source: 'carto-light',
       minzoom: 0,
       maxzoom: 22
     }
@@ -60,7 +60,7 @@ export default function MapCanvas() {
   const temp = current ? `${formatTemp(current.main.temp)}°` : '…'
 
   return (
-    <div className="absolute inset-0 z-0 bg-[#050B14]" role="region" aria-label="Interactive weather map">
+    <div className="absolute inset-0 z-0 bg-[#fde68a]" role="region" aria-label="Interactive weather map">
       <Map
         ref={mapRef}
         initialViewState={{
@@ -70,7 +70,7 @@ export default function MapCanvas() {
           pitch: 30, // Adds 3D perspective
           bearing: 15,
         }}
-        mapStyle={DARK_STYLE}
+        mapStyle={LIGHT_STYLE}
         projection="globe"
         attributionControl={true}
         interactive={true}
@@ -87,20 +87,20 @@ export default function MapCanvas() {
 
         <Marker longitude={coords.lon} latitude={coords.lat} anchor="center">
           <div className="relative flex items-center justify-center">
-            <div className="absolute h-10 w-10 animate-ping rounded-full bg-cyan-400/40" />
-            <div className="glass-inner relative z-10 flex h-9 w-9 flex-col items-center justify-center rounded-full border-2 border-white/80 text-white shadow-[0_4px_16px_rgba(34,211,238,0.4)]">
-              <span className="font-display text-[10px] font-bold leading-none">{temp}</span>
+            <div className="absolute h-12 w-12 animate-ping rounded-full bg-orange-400/40" />
+            <div className="glass-inner relative z-10 flex h-10 w-10 flex-col items-center justify-center rounded-full border-2 border-white/90 text-orange-600 shadow-[0_4px_16px_rgba(251,146,60,0.5)]">
+              <span className="font-display text-[11px] font-bold leading-none">{temp}</span>
             </div>
           </div>
         </Marker>
       </Map>
 
-      {/* Deep space vignette: keeps the edges dark and immersive */}
+      {/* Bright pastel vignette: keeps the edges airy and warm */}
       <div
         className="pointer-events-none absolute inset-0 z-10"
         style={{
           background:
-            'radial-gradient(circle at center, transparent 40%, rgba(5,11,20,0.85) 100%)',
+            'radial-gradient(circle at center, transparent 40%, rgba(255,237,213,0.7) 100%)',
         }}
       />
     </div>
