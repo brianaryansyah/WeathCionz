@@ -183,7 +183,7 @@ export default function FloatingSidebar() {
             </div>
 
             <div className="flex items-end gap-2">
-              <span className="font-display text-8xl font-bold leading-none text-ink-950">
+              <span className="font-display text-7xl font-bold leading-none text-ink-950">
                 {temp}°
               </span>
               <span className="mb-1.5 text-sm font-medium text-sky-700">C</span>
