@@ -45,14 +45,14 @@ export default function App() {
         <MapCanvas />
       </Suspense>
 
-      {/* Dark theme condition-reactive ambient glow with breathing animation */}
+      {/* Soft, pastel ambient glow with breathing animation */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-[5]"
         animate={{
-          background: `radial-gradient(75% 60% at 30% 35%, ${glow}30 0%, rgba(5,11,20,0) 60%)`,
-          opacity: [0.6, 0.9, 0.6],
+          background: `radial-gradient(75% 60% at 30% 35%, ${glow}40 0%, rgba(255,237,213,0) 60%)`,
+          opacity: [0.8, 1, 0.8],
         }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       {/* Grid wrapper for UI overlay to prevent absolute overlaps where possible, though we still use absolute positioning for specific placements */}
