@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import HeaderBar from './components/HeaderBar'
 import FloatingSidebar from './components/FloatingSidebar'
 import TimelineSlider from './components/TimelineSlider'
@@ -7,6 +7,7 @@ import DailyForecast from './components/DailyForecast'
 import MapLegend from './components/MapLegend'
 import DataFreshness from './components/DataFreshness'
 import DemoBanner from './components/DemoBanner'
+import LocationPopup from './components/LocationPopup'
 import { useWeatherStore } from './store/useWeatherStore'
 import { useWeatherData } from './hooks/useWeatherData'
 import { useGeolocation } from './hooks/useGeolocation'
@@ -32,7 +33,7 @@ export default function App() {
   const coords = useWeatherStore((s) => s.coords)
   const { current } = useWeatherData(coords)
 
-  useGeolocation()
+  const { isLocating } = useGeolocation()
 
   const group = current?.weather?.[0]?.main
   const glow = GLOW[group] || '#38bdf8'
@@ -40,7 +41,7 @@ export default function App() {
   return (
     <div className="relative h-screen w-screen overflow-hidden isolate">
       <Suspense
-        fallback={<div className="absolute inset-0 animate-pulse bg-sky-100" />}
+        fallback={<div className="absolute inset-0 animate-pulse bg-[#fdfbf7]" />}
       >
         <MapCanvas />
       </Suspense>
@@ -54,6 +55,10 @@ export default function App() {
         }}
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
       />
+
+      <AnimatePresence>
+        {isLocating && <LocationPopup />}
+      </AnimatePresence>
 
       {/* Grid wrapper for UI overlay to prevent absolute overlaps where possible, though we still use absolute positioning for specific placements */}
       <div className="absolute inset-0 z-50 pointer-events-none [&>*]:pointer-events-auto overflow-hidden">
