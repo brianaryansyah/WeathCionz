@@ -178,7 +178,7 @@ export default function FloatingSidebar() {
               </div>
               <WeatherIcon
                 code={icon}
-                className="h-14 w-14 drop-shadow-[0_6px_14px_rgba(2,132,199,0.35)]"
+                className="h-16 w-16 drop-shadow-[0_6px_14px_rgba(251,146,60,0.35)]"
               />
             </div>
 
