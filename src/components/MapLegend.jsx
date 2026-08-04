@@ -35,7 +35,7 @@ export default function MapLegend() {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="absolute right-6 bottom-8 z-20"
+      className="absolute right-6 bottom-[7.5rem] z-20 hidden md:block"
     >
       <div className="glass rounded-2xl px-4 py-3">
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-600">
