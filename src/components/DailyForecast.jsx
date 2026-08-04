@@ -20,10 +20,10 @@ export default function DailyForecast() {
 
   return (
     <motion.div
-      initial={{ y: 60, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+      initial={{ x: 60, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 70, damping: 17, delay: 0.25 }}
-      className="absolute bottom-4 left-4 z-10 hidden w-[19rem] lg:block"
+      className="absolute top-6 right-6 z-10 hidden w-[19rem] lg:block"
     >
       <div className="glass rounded-3xl p-4">
         <p className="mb-2.5 px-1 text-[11px] font-medium uppercase tracking-wide text-ink-600">
