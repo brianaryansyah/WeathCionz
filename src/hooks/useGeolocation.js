@@ -13,11 +13,13 @@ export function useGeolocation() {
   const locate = useWeatherStore((s) => s.locate)
   const [granted, setGranted] = useState(false)
   const [error, setError] = useState(null)
+  const [isLocating, setIsLocating] = useState(true)
 
   useEffect(() => {
     if (!navigator.geolocation) {
       setError('Geolocation is not supported by this browser')
       locate(DEFAULT_CITY)
+      setIsLocating(false)
       return
     }
 
@@ -31,11 +33,13 @@ export function useGeolocation() {
       }
       locate(coords, name)
       setGranted(true)
+      setIsLocating(false)
     }
 
     const fail = () => {
       setError('Location permission denied')
       locate(DEFAULT_CITY)
+      setIsLocating(false)
     }
 
     navigator.geolocation.getCurrentPosition(success, fail, {
@@ -45,5 +49,5 @@ export function useGeolocation() {
     })
   }, [locate])
 
-  return { granted, error }
+  return { granted, error, isLocating }
 }
