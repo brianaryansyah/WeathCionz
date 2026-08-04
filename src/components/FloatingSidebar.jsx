@@ -149,7 +149,7 @@ export default function FloatingSidebar() {
       initial={{ x: -420, opacity: 0 }}
       animate={{ x: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 60, damping: 16 }}
-      className="absolute left-4 top-20 z-20 flex w-[19rem] flex-col gap-4"
+      className="absolute left-6 top-6 z-20 flex w-[19rem] flex-col gap-4"
     >
       <SearchBar />
 
