@@ -6,8 +6,34 @@ import { buildTileUrl, hasLiveApi } from '../services/weatherApi'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { formatTemp } from '../utils/weatherUtils'
 
+const DARK_STYLE = {
+  version: 8,
+  sources: {
+    'carto-dark': {
+      type: 'raster',
+      tiles: [
+        'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+        'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+        'https://c.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
+        'https://d.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png'
+      ],
+      tileSize: 256,
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+    }
+  },
+  layers: [
+    {
+      id: 'carto-dark-layer',
+      type: 'raster',
+      source: 'carto-dark',
+      minzoom: 0,
+      maxzoom: 22
+    }
+  ]
+}
+
 /**
- * Fullscreen interactive map: a bright, colorful basemap with a
+ * Fullscreen interactive map: a dark, sleek basemap with a
  * configurable OpenWeatherMap overlay layer. Uses MapLibre GL
  * for a cinematic 3D globe effect that transitions to 2D on zoom.
  */
@@ -34,7 +60,7 @@ export default function MapCanvas() {
   const temp = current ? `${formatTemp(current.main.temp)}°` : '…'
 
   return (
-    <div className="absolute inset-0 z-0 bg-[#bfe3f7]" role="region" aria-label="Interactive weather map">
+    <div className="absolute inset-0 z-0 bg-[#050B14]" role="region" aria-label="Interactive weather map">
       <Map
         ref={mapRef}
         initialViewState={{
@@ -44,7 +70,7 @@ export default function MapCanvas() {
           pitch: 30, // Adds 3D perspective
           bearing: 15,
         }}
-        mapStyle="https://basemaps.cartocdn.com/gl/positron-gl-style/style.json"
+        mapStyle={DARK_STYLE}
         projection="globe"
         attributionControl={true}
         interactive={true}
@@ -61,20 +87,20 @@ export default function MapCanvas() {
 
         <Marker longitude={coords.lon} latitude={coords.lat} anchor="center">
           <div className="relative flex items-center justify-center">
-            <div className="absolute h-10 w-10 animate-ping rounded-full bg-sky-400/40" />
-            <div className="glass-inner relative z-10 flex h-9 w-9 flex-col items-center justify-center rounded-full border-2 border-white/80 text-ink-950 shadow-[0_4px_16px_rgba(2,132,199,0.4)]">
+            <div className="absolute h-10 w-10 animate-ping rounded-full bg-cyan-400/40" />
+            <div className="glass-inner relative z-10 flex h-9 w-9 flex-col items-center justify-center rounded-full border-2 border-white/80 text-white shadow-[0_4px_16px_rgba(34,211,238,0.4)]">
               <span className="font-display text-[10px] font-bold leading-none">{temp}</span>
             </div>
           </div>
         </Marker>
       </Map>
 
-      {/* Soft sky vignette: keeps the edges airy */}
+      {/* Deep space vignette: keeps the edges dark and immersive */}
       <div
         className="pointer-events-none absolute inset-0 z-10"
         style={{
           background:
-            'linear-gradient(180deg, rgba(186,230,253,0.15) 0%, rgba(255,255,255,0) 45%, rgba(224,242,254,0.35) 100%)',
+            'radial-gradient(circle at center, transparent 40%, rgba(5,11,20,0.85) 100%)',
         }}
       />
     </div>
