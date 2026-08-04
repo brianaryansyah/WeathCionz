@@ -49,7 +49,7 @@ export default function App() {
       <motion.div
         className="pointer-events-none absolute inset-0 z-[5]"
         animate={{
-          background: `radial-gradient(75% 60% at 30% 35%, ${glow}40 0%, rgba(255,237,213,0) 60%)`,
+          background: `radial-gradient(75% 60% at 30% 35%, ${glow}40 0%, rgba(244,238,224,0) 60%)`,
           opacity: [0.8, 1, 0.8],
         }}
         transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}

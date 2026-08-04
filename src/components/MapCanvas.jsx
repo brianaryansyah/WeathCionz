@@ -98,7 +98,7 @@ export default function MapCanvas() {
         className="pointer-events-none absolute inset-0 z-10"
         style={{
           background:
-            'radial-gradient(circle at center, transparent 40%, rgba(255,237,213,0.7) 100%)',
+            'radial-gradient(circle at center, transparent 40%, rgba(244,238,224,0.7) 100%)',
         }}
       />
     </div>
