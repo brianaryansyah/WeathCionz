@@ -61,8 +61,8 @@ export default function MapCanvas() {
 
         <Marker longitude={coords.lon} latitude={coords.lat} anchor="center">
           <div className="relative flex items-center justify-center">
-            <div className="absolute h-10 w-10 animate-ping rounded-full bg-sky-500/40" />
-            <div className="relative z-10 flex h-8 w-8 flex-col items-center justify-center rounded-full border-2 border-white bg-sky-500 text-white shadow-[0_0_15px_rgba(14,165,233,0.5)]">
+            <div className="absolute h-10 w-10 animate-ping rounded-full bg-sky-400/40" />
+            <div className="glass-inner relative z-10 flex h-9 w-9 flex-col items-center justify-center rounded-full border-2 border-white/80 text-ink-950 shadow-[0_4px_16px_rgba(2,132,199,0.4)]">
               <span className="font-display text-[10px] font-bold leading-none">{temp}</span>
             </div>
           </div>
