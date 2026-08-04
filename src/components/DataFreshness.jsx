@@ -36,7 +36,7 @@ export default function DataFreshness() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.7 }}
-      className="glass absolute right-4 top-20 z-10 rounded-full px-3 py-1.5 text-[11px] font-medium text-ink-600"
+      className="glass absolute left-6 bottom-32 z-10 rounded-full px-3 py-1.5 text-xs font-medium text-ink-600 shadow-md"
     >
       Updated {agoLabel(seconds)}
     </motion.p>
