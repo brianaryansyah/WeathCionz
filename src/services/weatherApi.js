@@ -1,4 +1,5 @@
-const API_KEY = import.meta.env.VITE_OWM_KEY || ''
+// Use the environment variable if available, otherwise use a public OWM demo key for real-time heatmap tiles
+const API_KEY = import.meta.env.VITE_OWM_KEY || 'b6907d289e10d714a6e88b30761fae22'
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 const OWM_HOST = 'https://api.openweathermap.org'
 
