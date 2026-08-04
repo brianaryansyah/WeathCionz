@@ -60,15 +60,13 @@ export default function MapCanvas() {
   const temp = current ? `${formatTemp(current.main.temp)}°` : '…'
 
   return (
-    <div className="absolute inset-0 z-0 bg-[#fde68a]" role="region" aria-label="Interactive weather map">
+    <div className="absolute inset-0 z-0 bg-transparent" role="region" aria-label="Interactive weather map">
       <Map
         ref={mapRef}
         initialViewState={{
           longitude: coords.lon,
           latitude: coords.lat,
           zoom: 1.5,
-          pitch: 30, // Adds 3D perspective
-          bearing: 15,
         }}
         mapStyle={LIGHT_STYLE}
         projection="globe"
