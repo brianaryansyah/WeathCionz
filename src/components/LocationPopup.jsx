@@ -16,7 +16,7 @@ export default function LocationPopup() {
             <circle cx="12" cy="10" r="3" />
           </svg>
         </div>
-        <div className="text-center">
+        <div className="text-center animate-pulse">
           <h3 className="font-display text-lg font-semibold text-ink-950">
             Mendeteksi Lokasi...
           </h3>
