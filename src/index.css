@@ -36,7 +36,7 @@
   body {
     margin: 0;
     font-family: var(--font-sans);
-    background: linear-gradient(180deg, #ffedd5 0%, #ffedd5 60%, #fff7ed 100%); /* Pastel orange */
+    background: linear-gradient(180deg, #fdfbf7 0%, #fdfbf7 60%, #f4eee0 100%); /* Soft pastel cream */
     color: var(--color-ink-950);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
