@@ -38,7 +38,7 @@ export default function App() {
   const glow = GLOW[group] || '#38bdf8'
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
+    <div className="relative h-screen w-screen overflow-hidden isolate">
       <Suspense
         fallback={<div className="absolute inset-0 animate-pulse bg-sky-100" />}
       >
@@ -54,13 +54,15 @@ export default function App() {
         transition={{ duration: 1.2 }}
       />
 
-      <HeaderBar />
-      <FloatingSidebar />
-      <TimelineSlider />
-      <DailyForecast />
-      <MapLegend />
-      <DataFreshness />
-      <DemoBanner />
+      <div className="absolute inset-0 z-50 pointer-events-none [&>*]:pointer-events-auto">
+        <HeaderBar />
+        <FloatingSidebar />
+        <TimelineSlider />
+        <DailyForecast />
+        <MapLegend />
+        <DataFreshness />
+        <DemoBanner />
+      </div>
     </div>
   )
 }
