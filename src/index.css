@@ -36,8 +36,8 @@
   body {
     margin: 0;
     font-family: var(--font-sans);
-    background: linear-gradient(180deg, #bae6fd 0%, #e0f2fe 60%, #f0f9ff 100%);
-    color: var(--color-ink-950);
+    background: #050b14; /* Dark space background */
+    color: #f8fafc; /* Slate 50 for main text */
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -66,31 +66,31 @@
 
   ::selection {
     background: rgba(56, 189, 248, 0.35);
-    color: var(--color-ink-950);
+    color: #ffffff;
   }
 }
 
 @layer components {
-  /* Signature frosted-glass panel for the light theme */
+  /* Signature frosted-glass panel for the dark theme */
   .glass {
     background: linear-gradient(
       150deg,
-      rgba(255, 255, 255, 0.85),
-      rgba(255, 255, 255, 0.65)
+      rgba(15, 23, 42, 0.75),
+      rgba(15, 23, 42, 0.45)
     );
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(24px) saturate(140%);
+    -webkit-backdrop-filter: blur(24px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow:
-      0 24px 60px -20px rgba(2, 132, 199, 0.4),
-      inset 0 1px 0 rgba(255, 255, 255, 1);
+      0 24px 60px -20px rgba(0, 0, 0, 0.7),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 
   /* Inner sub-panel */
   .glass-inner {
-    background: rgba(255, 255, 255, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(14px);
+    background: rgba(30, 41, 59, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
   }
 
   /* Elevated hover lift for interactive cards */
