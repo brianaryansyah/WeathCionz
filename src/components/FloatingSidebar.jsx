@@ -93,12 +93,12 @@ function SearchBar() {
 function Metric({ icon, label, value, sub, accent = 'text-sky-700' }) {
   return (
     <div className="glass-inner flex flex-col gap-1 rounded-2xl px-3.5 py-3">
-      <span className={`flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-wide text-ink-600`}>
+      <span className={`flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-ink-600`}>
         <span className={accent}>{icon}</span>
         {label}
       </span>
       <span className="font-display text-lg font-semibold text-ink-950">{value}</span>
-      {sub && <span className="text-[11px] text-ink-600/80">{sub}</span>}
+      {sub && <span className="text-xs text-ink-600/80">{sub}</span>}
     </div>
   )
 }
@@ -107,7 +107,7 @@ function SunRow({ sunrise, sunset }) {
   return (
     <div className="glass-inner flex items-center justify-around rounded-2xl px-3 py-3">
       <div className="flex flex-col items-center gap-1">
-        <span className="text-[11px] font-medium uppercase tracking-wide text-ink-600">
+        <span className="text-xs font-medium uppercase tracking-wide text-ink-600">
           Sunrise
         </span>
         <span className="font-display text-sm font-semibold text-ink-950">
@@ -116,7 +116,7 @@ function SunRow({ sunrise, sunset }) {
       </div>
       <span className="h-8 w-px bg-ink-950/10" aria-hidden="true" />
       <div className="flex flex-col items-center gap-1">
-        <span className="text-[11px] font-medium uppercase tracking-wide text-ink-600">
+        <span className="text-xs font-medium uppercase tracking-wide text-ink-600">
           Sunset
         </span>
         <span className="font-display text-sm font-semibold text-ink-950">
