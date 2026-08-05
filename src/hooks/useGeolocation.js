@@ -39,10 +39,22 @@ export function useGeolocation() {
     const fallbackToIP = async () => {
       try {
         const res = await fetch('https://ipapi.co/json/')
-        const data = await res.json()
-        if (data && data.latitude && data.longitude) {
-          await handleSuccess(data.latitude, data.longitude)
-          return
+        if (res.ok) {
+          const data = await res.json()
+          if (data && data.latitude && data.longitude) {
+            await handleSuccess(data.latitude, data.longitude)
+            return
+          }
+        }
+        
+        // Second fallback
+        const res2 = await fetch('http://ip-api.com/json/')
+        if (res2.ok) {
+          const data2 = await res2.json()
+          if (data2 && data2.lat && data2.lon) {
+            await handleSuccess(data2.lat, data2.lon)
+            return
+          }
         }
       } catch (err) {
         // IP fallback failed silently
@@ -63,7 +75,7 @@ export function useGeolocation() {
     navigator.geolocation.getCurrentPosition(
       ({ coords: { latitude, longitude } }) => handleSuccess(latitude, longitude),
       fallbackToIP,
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     )
 
     return () => {
