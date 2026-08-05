@@ -15,7 +15,15 @@ const SATELLITE_STYLE = {
         'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
       ],
       tileSize: 256,
-      attribution: '&copy; Esri, Maxar, Earthstar Geographics, and the GIS User Community'
+      attribution: '&copy; Esri, Maxar, Earthstar Geographics'
+    },
+    'carto-labels': {
+      type: 'raster',
+      tiles: [
+        'https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png'
+      ],
+      tileSize: 256,
+      attribution: '&copy; CARTO'
     }
   },
   layers: [
@@ -23,6 +31,13 @@ const SATELLITE_STYLE = {
       id: 'satellite-layer',
       type: 'raster',
       source: 'esri-satellite',
+      minzoom: 0,
+      maxzoom: 22
+    },
+    {
+      id: 'labels-layer',
+      type: 'raster',
+      source: 'carto-labels',
       minzoom: 0,
       maxzoom: 22
     }
