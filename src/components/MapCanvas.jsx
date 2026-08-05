@@ -85,12 +85,12 @@ export default function MapCanvas() {
         attributionControl={true}
         interactive={true}
       >
-        {live && layer && (
-          <Source id="weather-tiles" type="raster" tiles={[buildTileUrl(layer.tile)]} tileSize={256}>
+        {layer && (
+          <Source key={layer.id} id={`weather-tiles-${layer.id}`} type="raster" tiles={[buildTileUrl(layer.tile)]} tileSize={256}>
             <Layer
-              id="weather-layer"
+              id={`weather-layer-${layer.id}`}
               type="raster"
-              paint={{ 'raster-opacity': 0.65 }}
+              paint={{ 'raster-opacity': 0.75 }}
             />
           </Source>
         )}
