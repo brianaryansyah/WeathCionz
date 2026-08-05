@@ -48,15 +48,58 @@ function buildTomorrowUrl(path, params) {
 }
 
 /**
- * Fetches current weather for a coordinate.
- *
- * @param {{lat: number, lon: number}} coords
- * @returns {Promise<object>} OWM current weather payload
+ * Fetches current weather for a coordinate using Tomorrow.io.
+ * Maps the response to the OpenWeatherMap format used by the UI.
  */
 export async function fetchCurrentWeather({ lat, lon }) {
-  const res = await fetch(buildUrl('/data/2.5/weather', { lat, lon }))
+  if (!TOMORROW_KEY) {
+    throw new Error('Tomorrow.io API key is required for real-time weather.')
+  }
+  const res = await fetch(buildTomorrowUrl('/realtime', { location: `${lat},${lon}` }))
   if (!res.ok) throw new Error(`Weather request failed (${res.status})`)
-  return res.json()
+  
+  const json = await res.json()
+  const v = json.data.values
+  const time = new Date(json.data.time).getTime() / 1000
+
+  // Map Tomorrow.io weatherCode to OWM format
+  const codeStr = String(v.weatherCode || 1000)
+  let main = 'Clear'
+  let icon = '01d'
+  let desc = 'clear sky'
+
+  if (codeStr.startsWith('1000')) { main = 'Clear'; icon = '01d'; desc = 'clear' }
+  else if (codeStr.startsWith('11') || codeStr.startsWith('1001')) { main = 'Clouds'; icon = '03d'; desc = 'cloudy' }
+  else if (codeStr.startsWith('2')) { main = 'Mist'; icon = '50d'; desc = 'fog' }
+  else if (codeStr.startsWith('4000')) { main = 'Drizzle'; icon = '09d'; desc = 'drizzle' }
+  else if (codeStr.startsWith('4')) { main = 'Rain'; icon = '10d'; desc = 'rain' }
+  else if (codeStr.startsWith('5') || codeStr.startsWith('6') || codeStr.startsWith('7')) { main = 'Snow'; icon = '13d'; desc = 'snow' }
+  else if (codeStr.startsWith('8')) { main = 'Thunderstorm'; icon = '11d'; desc = 'thunderstorm' }
+
+  return {
+    dt: time,
+    main: {
+      temp: v.temperature,
+      feels_like: v.temperatureApparent,
+      temp_min: v.temperature,
+      temp_max: v.temperature,
+      pressure: v.pressureSurfaceLevel,
+      humidity: v.humidity,
+    },
+    wind: {
+      speed: v.windSpeed,
+      deg: v.windDirection,
+      gust: v.windGust || v.windSpeed,
+    },
+    visibility: (v.visibility || 10) * 1000,
+    clouds: { all: v.cloudCover || 0 },
+    sys: {
+      // Tomorrow.io realtime doesn't include sunrise/sunset, mock it based on current time
+      sunrise: time - 12 * 3600, 
+      sunset: time + 12 * 3600,
+    },
+    weather: [{ main, description: desc, icon }]
+  }
 }
 
 /**
