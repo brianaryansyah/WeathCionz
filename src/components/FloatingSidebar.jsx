@@ -202,38 +202,38 @@ export default function FloatingSidebar() {
             <div className="grid grid-cols-2 gap-2.5">
               <Metric
                 icon={<Droplet />}
-                accent="text-sky-600"
+                accent="text-sky-500"
                 label="Humidity"
                 value={`${current.main.humidity}%`}
               />
               <Metric
                 icon={<Cloud />}
-                accent="text-sky-700"
+                accent="text-slate-500"
                 label="Clouds"
                 value={`${current.clouds?.all ?? 0}%`}
               />
               <Metric
                 icon={<Dew />}
-                accent="text-cyan-600"
+                accent="text-cyan-500"
                 label="Dew point"
                 value={`${dewPoint(current.main.temp, current.main.humidity)}°`}
               />
               <Metric
                 icon={<Gauge />}
-                accent="text-orchid-500"
+                accent="text-indigo-500"
                 label="Pressure"
                 value={`${current.main.pressure} hPa`}
               />
               <Metric
                 icon={<Wind speed={current.wind.speed} />}
-                accent="text-sky-700"
+                accent="text-blue-500"
                 label="Wind"
                 value={`${formatWind(current.wind.speed)} m/s`}
                 sub={`${windDegToCardinal(current.wind.deg)} · gust ${formatWind(current.wind.gust)} m/s`}
               />
               <Metric
                 icon={<Visibility />}
-                accent="text-sun-500"
+                accent="text-teal-500"
                 label="Visibility"
                 value={`${(current.visibility / 1000).toFixed(1)} km`}
               />
