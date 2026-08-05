@@ -255,8 +255,8 @@ export default function FloatingSidebar() {
                 onClick={() => setActiveLayer(l.id)}
                 className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-sky-600 text-white shadow-lg shadow-sky-600/30'
-                    : 'glass-inner text-ink-600 hover:text-ink-950'
+                    ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-md shadow-sky-500/40'
+                    : 'glass-inner text-ink-800 hover:text-ink-950 hover:bg-white/40'
                 }`}
               >
                 {l.label}
