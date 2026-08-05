@@ -59,7 +59,7 @@ export default function DailyForecast() {
                           initial={{ width: 0 }}
                           animate={{ width: `${pop}%` }}
                           transition={{ duration: 0.8, delay: 0.3 }}
-                          className="h-full rounded-full bg-sky-500/80"
+                          className="h-full rounded-full bg-gradient-to-r from-sky-400 to-indigo-500"
                         />
                       </div>
                       <span className="text-[10px] font-medium text-sky-700">{pop}%</span>
