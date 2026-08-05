@@ -6,7 +6,7 @@ export const MAP_LAYERS = [
   { id: 'temp', label: 'Temperature', tile: 'temp_new', color: '#f59e0b' },
   { id: 'precip', label: 'Precipitation', tile: 'precipitation_new', color: '#38bdf8' },
   { id: 'clouds', label: 'Clouds', tile: 'clouds_new', color: '#94a3b8' },
-  { id: 'wind', label: 'Wind', tile: 'wind_new', color: '#a78bfa' },
+  { id: 'wind', label: 'Wind', tile: 'wind_new', color: '#2dd4bf' },
   { id: 'pressure', label: 'Pressure', tile: 'pressure_new', color: '#fbbf24' },
 ]
 

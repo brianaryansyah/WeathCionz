@@ -56,7 +56,7 @@ export function useGeolocation() {
             return
           }
         }
-      } catch (err) {
+      } catch {
         // IP fallback failed silently
       }
       
