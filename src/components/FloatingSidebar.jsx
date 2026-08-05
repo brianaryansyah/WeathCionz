@@ -253,11 +253,12 @@ export default function FloatingSidebar() {
               <button
                 key={l.id}
                 onClick={() => setActiveLayer(l.id)}
-                className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
+                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-95 ${
                   isActive
-                    ? 'bg-gradient-to-r from-sky-500 to-cyan-400 text-white shadow-md shadow-sky-500/40'
+                    ? 'text-white shadow-md'
                     : 'glass-inner text-ink-800 hover:text-ink-950 hover:bg-white/40'
                 }`}
+                style={isActive ? { backgroundColor: l.color, boxShadow: `0 4px 14px ${l.color}80` } : {}}
               >
                 {l.label}
               </button>
