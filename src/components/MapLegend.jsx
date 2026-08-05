@@ -4,9 +4,9 @@ import { useWeatherStore, MAP_LAYERS } from '../store/useWeatherStore'
 /** Shared legend gradients per layer type. */
 const GRADIENTS = {
   temp: 'linear-gradient(90deg, #1d4ed8, #38bdf8, #86efac, #fde047, #fb923c, #ef4444)',
-  precip: 'linear-gradient(90deg, #1e40af, #2563eb, #38bdf8, #7dd3fc)',
-  clouds: 'linear-gradient(90deg, #94a3b8, #cbd5e1, #e2e8f0, #f8fafc)',
-  wind: 'linear-gradient(90deg, #4c1d95, #7c3aed, #a78bfa, #ddd6fe)',
+  precip: 'linear-gradient(90deg, #0c4a6e, #0ea5e9, #38bdf8, #7dd3fc)',
+  clouds: 'linear-gradient(90deg, #475569, #94a3b8, #cbd5e1, #e2e8f0)',
+  wind: 'linear-gradient(90deg, #0f766e, #14b8a6, #2dd4bf, #99f6e4)',
   pressure: 'linear-gradient(90deg, #b45309, #d97706, #f59e0b, #fde68a)',
 }
 
