@@ -40,15 +40,15 @@ export default function HeaderBar() {
         <div className="hidden items-center gap-2 sm:flex">
           <span className="flex items-center gap-1.5">
             <span
-              className={isDemo && !live ? 'live-dot !bg-sun-400' : 'live-dot'}
+              className={isDemo ? 'live-dot !bg-sun-400' : 'live-dot'}
               aria-hidden="true"
             />
             <span
               className={`text-[11px] font-medium uppercase tracking-wider ${
-                isDemo && !live ? 'text-sun-500' : 'text-emerald-600'
+                isDemo ? 'text-sun-500' : 'text-emerald-600'
               }`}
             >
-              {isDemo && !live ? 'Demo' : 'Live'}
+              {isDemo ? 'Demo' : 'Live'}
             </span>
           </span>
           <span className="text-[11px] text-ink-600">{date}</span>
