@@ -78,7 +78,7 @@ export default function HeaderBar() {
               }
             }}
             aria-label="Locate Me"
-            className="btn-primary flex h-8 w-8 items-center justify-center rounded-full transition-transform active:scale-95 bg-sky-600 hover:bg-sky-500 shadow-md shadow-sky-600/30"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-transform active:scale-95 bg-gradient-to-br from-sky-500 to-indigo-500 shadow-md shadow-indigo-500/30 hover:brightness-110"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="3 11 22 2 13 21 11 13 3 11" />
@@ -89,7 +89,7 @@ export default function HeaderBar() {
           onClick={refetch}
           disabled={isFetching}
           aria-label="Refresh weather data"
-          className="btn-primary flex h-8 w-8 items-center justify-center rounded-full transition-transform active:scale-95 disabled:opacity-60"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-transform active:scale-95 disabled:opacity-60 bg-gradient-to-br from-indigo-500 to-sky-500 shadow-md shadow-sky-500/30 hover:brightness-110"
         >
           <svg
             className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`}
