@@ -71,7 +71,7 @@ export default function TimelineSlider() {
                 {isActive && (
                   <motion.span
                     layoutId="timeline-active"
-                    className="absolute inset-0 rounded-2xl border border-sky-400/60 bg-gradient-to-b from-sky-200/70 to-white/40 shadow-[0_8px_24px_-6px_rgba(2,132,199,0.4)]"
+                    className="absolute inset-0 rounded-2xl border border-sky-400/60 bg-gradient-to-b from-sky-400/50 to-white/60 shadow-[0_8px_24px_-6px_rgba(2,132,199,0.5)]"
                     transition={{ type: 'spring', stiffness: 300, damping: 28 }}
                   />
                 )}
