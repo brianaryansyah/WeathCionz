@@ -1,16 +1,17 @@
-// Use the environment variable if available, otherwise use a public OWM demo key for real-time heatmap tiles
-const API_KEY = import.meta.env.VITE_OWM_KEY || 'b6907d289e10d714a6e88b30761fae22'
+// OpenWeatherMap is still used for tiles and geocoding
+const OWM_KEY = import.meta.env.VITE_OWM_KEY || 'b6907d289e10d714a6e88b30761fae22'
+// Tomorrow.io is used for real-time weather and forecast
+const TOMORROW_KEY = import.meta.env.VITE_TOMORROW_KEY || ''
 const API_BASE = import.meta.env.VITE_API_BASE || ''
 const OWM_HOST = 'https://api.openweathermap.org'
+const TOMORROW_HOST = 'https://api.tomorrow.io/v4/weather'
 
 /**
- * Whether live weather is available in this build. When false the app
- * falls back to demo data so the interface still renders fully.
- *
- * @returns {boolean} true when a key or backend proxy is configured
+ * Whether live weather is available in this build.
+ * Requires Tomorrow.io API key for weather data.
  */
 export function hasLiveApi() {
-  return Boolean(API_BASE || API_KEY)
+  return Boolean(API_BASE || TOMORROW_KEY)
 }
 
 /**
@@ -29,9 +30,21 @@ function buildUrl(path, params) {
   if (API_BASE) {
     return `${API_BASE}/weather?endpoint=${encodeURIComponent(path)}&${query}`
   }
-  query.set('appid', API_KEY)
+  query.set('appid', OWM_KEY)
   query.set('units', 'metric')
   return `${OWM_HOST}${path}?${query}`
+}
+
+function buildTomorrowUrl(path, params) {
+  const query = new URLSearchParams(
+    Object.entries(params).map(([k, v]) => [k, String(v)]),
+  )
+  if (API_BASE) {
+    return `${API_BASE}/tomorrow?endpoint=${encodeURIComponent(path)}&${query}`
+  }
+  query.set('apikey', TOMORROW_KEY)
+  query.set('units', 'metric')
+  return `${TOMORROW_HOST}${path}?${query}`
 }
 
 /**
@@ -97,5 +110,5 @@ export function buildTileUrl(layer) {
   if (API_BASE) {
     return `${API_BASE}/tiles/${layer}/{z}/{x}/{y}.png`
   }
-  return `${OWM_HOST}/maps/tile/${layer}/{z}/{x}/{y}.png?appid=${API_KEY}`
+  return `${OWM_HOST}/maps/tile/${layer}/{z}/{x}/{y}.png?appid=${OWM_KEY}`
 }
