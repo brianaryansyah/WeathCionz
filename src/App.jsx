@@ -16,13 +16,13 @@ const MapCanvas = lazy(() => import('./components/MapCanvas'))
 
 /** Maps an OWM weather-group to an ambient sky-tinted glow. */
 const GLOW = {
-  Clear: '#fb923c',
-  Clouds: '#93c5fd',
-  Rain: '#38bdf8',
-  Drizzle: '#22d3ee',
-  Thunderstorm: '#8b5cf6',
-  Snow: '#a5c9e8',
-  Mist: '#cbd5e1',
+  Clear: '#f59e0b', // amber
+  Clouds: '#38bdf8', // sky
+  Rain: '#2563eb', // blue
+  Drizzle: '#06b6d4', // cyan
+  Thunderstorm: '#7c3aed', // violet
+  Snow: '#e0f2fe', // light blue
+  Mist: '#94a3b8', // slate
 }
 
 /**
@@ -39,21 +39,21 @@ export default function App() {
   const glow = GLOW[group] || '#38bdf8'
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden isolate">
+    <div className="relative h-screen w-screen overflow-hidden isolate bg-black">
       <Suspense
-        fallback={<div className="absolute inset-0 animate-pulse bg-[#fdfbf7]" />}
+        fallback={<div className="absolute inset-0 animate-pulse bg-slate-900" />}
       >
         <MapCanvas />
       </Suspense>
 
-      {/* Soft, pastel ambient glow with breathing animation */}
+      {/* Soft ambient glow with breathing animation */}
       <motion.div
-        className="pointer-events-none absolute inset-0 z-[5]"
+        className="pointer-events-none absolute inset-0 z-[5] mix-blend-screen"
         animate={{
-          background: `radial-gradient(75% 60% at 30% 35%, ${glow}40 0%, rgba(244,238,224,0) 60%)`,
-          opacity: [0.8, 1, 0.8],
+          background: `radial-gradient(75% 60% at 30% 35%, ${glow}60 0%, rgba(0,0,0,0) 70%)`,
+          opacity: [0.6, 0.9, 0.6],
         }}
-        transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       <AnimatePresence>
