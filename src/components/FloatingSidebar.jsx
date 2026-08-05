@@ -225,7 +225,7 @@ export default function FloatingSidebar() {
                 value={`${current.main.pressure} hPa`}
               />
               <Metric
-                icon={<Wind speed={current.wind.speed} />}
+                icon={<Wind speed={current.wind.speed} deg={current.wind.deg} />}
                 accent="text-blue-500"
                 label="Wind"
                 value={`${formatWind(current.wind.speed)} m/s`}
@@ -303,22 +303,19 @@ function Dew() {
     </svg>
   )
 }
-function Wind({ speed = 0 }) {
-  const duration = speed > 0 ? Math.max(0.3, 4 - speed * 0.25) : 0
+function Wind({ speed = 0, deg = 0 }) {
+  const duration = speed > 0 ? Math.max(0.5, 4 - speed * 0.25) : 0
   return (
-    <svg 
-      className="h-3.5 w-3.5 origin-center" 
-      style={duration ? { animation: `spin ${duration}s linear infinite` } : {}}
-      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 2v6" />
-      <path d="M12 16v6" />
-      <path d="M2 12h6" />
-      <path d="M16 12h6" />
-      <path d="M4.93 4.93l4.24 4.24" />
-      <path d="M14.83 14.83l4.24 4.24" />
-      <path d="M4.93 19.07l4.24-4.24" />
-      <path d="M14.83 9.17l4.24-4.24" />
-      <circle cx="12" cy="12" r="2" fill="currentColor" />
+    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      {/* live sweep that spins faster with stronger wind */}
+      <g style={duration ? { animation: `wind-spin ${duration}s linear infinite`, transformOrigin: '12px 12px' } : {}}>
+        <circle cx="12" cy="12" r="6.5" strokeWidth="1.4" strokeDasharray="3 2.5" opacity="0.55" />
+      </g>
+      {/* needle oriented to the true wind direction */}
+      <g style={{ transform: `rotate(${deg}deg)`, transformOrigin: '12px 12px' }} strokeWidth="2.2">
+        <path d="M12 3.2L14.4 8H9.6z" fill="currentColor" stroke="none" />
+        <path d="M12 21L12 8.4" />
+      </g>
     </svg>
   )
 }
