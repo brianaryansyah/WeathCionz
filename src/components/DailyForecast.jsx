@@ -36,7 +36,7 @@ export default function DailyForecast() {
             return (
               <li
                 key={day.key}
-                className="flex items-center gap-3 rounded-xl px-2 py-2 transition-colors hover:bg-sky-100/60"
+                className="flex items-center gap-3 rounded-xl px-2 py-2 transition-all hover:bg-sky-500/10 hover:shadow-inner hover:shadow-sky-500/20"
               >
                 <span className="w-10 text-sm font-medium text-ink-950">
                   {isToday ? 'Today' : day.label}
