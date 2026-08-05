@@ -48,7 +48,7 @@ export function useGeolocation() {
         }
         
         // Second fallback
-        const res2 = await fetch('http://ip-api.com/json/')
+        const res2 = await fetch('https://ip-api.com/json/')
         if (res2.ok) {
           const data2 = await res2.json()
           if (data2 && data2.lat && data2.lon) {
