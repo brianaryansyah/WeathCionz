@@ -35,14 +35,14 @@ export default function MapLegend() {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="absolute right-6 bottom-[7.5rem] z-20 hidden md:block"
+      className="absolute right-6 bottom-24 z-20"
     >
-      <div className="glass rounded-2xl px-4 py-3">
-        <p className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-ink-600">
+      <div className="glass rounded-2xl px-4 py-3 shadow-xl backdrop-blur-md border border-white/20">
+        <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-ink-950">
           {layer.label}
         </p>
-        <div className="h-2.5 w-36 rounded-full" style={{ background: GRADIENTS[layer.id] }} />
-        <div className="mt-1 flex w-36 justify-between text-[10px] text-ink-600">
+        <div className="h-3 w-40 rounded-full shadow-inner" style={{ background: GRADIENTS[layer.id] }} />
+        <div className="mt-1.5 flex w-40 justify-between text-[10px] font-medium text-ink-700">
           {ticks.map((tick) => (
             <span key={tick}>{tick}</span>
           ))}
