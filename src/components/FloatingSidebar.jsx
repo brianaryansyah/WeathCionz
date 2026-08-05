@@ -225,7 +225,7 @@ export default function FloatingSidebar() {
                 value={`${current.main.pressure} hPa`}
               />
               <Metric
-                icon={<Wind />}
+                icon={<Wind speed={current.wind.speed} />}
                 accent="text-sky-700"
                 label="Wind"
                 value={`${formatWind(current.wind.speed)} m/s`}
@@ -303,12 +303,22 @@ function Dew() {
     </svg>
   )
 }
-function Wind() {
+function Wind({ speed = 0 }) {
+  const duration = speed > 0 ? Math.max(0.3, 4 - speed * 0.25) : 0
   return (
-    <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 8h10a3 3 0 1 0-3-3" />
-      <path d="M3 12h15a3 3 0 1 1-3 3" />
-      <path d="M3 16h6" />
+    <svg 
+      className="h-3.5 w-3.5 origin-center" 
+      style={duration ? { animation: `spin ${duration}s linear infinite` } : {}}
+      viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2v6" />
+      <path d="M12 16v6" />
+      <path d="M2 12h6" />
+      <path d="M16 12h6" />
+      <path d="M4.93 4.93l4.24 4.24" />
+      <path d="M14.83 14.83l4.24 4.24" />
+      <path d="M4.93 19.07l4.24-4.24" />
+      <path d="M14.83 9.17l4.24-4.24" />
+      <circle cx="12" cy="12" r="2" fill="currentColor" />
     </svg>
   )
 }
