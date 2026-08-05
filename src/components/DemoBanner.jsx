@@ -20,7 +20,7 @@ export default function DemoBanner({ onDismiss }) {
         <div className="flex-1">
           <p className="text-xs font-semibold text-ink-950">Exploring demo data</p>
           <p className="mt-0.5 text-[11px] leading-relaxed text-ink-600">
-            Add your OpenWeatherMap key to <code className="font-semibold text-sky-700">.env</code>{' '}
+            Add your Tomorrow.io key to <code className="font-semibold text-sky-700">.env</code>{' '}
             to switch to live conditions. See{' '}
             <code className="font-semibold text-sky-700">.env.example</code>.
           </p>
