@@ -178,7 +178,7 @@ export default function FloatingSidebar() {
               </div>
               <WeatherIcon
                 code={icon}
-                className="h-16 w-16 drop-shadow-[0_6px_14px_rgba(251,146,60,0.35)]"
+                className="h-16 w-16 drop-shadow-[0_6px_14px_rgba(56,189,248,0.35)]"
               />
             </div>
 
@@ -208,7 +208,7 @@ export default function FloatingSidebar() {
               />
               <Metric
                 icon={<Cloud />}
-                accent="text-slate-500"
+                accent="text-sky-700"
                 label="Clouds"
                 value={`${current.clouds?.all ?? 0}%`}
               />
@@ -220,20 +220,20 @@ export default function FloatingSidebar() {
               />
               <Metric
                 icon={<Gauge />}
-                accent="text-indigo-500"
+                accent="text-indigo-400"
                 label="Pressure"
                 value={`${current.main.pressure} hPa`}
               />
               <Metric
                 icon={<Wind speed={current.wind.speed} deg={current.wind.deg} />}
-                accent="text-blue-500"
+                accent="text-teal-500"
                 label="Wind"
                 value={`${formatWind(current.wind.speed)} m/s`}
                 sub={`${windDegToCardinal(current.wind.deg)} · gust ${formatWind(current.wind.gust)} m/s`}
               />
               <Metric
                 icon={<Visibility />}
-                accent="text-teal-500"
+                accent="text-cyan-400"
                 label="Visibility"
                 value={`${(current.visibility / 1000).toFixed(1)} km`}
               />
@@ -255,7 +255,7 @@ export default function FloatingSidebar() {
                 onClick={() => setActiveLayer(l.id)}
                 className={`rounded-full px-3 py-1.5 text-xs font-medium transition-all ${
                   isActive
-                    ? 'bg-gradient-to-r from-sky-500 to-sky-600 text-white shadow-md shadow-sky-500/40'
+                    ? 'bg-gradient-to-r from-sky-500 to-cyan-400 text-white shadow-md shadow-sky-500/40'
                     : 'glass-inner text-ink-800 hover:text-ink-950 hover:bg-white/40'
                 }`}
               >
