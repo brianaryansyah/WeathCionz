@@ -23,18 +23,21 @@ export function useNow(tzOffset) {
     local = new Date(now.getTime() + tzOffset * 1000 + now.getTimezoneOffset() * 60000)
   }
 
+  const isCustomTz = tzOffset !== undefined && tzOffset !== null
+
   return {
     now,
     time: new Intl.DateTimeFormat('en-GB', {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      timeZone: 'UTC',
+      timeZone: isCustomTz ? 'UTC' : undefined,
     }).format(local),
     date: new Intl.DateTimeFormat('en-GB', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',
+      timeZone: isCustomTz ? 'UTC' : undefined,
     }).format(local),
   }
 }
