@@ -25,7 +25,7 @@ export default function HeaderBar() {
     >
       <nav className="glass flex items-center gap-3 rounded-full py-2 pl-3 pr-2" aria-label="Primary">
         <div className="flex items-center gap-2.5 pl-1">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-orchid-400">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-cyan-400">
             <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 2.7S5.5 9.4 5.5 14.5a6.5 6.5 0 0 0 13 0C18.5 9.4 12 2.7 12 2.7z" />
             </svg>
@@ -78,7 +78,7 @@ export default function HeaderBar() {
               }
             }}
             aria-label="Locate Me"
-            className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-transform active:scale-95 bg-gradient-to-br from-sky-500 to-indigo-500 shadow-md shadow-indigo-500/30 hover:brightness-110"
+            className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-transform active:scale-95 bg-gradient-to-br from-sky-500 to-cyan-400 shadow-md shadow-cyan-500/30 hover:brightness-110"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="3 11 22 2 13 21 11 13 3 11" />
@@ -89,7 +89,7 @@ export default function HeaderBar() {
           onClick={refetch}
           disabled={isFetching}
           aria-label="Refresh weather data"
-          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-transform active:scale-95 disabled:opacity-60 bg-gradient-to-br from-indigo-500 to-sky-500 shadow-md shadow-sky-500/30 hover:brightness-110"
+          className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-transform active:scale-95 disabled:opacity-60 bg-gradient-to-br from-cyan-500 to-sky-500 shadow-md shadow-sky-500/30 hover:brightness-110"
         >
           <svg
             className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`}
