@@ -159,17 +159,48 @@ export async function geocodeCity(query) {
 }
 
 /**
- * Reverse geocodes a coordinate into a display name.
+ * Reverse geocodes a coordinate into a detailed display address.
+ *
+ * Primary: OpenStreetMap Nominatim (no key, full hierarchy — road,
+ * village, suburb, city, province/state, country). Fallback: OWM.
  *
  * @param {{lat: number, lon: number}} coords
- * @returns {Promise<string|null>} best-effort location name
+ * @returns {Promise<string|null>} best-effort detailed location label
  */
 export async function reverseGeocode({ lat, lon }) {
+  // OSM Nominatim — rich address details, free, no key required.
+  try {
+    const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=jsonv2&addressdetails=1&accept-language=en`
+    const res = await fetch(url, {
+      headers: { Accept: 'application/json' },
+    })
+    if (res.ok) {
+      const data = await res.json()
+      const a = data.address || {}
+      const parts = [
+        a.road,
+        a.suburb || a.neighbourhood || a.village || a.hamlet,
+        a.city || a.town || a.municipality || a.county,
+        a.state || a.state_district,
+        a.country,
+      ].filter(Boolean)
+      const label = dedupeAddress(parts).join(', ')
+      if (label) return label
+    }
+  } catch {
+    // fall through to OWM
+  }
+
   const res = await fetch(buildUrl('/geo/1.0/reverse', { lat, lon, limit: 1 }))
   if (!res.ok) return null
   const [match] = await res.json()
   if (!match) return null
   return [match.name, match.state, match.country].filter(Boolean).join(', ')
+}
+
+/** Removes consecutive duplicate address parts (e.g. city repeated). */
+function dedupeAddress(parts) {
+  return parts.filter((part, i) => part !== parts[i - 1])
 }
 
 /**
