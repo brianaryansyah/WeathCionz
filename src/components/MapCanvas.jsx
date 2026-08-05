@@ -85,12 +85,45 @@ export default function MapCanvas() {
         attributionControl={true}
         interactive={true}
       >
+        {/* Active layer visual aura on the globe */}
+        <Source
+          key={`aura-${activeLayer}-${coords.lat}-${coords.lon}`}
+          id="location-aura"
+          type="geojson"
+          data={{
+            type: 'FeatureCollection',
+            features: [
+              {
+                type: 'Feature',
+                geometry: {
+                  type: 'Point',
+                  coordinates: [coords.lon, coords.lat],
+                },
+                properties: {},
+              },
+            ],
+          }}
+        >
+          <Layer
+            id="location-aura-heat"
+            type="circle"
+            beforeId="labels-layer"
+            paint={{
+              'circle-radius': ['interpolate', ['linear'], ['zoom'], 1, 100, 6, 250],
+              'circle-color': layer?.color || '#38bdf8',
+              'circle-opacity': 0.4,
+              'circle-blur': 0.85,
+            }}
+          />
+        </Source>
+
         {layer && (
           <Source key={layer.id} id={`weather-tiles-${layer.id}`} type="raster" tiles={[buildTileUrl(layer.tile)]} tileSize={256}>
             <Layer
               id={`weather-layer-${layer.id}`}
               type="raster"
-              paint={{ 'raster-opacity': 0.75 }}
+              beforeId="labels-layer"
+              paint={{ 'raster-opacity': 0.8 }}
             />
           </Source>
         )}
