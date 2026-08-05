@@ -51,8 +51,8 @@ export default function HeaderBar() {
               {isDemo ? 'Demo' : 'Live'}
             </span>
           </span>
-          <span className="text-[11px] text-ink-600">{date}</span>
-          <span className="font-display text-sm font-semibold tabular-nums text-ink-950">{time}</span>
+          <span className="text-[11px] font-medium text-ink-700">{date}</span>
+          <span className="font-display text-sm font-bold tabular-nums text-ink-950 tracking-wide drop-shadow-sm">{time}</span>
         </div>
 
         <span className="h-5 w-px bg-ink-950/10 sm:hidden" aria-hidden="true" />
