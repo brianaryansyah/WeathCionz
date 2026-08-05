@@ -50,10 +50,10 @@ export default function App() {
       <motion.div
         className="pointer-events-none absolute inset-0 z-[5] mix-blend-screen"
         animate={{
-          background: `radial-gradient(75% 60% at 30% 35%, ${glow}60 0%, rgba(0,0,0,0) 70%)`,
-          opacity: [0.6, 0.9, 0.6],
+          background: `radial-gradient(80% 65% at 50% 50%, ${glow}40 0%, rgba(0,0,0,0) 75%)`,
+          opacity: [0.5, 0.8, 0.5],
         }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
+        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
       />
 
       <AnimatePresence>
