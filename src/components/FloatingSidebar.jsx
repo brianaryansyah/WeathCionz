@@ -93,12 +93,12 @@ function SearchBar() {
 function Metric({ icon, label, value, sub, accent = 'text-sky-700' }) {
   return (
     <div className="glass-inner flex flex-col gap-1 rounded-2xl px-3.5 py-3">
-      <span className={`flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-ink-600`}>
+      <span className={`flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-ink-800`}>
         <span className={accent}>{icon}</span>
         {label}
       </span>
       <span className="font-display text-lg font-semibold text-ink-950">{value}</span>
-      {sub && <span className="text-xs text-ink-600/80">{sub}</span>}
+      {sub && <span className="text-xs text-ink-800/80">{sub}</span>}
     </div>
   )
 }
