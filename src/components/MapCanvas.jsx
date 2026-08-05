@@ -6,26 +6,23 @@ import { buildTileUrl, hasLiveApi } from '../services/weatherApi'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { formatTemp } from '../utils/weatherUtils'
 
-const LIGHT_STYLE = {
+const SATELLITE_STYLE = {
   version: 8,
   sources: {
-    'carto-light': {
+    'esri-satellite': {
       type: 'raster',
       tiles: [
-        'https://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-        'https://b.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-        'https://c.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-        'https://d.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png'
+        'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
       ],
       tileSize: 256,
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+      attribution: '&copy; Esri, Maxar, Earthstar Geographics, and the GIS User Community'
     }
   },
   layers: [
     {
-      id: 'carto-light-layer',
+      id: 'satellite-layer',
       type: 'raster',
-      source: 'carto-light',
+      source: 'esri-satellite',
       minzoom: 0,
       maxzoom: 22
     }
@@ -68,7 +65,7 @@ export default function MapCanvas() {
           latitude: coords.lat,
           zoom: 1.5,
         }}
-        mapStyle={LIGHT_STYLE}
+        mapStyle={SATELLITE_STYLE}
         projection="globe"
         attributionControl={true}
         interactive={true}
@@ -98,7 +95,7 @@ export default function MapCanvas() {
         className="pointer-events-none absolute inset-0 z-10"
         style={{
           background:
-            'radial-gradient(circle at center, transparent 40%, rgba(244,238,224,0.7) 100%)',
+            'radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.7) 100%)',
         }}
       />
     </div>
