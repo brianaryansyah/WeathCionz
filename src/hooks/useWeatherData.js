@@ -25,18 +25,18 @@ export function useWeatherData(coords) {
     queryKey: ['current', coordsKey],
     queryFn: () => fetchCurrentWeather(coords),
     enabled: live,
-    staleTime: 5 * 60 * 1000, // 5 minutes freshness
-    refetchInterval: 5 * 60 * 1000, // Every 5 minutes (avoids rate limits)
-    retry: 1,
+    staleTime: 60 * 1000, // 1 minute freshness
+    refetchInterval: 60 * 1000,
+    retry: 2,
   })
 
   const forecast = useQuery({
     queryKey: ['forecast', coordsKey],
     queryFn: () => fetchForecast(coords),
     enabled: live,
-    staleTime: 30 * 60 * 1000, // 30 minutes forecast freshness
-    refetchInterval: 30 * 60 * 1000, // Every 30 minutes
-    retry: 1,
+    staleTime: 5 * 60 * 1000, // 5 minutes forecast freshness
+    refetchInterval: 5 * 60 * 1000,
+    retry: 2,
   })
 
   const demo = getDemoWeather({ ...coords, name: locationName })
