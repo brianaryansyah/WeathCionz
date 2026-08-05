@@ -20,7 +20,7 @@ const SATELLITE_STYLE = {
     'carto-labels': {
       type: 'raster',
       tiles: [
-        'https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png'
+        'https://a.basemaps.cartocdn.com/rastertiles/dark_only_labels/{z}/{x}/{y}.png'
       ],
       tileSize: 256,
       attribution: '&copy; CARTO'
