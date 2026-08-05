@@ -19,8 +19,8 @@ export function useNow(tzOffset) {
 
   let local = now
   if (tzOffset !== undefined && tzOffset !== null) {
-    // Shift to the target timezone then read UTC parts as wall time.
-    local = new Date(now.getTime() + tzOffset * 1000 + now.getTimezoneOffset() * 60000)
+    // Shift UTC timestamp by tzOffset seconds, then read UTC parts as local wall time.
+    local = new Date(now.getTime() + tzOffset * 1000)
   }
 
   const isCustomTz = tzOffset !== undefined && tzOffset !== null
