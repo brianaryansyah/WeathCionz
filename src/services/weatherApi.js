@@ -7,138 +7,130 @@ const OWM_HOST = 'https://api.openweathermap.org'
 const TOMORROW_HOST = 'https://api.tomorrow.io/v4/weather'
 
 /**
- * Whether live weather is available in this build.
- * Requires Tomorrow.io API key for weather data.
+ * Live weather is always available via Open-Meteo.
  */
 export function hasLiveApi() {
-  return Boolean(API_BASE || TOMORROW_KEY)
+  return true
+}
+
+function mapWmoCode(code, isDay = 1) {
+  const d = isDay ? 'd' : 'n'
+  switch (code) {
+    case 0:
+      return { main: 'Clear', icon: `01${d}`, desc: 'clear sky' }
+    case 1:
+      return { main: 'Clear', icon: `01${d}`, desc: 'mainly clear' }
+    case 2:
+      return { main: 'Clouds', icon: `02${d}`, desc: 'partly cloudy' }
+    case 3:
+      return { main: 'Clouds', icon: `04${d}`, desc: 'overcast' }
+    case 45:
+    case 48:
+      return { main: 'Mist', icon: `50${d}`, desc: 'foggy' }
+    case 51:
+    case 53:
+    case 55:
+      return { main: 'Drizzle', icon: `09${d}`, desc: 'light drizzle' }
+    case 61:
+    case 63:
+    case 65:
+      return { main: 'Rain', icon: `10${d}`, desc: 'rain' }
+    case 71:
+    case 73:
+    case 75:
+      return { main: 'Snow', icon: `13${d}`, desc: 'snow' }
+    case 80:
+    case 81:
+    case 82:
+      return { main: 'Rain', icon: `09${d}`, desc: 'heavy showers' }
+    case 95:
+    case 96:
+    case 99:
+      return { main: 'Thunderstorm', icon: `11${d}`, desc: 'thunderstorm' }
+    default:
+      return { main: 'Clear', icon: `01${d}`, desc: 'clear' }
+  }
 }
 
 /**
- * Builds a proxied or direct OpenWeatherMap URL.
- * When VITE_API_BASE is set, requests are routed through the backend
- * so the API key never reaches the client bundle.
- *
- * @param {string} path - OWM API path, e.g. "/data/2.5/weather"
- * @param {Record<string, string|number>} params - query parameters
- * @returns {string} fully resolved URL
- */
-function buildUrl(path, params) {
-  const query = new URLSearchParams(
-    Object.entries(params).map(([k, v]) => [k, String(v)]),
-  )
-  if (API_BASE) {
-    return `${API_BASE}/weather?endpoint=${encodeURIComponent(path)}&${query}`
-  }
-  query.set('appid', OWM_KEY)
-  query.set('units', 'metric')
-  return `${OWM_HOST}${path}?${query}`
-}
-
-function buildTomorrowUrl(path, params) {
-  const query = new URLSearchParams(
-    Object.entries(params).map(([k, v]) => [k, String(v)]),
-  )
-  if (API_BASE) {
-    return `${API_BASE}/tomorrow?endpoint=${encodeURIComponent(path)}&${query}`
-  }
-  query.set('apikey', TOMORROW_KEY)
-  query.set('units', 'metric')
-  return `${TOMORROW_HOST}${path}?${query}`
-}
-
-/**
- * Fetches current weather for a coordinate using Tomorrow.io.
- * Maps the response to the OpenWeatherMap format used by the UI.
+ * Fetches current weather for a coordinate using Open-Meteo API.
  */
 export async function fetchCurrentWeather({ lat, lon }) {
-  if (!TOMORROW_KEY) {
-    throw new Error('Tomorrow.io API key is required for real-time weather.')
-  }
-  const res = await fetch(buildTomorrowUrl('/realtime', { location: `${lat},${lon}` }))
-  if (!res.ok) throw new Error(`Weather request failed (${res.status})`)
-  
-  const json = await res.json()
-  const v = json.data.values
-  const time = new Date(json.data.time).getTime() / 1000
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min&timezone=auto`
+  const res = await fetch(url)
+  if (!res.ok) throw new Error(`Open-Meteo request failed (${res.status})`)
 
-  // Map Tomorrow.io weatherCode to OWM format
-  const codeStr = String(v.weatherCode || 1000)
-  let main = 'Clear'
-  let icon = '01d'
-  let desc = 'clear sky'
+  const data = await res.json()
+  const c = data.current
+  const d = data.daily
+  const tzOffset = data.utc_offset_seconds || 0
 
-  if (codeStr.startsWith('1000')) { main = 'Clear'; icon = '01d'; desc = 'clear' }
-  else if (codeStr.startsWith('11') || codeStr.startsWith('1001')) { main = 'Clouds'; icon = '03d'; desc = 'cloudy' }
-  else if (codeStr.startsWith('2')) { main = 'Mist'; icon = '50d'; desc = 'fog' }
-  else if (codeStr.startsWith('4000')) { main = 'Drizzle'; icon = '09d'; desc = 'drizzle' }
-  else if (codeStr.startsWith('4')) { main = 'Rain'; icon = '10d'; desc = 'rain' }
-  else if (codeStr.startsWith('5') || codeStr.startsWith('6') || codeStr.startsWith('7')) { main = 'Snow'; icon = '13d'; desc = 'snow' }
-  else if (codeStr.startsWith('8')) { main = 'Thunderstorm'; icon = '11d'; desc = 'thunderstorm' }
+  const timeSec = new Date(c.time).getTime() / 1000
+  const sunriseSec = d?.sunrise?.[0] ? new Date(d.sunrise[0]).getTime() / 1000 : timeSec - 6 * 3600
+  const sunsetSec = d?.sunset?.[0] ? new Date(d.sunset[0]).getTime() / 1000 : timeSec + 6 * 3600
+
+  const w = mapWmoCode(c.weather_code, c.is_day)
+  // Convert wind speed from km/h to m/s
+  const windMps = Number((c.wind_speed_10m / 3.6).toFixed(1))
+  const gustMps = Number(((c.wind_gusts_10m || c.wind_speed_10m) / 3.6).toFixed(1))
 
   return {
-    dt: time,
+    dt: timeSec,
+    timezone: tzOffset,
     main: {
-      temp: v.temperature,
-      feels_like: v.temperatureApparent,
-      temp_min: v.temperature,
-      temp_max: v.temperature,
-      pressure: v.pressureSurfaceLevel,
-      humidity: v.humidity,
+      temp: Math.round(c.temperature_2m),
+      feels_like: Math.round(c.apparent_temperature),
+      temp_min: d?.temperature_2m_min?.[0] ? Math.round(d.temperature_2m_min[0]) : Math.round(c.temperature_2m),
+      temp_max: d?.temperature_2m_max?.[0] ? Math.round(d.temperature_2m_max[0]) : Math.round(c.temperature_2m),
+      pressure: Math.round(c.surface_pressure),
+      humidity: c.relative_humidity_2m,
     },
     wind: {
-      speed: v.windSpeed,
-      deg: v.windDirection,
-      gust: v.windGust || v.windSpeed,
+      speed: windMps,
+      deg: c.wind_direction_10m,
+      gust: gustMps,
     },
-    visibility: (v.visibility || 10) * 1000,
-    clouds: { all: v.cloudCover || 0 },
+    visibility: 10000,
+    clouds: { all: c.cloud_cover },
     sys: {
-      // Tomorrow.io realtime doesn't include sunrise/sunset, mock it based on current time
-      sunrise: time - 12 * 3600, 
-      sunset: time + 12 * 3600,
+      sunrise: sunriseSec,
+      sunset: sunsetSec,
     },
-    weather: [{ main, description: desc, icon }]
+    weather: [
+      {
+        main: w.main,
+        description: w.desc,
+        icon: w.icon,
+      },
+    ],
   }
 }
 
 /**
- * Fetches the hourly forecast for a coordinate using Tomorrow.io.
- * Maps the response to the OpenWeatherMap forecast payload structure.
+ * Fetches hourly & daily forecast for a coordinate using Open-Meteo.
  */
 export async function fetchForecast({ lat, lon }) {
-  if (!TOMORROW_KEY) {
-    throw new Error('Tomorrow.io API key is required for forecast.')
-  }
-  const res = await fetch(buildTomorrowUrl('/forecast', { location: `${lat},${lon}`, timesteps: '1h' }))
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=auto`
+  const res = await fetch(url)
   if (!res.ok) throw new Error(`Forecast request failed (${res.status})`)
-  
-  const json = await res.json()
-  const hourly = json.timelines?.hourly || []
 
-  const list = hourly.map(item => {
-    const v = item.values
-    const time = new Date(item.time).getTime() / 1000
+  const data = await res.json()
+  const h = data.hourly || {}
+  const times = h.time || []
+  const temps = h.temperature_2m || []
+  const codes = h.weather_code || []
+  const pops = h.precipitation_probability || []
 
-    const codeStr = String(v.weatherCode || 1000)
-    let icon = '01d'
-    let desc = 'clear sky'
-
-    if (codeStr.startsWith('1000')) { icon = '01d'; desc = 'clear' }
-    else if (codeStr.startsWith('11') || codeStr.startsWith('1001')) { icon = '03d'; desc = 'cloudy' }
-    else if (codeStr.startsWith('2')) { icon = '50d'; desc = 'fog' }
-    else if (codeStr.startsWith('4000')) { icon = '09d'; desc = 'drizzle' }
-    else if (codeStr.startsWith('4')) { icon = '10d'; desc = 'rain' }
-    else if (codeStr.startsWith('5') || codeStr.startsWith('6') || codeStr.startsWith('7')) { icon = '13d'; desc = 'snow' }
-    else if (codeStr.startsWith('8')) { icon = '11d'; desc = 'thunderstorm' }
-
+  const list = times.slice(0, 24).map((tStr, i) => {
+    const timeSec = new Date(tStr).getTime() / 1000
+    const w = mapWmoCode(codes[i] || 0, 1)
     return {
-      dt: time,
+      dt: timeSec,
       main: {
-        temp: v.temperature,
+        temp: Math.round(temps[i]),
       },
-      pop: (v.precipitationProbability || 0) / 100, // OWM uses 0 to 1
-      weather: [{ icon, description: desc }]
+      pop: (pops[i] || 0) / 100,
+      weather: [{ icon: w.icon, description: w.desc }],
     }
   })
 
