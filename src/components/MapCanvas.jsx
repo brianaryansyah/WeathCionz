@@ -82,9 +82,9 @@ export default function MapCanvas() {
 
         <Marker longitude={coords.lon} latitude={coords.lat} anchor="center">
           <div className="relative flex items-center justify-center">
-            <div className="absolute h-12 w-12 animate-ping rounded-full bg-orange-400/40" />
-            <div className="glass-inner relative z-10 flex h-10 w-10 flex-col items-center justify-center rounded-full border-2 border-white/90 text-orange-600 shadow-[0_4px_16px_rgba(251,146,60,0.5)]">
-              <span className="font-display text-[11px] font-bold leading-none">{temp}</span>
+            <div className="absolute h-14 w-14 animate-ping rounded-full bg-sky-400/50" />
+            <div className="glass-inner relative z-10 flex h-12 w-12 flex-col items-center justify-center rounded-full border-2 border-white bg-white/20 text-white shadow-[0_4px_24px_rgba(56,189,248,0.8)] backdrop-blur-md">
+              <span className="font-display text-sm font-bold leading-none drop-shadow-md">{temp}</span>
             </div>
           </div>
         </Marker>
