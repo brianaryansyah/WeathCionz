@@ -38,7 +38,8 @@ export default function MapLegend() {
       className="absolute right-6 bottom-24 z-20"
     >
       <div className="glass rounded-2xl px-4 py-3 shadow-xl backdrop-blur-md border border-white/20">
-        <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-ink-950">
+        <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ink-950">
+          <span className="h-2 w-2 rounded-full" style={{ backgroundColor: layer.color }} />
           {layer.label}
         </p>
         <div className="h-3 w-40 rounded-full shadow-inner" style={{ background: GRADIENTS[layer.id] }} />
