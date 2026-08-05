@@ -57,7 +57,35 @@ export default function HeaderBar() {
 
         <span className="h-5 w-px bg-ink-950/10 sm:hidden" aria-hidden="true" />
 
-        <button
+        <div className="flex gap-2">
+          <button
+            onClick={() => {
+              if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                  async (pos) => {
+                    const coords = { lat: pos.coords.latitude, lon: pos.coords.longitude }
+                    const { reverseGeocode } = await import('../services/weatherApi')
+                    try {
+                      const name = await reverseGeocode(coords)
+                      useWeatherStore.getState().locate(coords, name)
+                    } catch {
+                      useWeatherStore.getState().locate(coords, 'Your Location')
+                    }
+                  },
+                  () => alert('Could not get location.'),
+                  { enableHighAccuracy: true, timeout: 15000 }
+                )
+              }
+            }}
+            aria-label="Locate Me"
+            className="btn-primary flex h-8 w-8 items-center justify-center rounded-full transition-transform active:scale-95 bg-sky-600 hover:bg-sky-500 shadow-md shadow-sky-600/30"
+          >
+            <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <polygon points="3 11 22 2 13 21 11 13 3 11" />
+            </svg>
+          </button>
+
+          <button
           onClick={refetch}
           disabled={isFetching}
           aria-label="Refresh weather data"
@@ -76,6 +104,7 @@ export default function HeaderBar() {
             <path d="M21 3v6h-6" />
           </svg>
         </button>
+        </div>
       </nav>
 
       <p className="mt-1.5 text-center text-[11px] font-medium text-ink-600">
