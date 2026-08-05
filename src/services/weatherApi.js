@@ -207,5 +207,5 @@ export function buildTileUrl(layer) {
   if (API_BASE) {
     return `${API_BASE}/tiles/${layer}/{z}/{x}/{y}.png`
   }
-  return `${OWM_HOST}/maps/tile/${layer}/{z}/{x}/{y}.png?appid=${OWM_KEY}`
+  return `https://tile.openweathermap.org/map/${layer}/{z}/{x}/{y}.png?appid=${OWM_KEY}`
 }
