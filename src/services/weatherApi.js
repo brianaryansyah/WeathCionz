@@ -1,8 +1,8 @@
 // OpenWeatherMap is still used for tiles and geocoding
-const OWM_KEY = import.meta.env.VITE_OWM_KEY || 'b6907d289e10d714a6e88b30761fae22'
+const OWM_KEY = import.meta.env?.VITE_OWM_KEY || 'b6907d289e10d714a6e88b30761fae22'
 // Tomorrow.io is used for real-time weather and forecast
-const TOMORROW_KEY = import.meta.env.VITE_TOMORROW_KEY || ''
-const API_BASE = import.meta.env.VITE_API_BASE || ''
+const TOMORROW_KEY = import.meta.env?.VITE_TOMORROW_KEY || ''
+const API_BASE = import.meta.env?.VITE_API_BASE || ''
 const OWM_HOST = 'https://api.openweathermap.org'
 const TOMORROW_HOST = 'https://api.tomorrow.io/v4/weather'
 
