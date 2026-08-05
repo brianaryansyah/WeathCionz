@@ -103,15 +103,46 @@ export async function fetchCurrentWeather({ lat, lon }) {
 }
 
 /**
- * Fetches the 5-day / 3-hour forecast for a coordinate.
- *
- * @param {{lat: number, lon: number}} coords
- * @returns {Promise<object>} OWM forecast payload
+ * Fetches the hourly forecast for a coordinate using Tomorrow.io.
+ * Maps the response to the OpenWeatherMap forecast payload structure.
  */
 export async function fetchForecast({ lat, lon }) {
-  const res = await fetch(buildUrl('/data/2.5/forecast', { lat, lon }))
+  if (!TOMORROW_KEY) {
+    throw new Error('Tomorrow.io API key is required for forecast.')
+  }
+  const res = await fetch(buildTomorrowUrl('/forecast', { location: `${lat},${lon}`, timesteps: '1h' }))
   if (!res.ok) throw new Error(`Forecast request failed (${res.status})`)
-  return res.json()
+  
+  const json = await res.json()
+  const hourly = json.timelines?.hourly || []
+
+  const list = hourly.map(item => {
+    const v = item.values
+    const time = new Date(item.time).getTime() / 1000
+
+    const codeStr = String(v.weatherCode || 1000)
+    let icon = '01d'
+    let desc = 'clear sky'
+
+    if (codeStr.startsWith('1000')) { icon = '01d'; desc = 'clear' }
+    else if (codeStr.startsWith('11') || codeStr.startsWith('1001')) { icon = '03d'; desc = 'cloudy' }
+    else if (codeStr.startsWith('2')) { icon = '50d'; desc = 'fog' }
+    else if (codeStr.startsWith('4000')) { icon = '09d'; desc = 'drizzle' }
+    else if (codeStr.startsWith('4')) { icon = '10d'; desc = 'rain' }
+    else if (codeStr.startsWith('5') || codeStr.startsWith('6') || codeStr.startsWith('7')) { icon = '13d'; desc = 'snow' }
+    else if (codeStr.startsWith('8')) { icon = '11d'; desc = 'thunderstorm' }
+
+    return {
+      dt: time,
+      main: {
+        temp: v.temperature,
+      },
+      pop: (v.precipitationProbability || 0) / 100, // OWM uses 0 to 1
+      weather: [{ icon, description: desc }]
+    }
+  })
+
+  return { list }
 }
 
 /**
