@@ -199,9 +199,7 @@ function dedupeAddress(parts) {
  * Builds the OpenWeatherMap tile overlay URL template for a given layer.
  * Uses Leaflet's {z}/{x}/{y} substitution tokens. Tile requests are
  * proxied in production to keep the key server-side.
- *
- * @param {string} layer - OWM tile layer id, e.g. "temp_new"
- * @returns {string} tile URL template
+ * Uses tile.openweathermap.org for high-performance raster weather overlays.
  */
 export function buildTileUrl(layer) {
   if (API_BASE) {
