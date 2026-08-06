@@ -11,8 +11,6 @@
  * @param {object} currentWeather - live current weather data object
  * @returns {object} GeoJSON FeatureCollection
  */
-const clamp01 = (v) => Math.min(1, Math.max(0, v))
-
 export function generateWeatherGrid(center, currentWeather) {
   const baseLat = center?.lat ?? -6.2
   const baseLon = center?.lon ?? 106.8
@@ -30,12 +28,6 @@ export function generateWeatherGrid(center, currentWeather) {
 
   for (let lat = -75; lat <= 75; lat += stepLat) {
     for (let lon = -180; lon <= 180; lon += stepLon) {
-      const absLat = Math.abs(lat)
-
-      // Latitude-driven climate baselines + gentle geographic noise.
-      const seasonalNoise = Math.sin((lon + baseLon) * 0.05) * 3
-      const modelledTemp = 32 - absLat * 0.55 + seasonalNoise
-
       // Blend the modelled field with the live reading so the user's
       // location always reflects real observed conditions: within ~15°
       const latDist = (lat - baseLat) / 180

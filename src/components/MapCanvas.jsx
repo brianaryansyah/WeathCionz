@@ -95,14 +95,6 @@ const CIRCLE_COLOR_RAMPS = {
   ]
 }
 
-const WEIGHT_KEYS = {
-  temp: 'tempWeight',
-  precip: 'precipWeight',
-  clouds: 'cloudWeight',
-  wind: 'windWeight',
-  pressure: 'pressureWeight',
-}
-
 /**
  * Fullscreen interactive map: a dark, sleek basemap with native MapLibre
  * weather heatmap layers (Windy/Ventusky style).
