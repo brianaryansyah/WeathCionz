@@ -50,73 +50,11 @@ function mapWmoCode(code, isDay = 1) {
 }
 
 /**
- * Fetches official real-time weather from BMKG API (Indonesia).
- */
-export async function fetchBmkgWeather(adm4 = '31.71.01.1001') {
-  const url = `https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4=${adm4}`
-  const res = await fetch(url, {
-    headers: {
-      'Accept': 'application/json',
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-    },
-  })
-  if (!res.ok) throw new Error(`BMKG request failed (${res.status})`)
-
-  const json = await res.json()
-  const lokasi = json.lokasi || {}
-  const cuacaList = json.data?.[0]?.cuaca?.[0] || []
-  const currentItem = cuacaList[0] || {}
-
-  const timeSec = currentItem.datetime ? new Date(currentItem.datetime).getTime() / 1000 : Date.now() / 1000
-  const windMps = currentItem.ws ? Number((currentItem.ws / 3.6).toFixed(1)) : 2.8
-  const locationLabel = [lokasi.desa, lokasi.kecamatan, lokasi.kotkab, lokasi.provinsi].filter(Boolean).join(', ')
-
-  return {
-    dt: timeSec,
-    timezone: 25200,
-    bmkgLocation: locationLabel,
-    main: {
-      temp: Math.round(currentItem.t || 30),
-      feels_like: Math.round(currentItem.t || 30),
-      temp_min: Math.round(currentItem.t || 25),
-      temp_max: Math.round((currentItem.t || 30) + 3),
-      pressure: 1010,
-      humidity: currentItem.hu || 60,
-    },
-    wind: {
-      speed: windMps,
-      deg: currentItem.wd_deg || 0,
-      gust: windMps,
-    },
-    visibility: 10000,
-    clouds: { all: currentItem.tcc || 20 },
-    sys: {
-      sunrise: timeSec - 6 * 3600,
-      sunset: timeSec + 6 * 3600,
-    },
-    weather: [
-      {
-        main: currentItem.weather_desc_en || 'Clear',
-        description: currentItem.weather_desc || 'Cerah',
-        icon: '01d',
-      },
-    ],
-  }
-}
-
-/**
- * Fetches current weather for a coordinate using BMKG (for Indonesia) with Open-Meteo fallback.
+ * Fetches current weather for a coordinate. Always requests data for the
+ * exact latitude/longitude provided (via Open-Meteo) so the forecast
+ * matches the user's selected location — never a hard-coded city.
  */
 export async function fetchCurrentWeather({ lat, lon }) {
-  const isIndonesia = lat >= -11 && lat <= 6 && lon >= 95 && lon <= 141
-  if (isIndonesia) {
-    try {
-      return await fetchBmkgWeather('31.71.01.1001')
-    } catch {
-      // Fall through to Open-Meteo fallback
-    }
-  }
-
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min&timezone=auto`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Open-Meteo request failed (${res.status})`)
