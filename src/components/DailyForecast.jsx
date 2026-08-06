@@ -8,7 +8,7 @@ import { groupForecastByDay, formatDay, formatTemp, iconUrl } from '../utils/wea
  * Groups the 3-hour forecast into daily high/low summaries and shows a
  * precipitation probability bar for the day.
  */
-export default function DailyForecast({ variant = 'desktop' }) {
+export default function DailyForecast({ variant = 'desktop', onExpand }) {
   const coords = useWeatherStore((s) => s.coords)
   const { forecast } = useWeatherData(coords)
   const days = groupForecastByDay(forecast?.list || []).slice(0, 5)
@@ -20,9 +20,19 @@ export default function DailyForecast({ variant = 'desktop' }) {
 
   const card = (
     <div className="glass rounded-3xl p-5">
-      <p className="mb-2.5 px-1 text-[11px] font-medium uppercase tracking-wide text-ink-600">
-        5 hari ke depan
-      </p>
+      <div className="mb-2.5 flex items-center justify-between px-1">
+        <p className="text-[11px] font-medium uppercase tracking-wide text-ink-600">
+          5 hari ke depan
+        </p>
+        {onExpand && (
+          <button 
+            onClick={onExpand}
+            className="text-[10px] font-semibold text-sky-600 hover:text-sky-800 uppercase tracking-wide"
+          >
+            Lihat Detail
+          </button>
+        )}
+      </div>
       <ul className="flex flex-col gap-1">
         {days.map((day) => {
           const isToday = day.label === formatDay(Date.now() / 1000)
@@ -64,6 +74,14 @@ export default function DailyForecast({ variant = 'desktop' }) {
           )
         })}
       </ul>
+      {onExpand && (
+        <button 
+          onClick={onExpand}
+          className="mt-3 w-full rounded-xl bg-white/30 py-2.5 text-xs font-semibold text-ink-800 transition-colors hover:bg-white/50 hover:text-ink-950"
+        >
+          Lihat Detail Lengkap (BMKG Style)
+        </button>
+      )}
     </div>
   )
 
