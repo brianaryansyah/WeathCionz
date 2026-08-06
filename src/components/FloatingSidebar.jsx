@@ -4,7 +4,7 @@ import { useDebounce } from '../hooks/useDebounce'
 import { useSearchCities } from '../hooks/useSearchCities'
 import { useWeatherStore, MAP_LAYERS } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
-import { hasLiveApi } from '../services/weatherApi'
+import { hasLiveApi, focusForSearch } from '../services/weatherApi'
 import {
   formatTemp,
   formatWind,
@@ -14,6 +14,9 @@ import {
   dewPoint,
 } from '../utils/weatherUtils'
 import WeatherIcon from './WeatherIcon'
+import MapLegend from './MapLegend'
+import DailyForecast from './DailyForecast'
+import TimelineSlider from './TimelineSlider'
 
 function SearchBar() {
   const [query, setQuery] = useState('')
@@ -26,7 +29,7 @@ function SearchBar() {
 
   const pick = (city) => {
     const name = [city.name, city.state, city.country].filter(Boolean).join(', ')
-    locate({ lat: city.lat, lon: city.lon }, name)
+    locate({ lat: city.lat, lon: city.lon }, name, focusForSearch(city))
     setQuery('')
     setFocused(false)
   }
@@ -146,14 +149,18 @@ export default function FloatingSidebar() {
 
   return (
     <motion.aside
-      initial={{ x: -420, opacity: 0 }}
-      animate={{ x: 0, opacity: 1 }}
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ type: 'spring', stiffness: 60, damping: 16 }}
-      className="absolute left-6 top-6 z-20 flex w-[19rem] flex-col gap-4"
+      className="absolute inset-x-2 bottom-0 z-20 flex max-h-[58vh] flex-col gap-3 overflow-y-auto rounded-t-3xl bg-slate-950/40 px-2 pt-1.5 pb-[max(1rem,env(safe-area-inset-bottom))] backdrop-blur-sm [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:inset-x-auto lg:bottom-auto lg:left-6 lg:top-6 lg:max-h-none lg:w-[19rem] lg:gap-4 lg:overflow-visible lg:rounded-none lg:bg-transparent lg:px-0 lg:pt-0 lg:pb-0 lg:backdrop-blur-none"
     >
+      <div className="flex justify-center lg:hidden" aria-hidden="true">
+        <span className="h-1 w-12 rounded-full bg-white/50" />
+      </div>
+
       <SearchBar />
 
-      <div className="glass glass-hover rounded-3xl p-6">
+      <div className="glass glass-hover rounded-3xl p-5 lg:p-6">
         {isLoading && !current ? (
           <div className="flex h-64 animate-pulse flex-col justify-between">
             <div className="h-4 w-24 rounded bg-sky-200" />
@@ -183,7 +190,7 @@ export default function FloatingSidebar() {
             </div>
 
             <div className="flex items-end gap-2">
-              <span className="font-display text-7xl font-bold leading-none text-ink-950">
+              <span className="font-display text-6xl font-bold leading-none text-ink-950 lg:text-7xl">
                 {temp}°
               </span>
               <span className="mb-1.5 text-sm font-medium text-sky-700">C</span>
@@ -265,6 +272,12 @@ export default function FloatingSidebar() {
             )
           })}
         </div>
+      </div>
+
+      <div className="flex flex-col gap-4 lg:hidden">
+        <MapLegend variant="dock" />
+        <DailyForecast variant="dock" />
+        <TimelineSlider variant="dock" />
       </div>
     </motion.aside>
   )
