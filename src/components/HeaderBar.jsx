@@ -1,8 +1,7 @@
 import { motion } from 'framer-motion'
 import { useNow } from '../hooks/useNow'
-import { DEFAULT_CITY, useWeatherStore } from '../store/useWeatherStore'
+import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
-import { USER_ZOOM } from '../hooks/useGeolocation'
 
 /**
  * Floating top navigation: brand mark, a realtime location clock and
@@ -11,6 +10,7 @@ import { USER_ZOOM } from '../hooks/useGeolocation'
 export default function HeaderBar() {
   const coords = useWeatherStore((s) => s.coords)
   const locationName = useWeatherStore((s) => s.locationName)
+  const locateMe = useWeatherStore((s) => s.locateMe)
   const { current, refetch, isFetching, isDemo } = useWeatherData(coords)
   const tzOffset = current?.timezone
   const { time, date } = useNow(tzOffset)
@@ -58,23 +58,8 @@ export default function HeaderBar() {
 
         <div className="flex gap-2">
           <button
-            onClick={async () => {
-              const { locateCurrentPosition } = await import('../services/geolocation')
-              const { reverseGeocode } = await import('../services/weatherApi')
-              try {
-                const { lat, lon } = await locateCurrentPosition()
-                const coords = { lat, lon }
-                const name = await reverseGeocode(coords)
-                useWeatherStore.getState().locate(coords, name, { zoom: USER_ZOOM })
-              } catch {
-                useWeatherStore.getState().locate(
-                  { lat: DEFAULT_CITY.lat, lon: DEFAULT_CITY.lon },
-                  DEFAULT_CITY.name,
-                  { zoom: USER_ZOOM },
-                )
-              }
-            }}
-            aria-label="Locate Me"
+            onClick={locateMe}
+            aria-label="Temukan lokasi saya"
             className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-transform active:scale-95 bg-gradient-to-br from-sky-500 to-cyan-400 shadow-md shadow-cyan-500/30 hover:brightness-110"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
