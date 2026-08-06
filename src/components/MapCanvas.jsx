@@ -20,7 +20,7 @@ const SATELLITE_STYLE = {
     'carto-labels': {
       type: 'raster',
       tiles: [
-        'https://a.basemaps.cartocdn.com/rastertiles/dark_only_labels/{z}/{x}/{y}.png'
+        'https://a.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}.png'
       ],
       tileSize: 256,
       attribution: '&copy; CARTO'
@@ -215,16 +215,16 @@ export default function MapCanvas() {
 
         <Marker longitude={coords.lon} latitude={coords.lat} anchor="center">
           <div className="relative flex flex-col items-center">
-            <span className="glass absolute -top-9 left-1/2 z-20 max-w-[13rem] -translate-x-1/2 truncate whitespace-nowrap rounded-full px-2.5 py-1 text-[11px] font-semibold text-ink-950 shadow-lg">
+            <span className="absolute -top-12 left-1/2 z-20 max-w-[16rem] -translate-x-1/2 truncate whitespace-nowrap rounded-xl border border-white/60 bg-white/95 px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-sky-950 shadow-2xl backdrop-blur-md">
               {locationName}
             </span>
-            <div className="relative">
-              <div className="absolute inset-0 animate-ping rounded-full bg-sky-400/40" />
+            <div className="relative mt-2">
+              <div className="absolute inset-0 animate-ping rounded-full bg-sky-400/50" />
               {accuracy != null && accuracy > 30 && (
-                <span className="pointer-events-none absolute -top-1/2 -left-1/2 flex h-[200%] w-[200%] items-center justify-center rounded-full border-2 border-sky-400/30 bg-sky-400/5" aria-hidden="true" />
+                <span className="pointer-events-none absolute -top-1/2 -left-1/2 flex h-[200%] w-[200%] items-center justify-center rounded-full border-2 border-sky-400/40 bg-sky-400/10" aria-hidden="true" />
               )}
-              <div className="glass-inner relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-white/20 text-white shadow-[0_4px_24px_rgba(56,189,248,0.8)] backdrop-blur-md">
-                <span className="font-display text-sm font-bold leading-none drop-shadow-md">{temp}</span>
+              <div className="relative z-10 flex h-14 w-14 items-center justify-center rounded-full border-[3px] border-white bg-sky-500 text-white shadow-[0_8px_32px_rgba(56,189,248,0.6)] backdrop-blur-md transition-transform hover:scale-110">
+                <span className="font-display text-lg font-bold leading-none drop-shadow-md">{temp}</span>
               </div>
             </div>
           </div>
