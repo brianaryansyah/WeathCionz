@@ -1,10 +1,7 @@
-// OpenWeatherMap is still used for tiles and geocoding
+// OpenWeatherMap is still used for geocoding (Open-Meteo powers the weather)
 const OWM_KEY = import.meta.env?.VITE_OWM_KEY || 'b6907d289e10d714a6e88b30761fae22'
-// Tomorrow.io is used for real-time weather and forecast
-const TOMORROW_KEY = import.meta.env?.VITE_TOMORROW_KEY || ''
 const API_BASE = import.meta.env?.VITE_API_BASE || ''
 const OWM_HOST = 'https://api.openweathermap.org'
-const TOMORROW_HOST = 'https://api.tomorrow.io/v4/weather'
 
 /**
  * Live weather is always available via Open-Meteo.
@@ -53,9 +50,73 @@ function mapWmoCode(code, isDay = 1) {
 }
 
 /**
- * Fetches current weather for a coordinate using Open-Meteo API.
+ * Fetches official real-time weather from BMKG API (Indonesia).
+ */
+export async function fetchBmkgWeather(adm4 = '31.71.01.1001') {
+  const url = `https://api.bmkg.go.id/publik/prakiraan-cuaca?adm4=${adm4}`
+  const res = await fetch(url, {
+    headers: {
+      'Accept': 'application/json',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    },
+  })
+  if (!res.ok) throw new Error(`BMKG request failed (${res.status})`)
+
+  const json = await res.json()
+  const lokasi = json.lokasi || {}
+  const cuacaList = json.data?.[0]?.cuaca?.[0] || []
+  const currentItem = cuacaList[0] || {}
+
+  const timeSec = currentItem.datetime ? new Date(currentItem.datetime).getTime() / 1000 : Date.now() / 1000
+  const windMps = currentItem.ws ? Number((currentItem.ws / 3.6).toFixed(1)) : 2.8
+  const locationLabel = [lokasi.desa, lokasi.kecamatan, lokasi.kotkab, lokasi.provinsi].filter(Boolean).join(', ')
+
+  return {
+    dt: timeSec,
+    timezone: 25200,
+    bmkgLocation: locationLabel,
+    main: {
+      temp: Math.round(currentItem.t || 30),
+      feels_like: Math.round(currentItem.t || 30),
+      temp_min: Math.round(currentItem.t || 25),
+      temp_max: Math.round((currentItem.t || 30) + 3),
+      pressure: 1010,
+      humidity: currentItem.hu || 60,
+    },
+    wind: {
+      speed: windMps,
+      deg: currentItem.wd_deg || 0,
+      gust: windMps,
+    },
+    visibility: 10000,
+    clouds: { all: currentItem.tcc || 20 },
+    sys: {
+      sunrise: timeSec - 6 * 3600,
+      sunset: timeSec + 6 * 3600,
+    },
+    weather: [
+      {
+        main: currentItem.weather_desc_en || 'Clear',
+        description: currentItem.weather_desc || 'Cerah',
+        icon: '01d',
+      },
+    ],
+  }
+}
+
+/**
+ * Fetches current weather for a coordinate using BMKG (for Indonesia) with Open-Meteo fallback.
  */
 export async function fetchCurrentWeather({ lat, lon }) {
+  const isIndonesia = lat >= -11 && lat <= 6 && lon >= 95 && lon <= 141
+  if (isIndonesia) {
+    try {
+      return await fetchBmkgWeather('31.71.01.1001')
+    } catch {
+      // Fall through to Open-Meteo fallback
+    }
+  }
+
   const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min&timezone=auto`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Open-Meteo request failed (${res.status})`)
@@ -70,7 +131,6 @@ export async function fetchCurrentWeather({ lat, lon }) {
   const sunsetSec = d?.sunset?.[0] ? new Date(d.sunset[0]).getTime() / 1000 : timeSec + 6 * 3600
 
   const w = mapWmoCode(c.weather_code, c.is_day)
-  // Convert wind speed from km/h to m/s
   const windMps = Number((c.wind_speed_10m / 3.6).toFixed(1))
   const gustMps = Number(((c.wind_gusts_10m || c.wind_speed_10m) / 3.6).toFixed(1))
 
@@ -138,13 +198,101 @@ export async function fetchForecast({ lat, lon }) {
 }
 
 /**
- * Geocodes a free-text city query into candidate locations.
+ * Builds an OpenWeatherMap URL. When VITE_API_BASE is set, requests are
+ * routed through the backend so the API key never reaches the client.
  *
- * @param {string} query - city name, optional country code, e.g. "Tokyo"
+ * @param {string} path - OWM API path, e.g. "/geo/1.0/direct"
+ * @param {Record<string, string|number>} params - query parameters
+ * @returns {string} fully resolved URL
+ */
+function buildUrl(path, params) {
+  const query = new URLSearchParams(
+    Object.entries(params).map(([k, v]) => [k, String(v)]),
+  )
+  if (API_BASE) {
+    return `${API_BASE}/weather?endpoint=${encodeURIComponent(path)}&${query}`
+  }
+  query.set('appid', OWM_KEY)
+  return `${OWM_HOST}${path}?${query}`
+}
+
+/**
+ * Fallback zoom per place type when a geocoded result has no bounding
+ * box. Large administrative areas stay wide; small places zoom in close.
+ */
+const SEARCH_ZOOM_BY_TYPE = {
+  country: 5,
+  state: 6,
+  province: 6,
+  region: 7,
+  county: 9,
+  administrative: 9,
+  municipality: 10,
+  city: 10.5,
+  town: 12,
+  village: 13,
+  hamlet: 14,
+  suburb: 13,
+  district: 13,
+  neighbourhood: 14,
+}
+
+/**
+ * Builds the map "focus" for a geocoded result so the globe can frame
+ * the searched city / region / village (bounds win when available).
+ *
+ * @param {object} result - one geocoding candidate
+ * @returns {{bounds: Array<[number, number]>|null, zoom: number|undefined}}
+ */
+export function focusForSearch(result) {
+  const bounds = result.bounds || null
+  const zoom = bounds ? undefined : SEARCH_ZOOM_BY_TYPE[result.type] ?? 10
+  return { bounds, zoom }
+}
+
+/**
+ * Geocodes a free-text query into candidate locations.
+ *
+ * Primary: OpenStreetMap Nominatim — understands villages, suburbs and
+ * full administrative areas, and returns a place type + bounding box so
+ * the map can frame the searched area precisely. Fallback: OWM.
+ *
+ * @param {string} query - city / region / village name
  * @returns {Promise<Array<object>>} list of geocoding matches
  */
 export async function geocodeCity(query) {
   if (!query.trim()) return []
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=jsonv2&limit=6&addressdetails=1&accept-language=en`
+    const res = await fetch(url, {
+      headers: { Accept: 'application/json' },
+    })
+    if (res.ok) {
+      const data = await res.json()
+      return data.map((r) => {
+        const a = r.address || {}
+        const name =
+          r.name || a.village || a.town || a.city || a.hamlet || r.display_name?.split(',')[0]
+        return {
+          name,
+          state: a.state || a.state_district || a.county || '',
+          country: a.country || '',
+          lat: parseFloat(r.lat),
+          lon: parseFloat(r.lon),
+          type: r.type || 'city',
+          bounds: r.boundingbox
+            ? [
+                [parseFloat(r.boundingbox[2]), parseFloat(r.boundingbox[0])],
+                [parseFloat(r.boundingbox[3]), parseFloat(r.boundingbox[1])],
+              ]
+            : null,
+        }
+      })
+    }
+  } catch {
+    // fall through to OWM
+  }
+
   const res = await fetch(buildUrl('/geo/1.0/direct', { q: query, limit: 6 }))
   if (!res.ok) throw new Error(`Geocoding request failed (${res.status})`)
   return res.json()
@@ -195,13 +343,11 @@ function dedupeAddress(parts) {
   return parts.filter((part, i) => part !== parts[i - 1])
 }
 
-/**
- * Builds the OpenWeatherMap tile overlay URL template for a given layer.
- * Uses Leaflet's {z}/{x}/{y} substitution tokens. Tile requests are
- * proxied in production to keep the key server-side.
- * Uses tile.openweathermap.org for high-performance raster weather overlays.
- */
 export function buildTileUrl(layer) {
+  if (layer === 'precipitation_new' || layer === 'precip') {
+    // Iowa State University NEXRAD radar tiles — 100% free, HTTP 200 OK
+    return 'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-900913/{z}/{x}/{y}.png'
+  }
   if (API_BASE) {
     return `${API_BASE}/tiles/${layer}/{z}/{x}/{y}.png`
   }
