@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import HeaderBar from './components/HeaderBar'
 import FloatingSidebar from './components/FloatingSidebar'
@@ -8,6 +8,7 @@ import MapLegend from './components/MapLegend'
 import DataFreshness from './components/DataFreshness'
 import DemoBanner from './components/DemoBanner'
 import LocationPopup from './components/LocationPopup'
+import ExpandedForecastTable from './components/ExpandedForecastTable'
 import { useWeatherStore } from './store/useWeatherStore'
 import { useWeatherData } from './hooks/useWeatherData'
 import { useGeolocation } from './hooks/useGeolocation'
@@ -32,6 +33,7 @@ const GLOW = {
 export default function App() {
   const coords = useWeatherStore((s) => s.coords)
   const { current } = useWeatherData(coords)
+  const [isExpandedOpen, setIsExpandedOpen] = useState(false)
 
   const { isLocating, source, retry } = useGeolocation()
 
@@ -63,13 +65,18 @@ export default function App() {
       {/* Grid wrapper for UI overlay to prevent absolute overlaps where possible, though we still use absolute positioning for specific placements */}
       <div className="absolute inset-0 z-50 pointer-events-none [&>*]:pointer-events-auto overflow-hidden">
         <HeaderBar />
-        <FloatingSidebar />
+        <FloatingSidebar onExpand={() => setIsExpandedOpen(true)} />
         <TimelineSlider />
-        <DailyForecast />
+        <DailyForecast onExpand={() => setIsExpandedOpen(true)} />
         <MapLegend />
         <DataFreshness />
         <DemoBanner />
       </div>
+      
+      <ExpandedForecastTable 
+        isOpen={isExpandedOpen} 
+        onClose={() => setIsExpandedOpen(false)} 
+      />
     </div>
   )
 }
