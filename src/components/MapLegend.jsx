@@ -23,11 +23,30 @@ const TICKS = {
  * Small floating legend for the currently selected weather overlay.
  * Appears only when a map layer is active so users can read the heatmap.
  */
-export default function MapLegend() {
+export default function MapLegend({ variant = 'desktop' }) {
   const activeLayerId = useWeatherStore((s) => s.activeLayer)
   const layer = MAP_LAYERS.find((l) => l.id === activeLayerId)
   if (!layer) return null
   const ticks = TICKS[layer.id]
+
+  const card = (
+    <div className="glass rounded-2xl px-4 py-3 shadow-xl backdrop-blur-md border border-white/20">
+      <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ink-950">
+        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: layer.color }} />
+        {layer.label}
+      </p>
+      <div className="h-3 w-40 rounded-full shadow-inner" style={{ background: GRADIENTS[layer.id] }} />
+      <div className="mt-1.5 flex w-40 justify-between text-[10px] font-medium text-ink-700">
+        {ticks.map((tick) => (
+          <span key={tick}>{tick}</span>
+        ))}
+      </div>
+    </div>
+  )
+
+  if (variant === 'dock') {
+    return <div className="w-fit max-w-full">{card}</div>
+  }
 
   return (
     <motion.div
@@ -35,20 +54,9 @@ export default function MapLegend() {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="absolute right-6 bottom-24 z-20"
+      className="absolute right-6 bottom-24 z-20 hidden lg:block"
     >
-      <div className="glass rounded-2xl px-4 py-3 shadow-xl backdrop-blur-md border border-white/20">
-        <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ink-950">
-          <span className="h-2 w-2 rounded-full" style={{ backgroundColor: layer.color }} />
-          {layer.label}
-        </p>
-        <div className="h-3 w-40 rounded-full shadow-inner" style={{ background: GRADIENTS[layer.id] }} />
-        <div className="mt-1.5 flex w-40 justify-between text-[10px] font-medium text-ink-700">
-          {ticks.map((tick) => (
-            <span key={tick}>{tick}</span>
-          ))}
-        </div>
-      </div>
+      {card}
     </motion.div>
   )
 }
