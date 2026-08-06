@@ -33,6 +33,12 @@
   #root {
     height: 100%;
   }
+
+  /* Mobile viewport height (falls back to 100vh where dvh is unsupported) */
+  .h-viewport {
+    height: 100vh;
+    height: 100dvh;
+  }
   body {
     margin: 0;
     font-family: var(--font-sans);
@@ -158,6 +164,7 @@
   }
 
   /* Custom scrollbar for the timeline rail (WebKit) */
+
   ::-webkit-scrollbar {
     height: 5px;
     width: 6px;
