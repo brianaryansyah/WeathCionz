@@ -46,7 +46,7 @@ function SearchBar() {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => window.setTimeout(() => setFocused(false), 150)}
-          placeholder={live ? 'Cari kota…' : 'Pilih kota untuk dijelajahi…'}
+          placeholder={live ? 'Cari kelurahan/desa...' : 'Pilih kota untuk dijelajahi…'}
           className="w-full bg-transparent text-sm text-ink-950 placeholder:text-ink-600/60 focus:outline-none"
           aria-label="Search city"
         />
@@ -134,7 +134,7 @@ function SunRow({ sunrise, sunset }) {
  * Floating glass sidebar: city search, headline temperature and
  * live humidity / wind / pressure metrics for the active coordinates.
  */
-export default function FloatingSidebar() {
+export default function FloatingSidebar({ onExpand }) {
   const coords = useWeatherStore((s) => s.coords)
   const locationName = useWeatherStore((s) => s.locationName)
   const activeLayer = useWeatherStore((s) => s.activeLayer)
@@ -276,7 +276,7 @@ export default function FloatingSidebar() {
 
       <div className="flex flex-col gap-4 lg:hidden">
         <MapLegend variant="dock" />
-        <DailyForecast variant="dock" />
+        <DailyForecast variant="dock" onExpand={onExpand} />
         <TimelineSlider variant="dock" />
       </div>
     </motion.aside>
