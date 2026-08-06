@@ -39,7 +39,7 @@ export default function App() {
   const glow = GLOW[group] || '#38bdf8'
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden isolate bg-black">
+    <div className="relative h-viewport w-screen overflow-hidden isolate bg-black">
       <Suspense
         fallback={<div className="absolute inset-0 animate-pulse bg-slate-900" />}
       >
