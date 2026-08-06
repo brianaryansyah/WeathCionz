@@ -18,10 +18,10 @@ export default function DemoBanner({ onDismiss }) {
       <div className="glass flex items-start gap-3 rounded-2xl px-4 py-3">
         <span className="mt-0.5 text-base leading-none" aria-hidden="true">⚡</span>
         <div className="flex-1">
-          <p className="text-xs font-semibold text-ink-950">Live data unavailable</p>
+          <p className="text-xs font-semibold text-ink-950">Data langsung tidak tersedia</p>
           <p className="mt-0.5 text-[11px] leading-relaxed text-ink-600">
-            Weather uses the free Open-Meteo API (no key needed). If data
-            still fails, check your connection and press refresh.
+            Cuaca memakai API Open-Meteo gratis (tanpa kunci). Jika data tetap
+            gagal, periksa koneksi Anda lalu tekan segarkan.
           </p>
         </div>
         {onDismiss && (

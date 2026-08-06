@@ -43,7 +43,7 @@ export default function DailyForecast({ variant = 'desktop' }) {
               />
               <div className="flex-1">
                 <div className="flex justify-end gap-2 text-xs">
-                  <span className="text-ink-600">L {formatTemp(day.min)}°</span>
+                  <span className="text-ink-600">R {formatTemp(day.min)}°</span>
                   <span className="font-semibold text-ink-950">{formatTemp(day.max)}°</span>
                 </div>
                 {pop > 0 && (
