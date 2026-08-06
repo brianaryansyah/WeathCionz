@@ -2,7 +2,6 @@ import { motion } from 'framer-motion'
 import { useNow } from '../hooks/useNow'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
-import { hasLiveApi } from '../services/weatherApi'
 
 /**
  * Floating top navigation: brand mark, a realtime location clock and
@@ -14,28 +13,27 @@ export default function HeaderBar() {
   const { current, refetch, isFetching, isDemo } = useWeatherData(coords)
   const tzOffset = current?.timezone
   const { time, date } = useNow(tzOffset)
-  const live = hasLiveApi()
 
   return (
     <motion.header
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 80, damping: 18, delay: 0.2 }}
-      className="absolute left-1/2 top-4 z-30 -translate-x-1/2"
+      className="absolute left-1/2 top-[max(1rem,env(safe-area-inset-top))] z-30 -translate-x-1/2"
     >
-      <nav className="glass flex items-center gap-3 rounded-full py-2 pl-3 pr-2" aria-label="Primary">
-        <div className="flex items-center gap-2.5 pl-1">
+      <nav className="glass flex items-center gap-2 rounded-full py-2 pl-2.5 pr-2 lg:gap-3 lg:pl-3" aria-label="Primary">
+        <div className="flex items-center gap-2 pl-1 lg:gap-2.5">
           <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-sky-500 to-cyan-400">
             <svg className="h-4 w-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M12 2.7S5.5 9.4 5.5 14.5a6.5 6.5 0 0 0 13 0C18.5 9.4 12 2.7 12 2.7z" />
             </svg>
           </span>
-          <span className="font-display text-sm font-semibold tracking-tight text-ink-950">
+          <span className="hidden font-display text-sm font-semibold tracking-tight text-ink-950 sm:inline">
             WeathCionz
           </span>
         </div>
 
-        <span className="h-5 w-px bg-ink-950/10" aria-hidden="true" />
+        <span className="hidden h-5 w-px bg-ink-950/10 sm:block" aria-hidden="true" />
 
         <div className="hidden items-center gap-2 sm:flex">
           <span className="flex items-center gap-1.5">
@@ -55,7 +53,7 @@ export default function HeaderBar() {
           <span className="font-display text-sm font-bold tabular-nums text-ink-950 tracking-wide drop-shadow-sm">{time}</span>
         </div>
 
-        <span className="h-5 w-px bg-ink-950/10 sm:hidden" aria-hidden="true" />
+        <span className="hidden h-5 w-px bg-ink-950/10 sm:block" aria-hidden="true" />
 
         <div className="flex gap-2">
           <button
