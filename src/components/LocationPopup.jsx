@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 
-export default function LocationPopup() {
+export default function LocationPopup({ source = 'gps' }) {
+  const isIp = source === 'ip'
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
@@ -18,10 +19,12 @@ export default function LocationPopup() {
         </div>
         <div className="text-center animate-pulse">
           <h3 className="font-display text-lg font-semibold text-ink-950">
-            Mendeteksi Lokasi Anda
+            {isIp ? 'Menentukan Lokasi Perkiraan' : 'Mendeteksi Lokasi Anda'}
           </h3>
           <p className="mt-1 text-sm text-ink-600">
-            Akurasi tinggi untuk cuaca di tempat Anda sekarang
+            {isIp
+              ? 'Menggunakan perkiraan berbasis jaringan Anda — izinkan akses lokasi untuk hasil yang lebih akurat'
+              : 'Akurasi tinggi untuk cuaca di tempat Anda sekarang'}
           </p>
         </div>
       </div>

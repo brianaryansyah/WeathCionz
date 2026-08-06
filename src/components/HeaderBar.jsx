@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { useNow } from '../hooks/useNow'
-import { useWeatherStore } from '../store/useWeatherStore'
+import { DEFAULT_CITY, useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { USER_ZOOM } from '../hooks/useGeolocation'
 
@@ -58,21 +58,19 @@ export default function HeaderBar() {
 
         <div className="flex gap-2">
           <button
-            onClick={() => {
-              if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                  async (pos) => {
-                    const coords = { lat: pos.coords.latitude, lon: pos.coords.longitude }
-                    const { reverseGeocode } = await import('../services/weatherApi')
-                    try {
-                      const name = await reverseGeocode(coords)
-                      useWeatherStore.getState().locate(coords, name, { zoom: USER_ZOOM })
-                    } catch {
-                      useWeatherStore.getState().locate(coords, 'Your Location', { zoom: USER_ZOOM })
-                    }
-                  },
-                  () => alert('Could not get location.'),
-                  { enableHighAccuracy: true, timeout: 15000 }
+            onClick={async () => {
+              const { locateCurrentPosition } = await import('../services/geolocation')
+              const { reverseGeocode } = await import('../services/weatherApi')
+              try {
+                const { lat, lon } = await locateCurrentPosition()
+                const coords = { lat, lon }
+                const name = await reverseGeocode(coords)
+                useWeatherStore.getState().locate(coords, name, { zoom: USER_ZOOM })
+              } catch {
+                useWeatherStore.getState().locate(
+                  { lat: DEFAULT_CITY.lat, lon: DEFAULT_CITY.lon },
+                  DEFAULT_CITY.name,
+                  { zoom: USER_ZOOM },
                 )
               }
             }}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { DEFAULT_CITY, useWeatherStore } from '../store/useWeatherStore'
 import { reverseGeocode } from '../services/weatherApi'
+import { locateCurrentPosition } from '../services/geolocation'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
@@ -9,22 +10,24 @@ export const USER_ZOOM = 12
 
 /**
  * Requests the browser location on mount, then stores the resolved
- * coordinates + display name globally. Falls back to IP API if denied,
- * then to default city (Jakarta).
+ * coordinates + display name globally. Prefers the high-accuracy GPS fix
+ * and falls back to IP geolocation (marked as approximate) or the
+ * default city (Jakarta) as a last resort.
  *
- * @returns {{granted: boolean, error: string|null, isLocating: boolean}}
+ * @returns {{granted: boolean, error: string|null, isLocating: boolean, source: 'gps'|'ip'|null}}
  */
 export function useGeolocation() {
   const locate = useWeatherStore((s) => s.locate)
   const [granted, setGranted] = useState(false)
   const [error, setError] = useState(null)
   const [isLocating, setIsLocating] = useState(true)
+  const [source, setSource] = useState(null)
 
   useEffect(() => {
     let mounted = true
     const minDelayPromise = delay(1200) // Ensure popup is visible briefly
 
-    const handleSuccess = async (lat, lon) => {
+    const handleSuccess = async (lat, lon, src) => {
       const coords = { lat, lon }
       let name = null
       try {
@@ -35,56 +38,28 @@ export function useGeolocation() {
       if (!mounted) return
       locate(coords, name, { zoom: USER_ZOOM })
       setGranted(true)
+      setSource(src)
       await minDelayPromise
       if (mounted) setIsLocating(false)
     }
 
-    const fallbackToIP = async () => {
-      try {
-        const res = await fetch('https://ipapi.co/json/')
-        if (res.ok) {
-          const data = await res.json()
-          if (data && data.latitude && data.longitude) {
-            await handleSuccess(data.latitude, data.longitude)
-            return
-          }
-        }
-        
-        // Second fallback
-        const res2 = await fetch('https://ip-api.com/json/')
-        if (res2.ok) {
-          const data2 = await res2.json()
-          if (data2 && data2.lat && data2.lon) {
-            await handleSuccess(data2.lat, data2.lon)
-            return
-          }
-        }
-      } catch {
-        // IP fallback failed silently
-      }
-      
+    const handleFailure = async () => {
       if (!mounted) return
       setError('Location access failed')
-      locate(DEFAULT_CITY)
+      locate(DEFAULT_CITY, null, { zoom: USER_ZOOM })
+      setSource(null)
       await minDelayPromise
       if (mounted) setIsLocating(false)
     }
 
-    if (!navigator.geolocation) {
-      fallbackToIP()
-      return
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      ({ coords: { latitude, longitude } }) => handleSuccess(latitude, longitude),
-      fallbackToIP,
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
-    )
+    locateCurrentPosition()
+      .then(({ lat, lon, source: src }) => handleSuccess(lat, lon, src))
+      .catch(handleFailure)
 
     return () => {
       mounted = false
     }
   }, [locate])
 
-  return { granted, error, isLocating }
+  return { granted, error, isLocating, source }
 }
