@@ -33,7 +33,7 @@ export default function App() {
   const coords = useWeatherStore((s) => s.coords)
   const { current } = useWeatherData(coords)
 
-  const { isLocating, source } = useGeolocation()
+  const { isLocating, source, retry } = useGeolocation()
 
   const group = current?.weather?.[0]?.main
   const glow = GLOW[group] || '#38bdf8'
@@ -57,7 +57,7 @@ export default function App() {
       />
 
       <AnimatePresence>
-        {isLocating && <LocationPopup source={source} />}
+        {isLocating && <LocationPopup source={source} onRetry={retry} />}
       </AnimatePresence>
 
       {/* Grid wrapper for UI overlay to prevent absolute overlaps where possible, though we still use absolute positioning for specific placements */}
