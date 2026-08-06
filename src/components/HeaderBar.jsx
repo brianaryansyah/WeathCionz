@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { useNow } from '../hooks/useNow'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
+import { USER_ZOOM } from '../hooks/useGeolocation'
 
 /**
  * Floating top navigation: brand mark, a realtime location clock and
@@ -65,9 +66,9 @@ export default function HeaderBar() {
                     const { reverseGeocode } = await import('../services/weatherApi')
                     try {
                       const name = await reverseGeocode(coords)
-                      useWeatherStore.getState().locate(coords, name)
+                      useWeatherStore.getState().locate(coords, name, { zoom: USER_ZOOM })
                     } catch {
-                      useWeatherStore.getState().locate(coords, 'Your Location')
+                      useWeatherStore.getState().locate(coords, 'Your Location', { zoom: USER_ZOOM })
                     }
                   },
                   () => alert('Could not get location.'),

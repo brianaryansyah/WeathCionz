@@ -4,6 +4,9 @@ import { reverseGeocode } from '../services/weatherApi'
 
 const delay = (ms) => new Promise(res => setTimeout(res, ms))
 
+/** Street-level zoom used when framing the user's exact position. */
+export const USER_ZOOM = 12
+
 /**
  * Requests the browser location on mount, then stores the resolved
  * coordinates + display name globally. Falls back to IP API if denied,
@@ -30,7 +33,7 @@ export function useGeolocation() {
         name = null
       }
       if (!mounted) return
-      locate(coords, name)
+      locate(coords, name, { zoom: USER_ZOOM })
       setGranted(true)
       await minDelayPromise
       if (mounted) setIsLocating(false)

@@ -18,10 +18,10 @@ export default function LocationPopup() {
         </div>
         <div className="text-center animate-pulse">
           <h3 className="font-display text-lg font-semibold text-ink-950">
-            Mendeteksi Lokasi...
+            Mendeteksi Lokasi Anda
           </h3>
           <p className="mt-1 text-sm text-ink-600">
-            Menyesuaikan cuaca di tempat Anda
+            Akurasi tinggi untuk cuaca di tempat Anda sekarang
           </p>
         </div>
       </div>
