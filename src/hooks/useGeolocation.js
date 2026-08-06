@@ -7,12 +7,13 @@ import { useWeatherStore } from '../store/useWeatherStore'
  * resolution lives in the store (`locateMe`) so the "Locate Me" button
  * and the initial load behave identically.
  *
- * @returns {{granted: boolean, error: string|null, isLocating: boolean, source: 'gps'|'ip'|null, retry: Function}}
+ * @returns {{granted: boolean, error: string|null, isLocating: boolean, source: 'gps'|'ip'|null, accuracy: number|null, retry: Function}}
  */
 export function useGeolocation() {
   const locateMe = useWeatherStore((s) => s.locateMe)
   const isLocating = useWeatherStore((s) => s.isLocating)
   const source = useWeatherStore((s) => s.locateSource)
+  const accuracy = useWeatherStore((s) => s.accuracy)
 
   useEffect(() => {
     locateMe()
@@ -23,6 +24,7 @@ export function useGeolocation() {
     error: isLocating === false && source === null ? 'Location access failed' : null,
     isLocating,
     source,
+    accuracy,
     retry: locateMe,
   }
 }
