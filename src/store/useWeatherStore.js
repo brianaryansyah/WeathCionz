@@ -15,16 +15,18 @@ export const useWeatherStore = create((set) => ({
   locationName: DEFAULT_CITY.name,
   activeLayer: 'temp',
   selectedIndex: 0,
+  focus: null,
 
   setCoords: (coords) => set({ coords }),
   setLocationName: (name) => set({ locationName: name }),
   setActiveLayer: (layer) => set({ activeLayer: layer }),
   setSelectedIndex: (index) => set({ selectedIndex: index }),
 
-  locate: (coords, name) =>
+  locate: (coords, name, focus = null) =>
     set({
       coords,
       locationName: name || (coords.lat === DEFAULT_CITY.lat && coords.lon === DEFAULT_CITY.lon ? DEFAULT_CITY.name : 'Your Location'),
       selectedIndex: 0,
+      focus,
     }),
 }))
