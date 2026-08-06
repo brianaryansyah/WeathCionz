@@ -38,22 +38,21 @@ export default function HeaderBar() {
 
         <span className="hidden h-5 w-px bg-ink-950/10 sm:block" aria-hidden="true" />
 
-        <div className="hidden items-center gap-2 sm:flex">
-          <span className="flex items-center gap-1.5">
+        <div className="hidden items-center gap-3 sm:flex">
+          <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-sky-700">
+            Standar Waktu Indonesia
+          </span>
+          <div className="flex items-center gap-1.5 rounded-md bg-white/40 px-2 py-0.5 shadow-sm">
+            <span className="text-[11px] font-semibold text-ink-800 uppercase tracking-wide">{date}</span>
+            <span className="h-3 w-px bg-ink-950/20" />
+            <span className="font-display text-[13px] font-bold tabular-nums tracking-wider text-ink-950">
+              {time}
+            </span>
             <span
-              className={isDemo ? 'live-dot !bg-sun-400' : 'live-dot'}
+              className={isDemo ? 'live-dot !bg-sun-400 ml-1' : 'live-dot ml-1'}
               aria-hidden="true"
             />
-            <span
-              className={`text-[11px] font-medium uppercase tracking-wider ${
-                isDemo ? 'text-sun-500' : 'text-emerald-600'
-              }`}
-            >
-              {isDemo ? 'Demo' : 'Langsung'}
-            </span>
-          </span>
-          <span className="text-[11px] font-medium text-ink-700">{date}</span>
-          <span className="font-display text-sm font-bold tabular-nums text-ink-950 tracking-wide drop-shadow-sm">{time}</span>
+          </div>
         </div>
 
         <span className="hidden h-5 w-px bg-ink-950/10 sm:block" aria-hidden="true" />
