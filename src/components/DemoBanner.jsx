@@ -18,11 +18,10 @@ export default function DemoBanner({ onDismiss }) {
       <div className="glass flex items-start gap-3 rounded-2xl px-4 py-3">
         <span className="mt-0.5 text-base leading-none" aria-hidden="true">⚡</span>
         <div className="flex-1">
-          <p className="text-xs font-semibold text-ink-950">Exploring demo data</p>
+          <p className="text-xs font-semibold text-ink-950">Live data unavailable</p>
           <p className="mt-0.5 text-[11px] leading-relaxed text-ink-600">
-            Add your Tomorrow.io key to <code className="font-semibold text-sky-700">.env</code>{' '}
-            to switch to live conditions. See{' '}
-            <code className="font-semibold text-sky-700">.env.example</code>.
+            Weather uses the free Open-Meteo API (no key needed). If data
+            still fails, check your connection and press refresh.
           </p>
         </div>
         {onDismiss && (
