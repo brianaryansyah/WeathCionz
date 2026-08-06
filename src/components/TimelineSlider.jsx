@@ -43,7 +43,7 @@ export default function TimelineSlider({ variant = 'desktop' }) {
         {list.map((item, i) => {
           const isActive = i === selectedIndex
           const hour = formatHour(item.dt)
-          const label = i === 0 ? 'Now' : hour
+          const label = i === 0 ? 'Sekarang' : hour
           const day = formatDay(item.dt)
           const showDay = day !== lastDay
           lastDay = day

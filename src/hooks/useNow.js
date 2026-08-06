@@ -27,13 +27,13 @@ export function useNow(tzOffset) {
 
   return {
     now,
-    time: new Intl.DateTimeFormat('en-GB', {
+    time: new Intl.DateTimeFormat('id-ID', {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
       timeZone: isCustomTz ? 'UTC' : undefined,
     }).format(local),
-    date: new Intl.DateTimeFormat('en-GB', {
+    date: new Intl.DateTimeFormat('id-ID', {
       weekday: 'long',
       day: 'numeric',
       month: 'long',

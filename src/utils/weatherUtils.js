@@ -49,11 +49,11 @@ export function formatWind(speed) {
  *
  * @param {number} dt unix seconds
  * @param {string} timezone IANA zone label from the API (optional)
- * @returns {string} e.g. "14:30"
+ * @returns {string} e.g. "14.30"
  */
 export function formatTime(dt, timezone) {
   const date = new Date(dt * 1000)
-  return new Intl.DateTimeFormat('en-GB', {
+  return new Intl.DateTimeFormat('id-ID', {
     hour: '2-digit',
     minute: '2-digit',
     timeZone: timezone || undefined,
@@ -65,27 +65,29 @@ export function formatTime(dt, timezone) {
  *
  * @param {number} dt unix seconds
  * @param {string} timezone IANA zone label (optional)
- * @returns {string} e.g. "Mon"
+ * @returns {string} e.g. "Sen"
  */
 export function formatDay(dt, timezone) {
   const date = new Date(dt * 1000)
-  return new Intl.DateTimeFormat('en-GB', {
+  return new Intl.DateTimeFormat('id-ID', {
     weekday: 'short',
     timeZone: timezone || undefined,
   }).format(date)
 }
 
 /**
- * Converts a timestampt to an hour label for timeline ticks.
+ * Converts a timestamp to an hour label for timeline ticks using the
+ * Indonesian 24-hour convention.
  *
  * @param {number} dt unix seconds
- * @returns {string} e.g. "2 PM"
+ * @returns {string} e.g. "14.00"
  */
 export function formatHour(dt) {
   const date = new Date(dt * 1000)
-  const h = date.getHours()
-  const normalized = h % 12 || 12
-  return `${normalized} ${h >= 12 ? 'PM' : 'AM'}`
+  return new Intl.DateTimeFormat('id-ID', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date)
 }
 
 /**
@@ -138,19 +140,17 @@ export function flattenHourly(list = []) {
 }
 
 /**
- * Formats a unix timestamp to a 12-hour clock with meridiem.
+ * Formats a unix timestamp to a 24-hour Indonesian clock string.
  *
  * @param {number} dt unix seconds
- * @returns {string} e.g. "6:24 AM"
+ * @returns {string} e.g. "06.24"
  */
 export function formatTime12(dt) {
   if (!dt) return '—'
   const date = new Date(dt * 1000)
-  let h = date.getHours()
+  const h = String(date.getHours()).padStart(2, '0')
   const m = String(date.getMinutes()).padStart(2, '0')
-  const meridiem = h >= 12 ? 'PM' : 'AM'
-  h = h % 12 || 12
-  return `${h}:${m} ${meridiem}`
+  return `${h}.${m}`
 }
 
 /**
