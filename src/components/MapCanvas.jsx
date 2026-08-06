@@ -151,8 +151,7 @@ export default function MapCanvas() {
 
     if (focus?.bounds) {
       const [[w, s], [e, n]] = focus.bounds
-      map.flyTo({
-        bounds: [[w, s], [e, n]],
+      map.fitBounds([[w, s], [e, n]], {
         padding: { top: 110, bottom: isMobile ? vh * 0.42 : 110, left: 70, right: 70 },
         offset,
         duration,
