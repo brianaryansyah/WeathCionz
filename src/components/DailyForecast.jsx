@@ -21,7 +21,7 @@ export default function DailyForecast({ variant = 'desktop' }) {
   const card = (
     <div className="glass rounded-3xl p-5">
       <p className="mb-2.5 px-1 text-[11px] font-medium uppercase tracking-wide text-ink-600">
-        Next 5 days
+        5 hari ke depan
       </p>
       <ul className="flex flex-col gap-1">
         {days.map((day) => {
@@ -33,7 +33,7 @@ export default function DailyForecast({ variant = 'desktop' }) {
               className="flex items-center gap-3 rounded-xl px-2 py-2 transition-all hover:bg-sky-500/10 hover:shadow-inner hover:shadow-sky-500/20"
             >
               <span className="w-10 text-sm font-medium text-ink-950">
-                {isToday ? 'Today' : day.label}
+                {isToday ? 'Hari ini' : day.label}
               </span>
               <img
                 src={iconUrl(day.icon)}
@@ -68,7 +68,7 @@ export default function DailyForecast({ variant = 'desktop' }) {
   )
 
   if (variant === 'dock') {
-    return <section aria-label="Next 5 days">{card}</section>
+    return <section aria-label="5 hari ke depan">{card}</section>
   }
 
   return (

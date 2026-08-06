@@ -46,7 +46,7 @@ function SearchBar() {
           onChange={(e) => setQuery(e.target.value)}
           onFocus={() => setFocused(true)}
           onBlur={() => window.setTimeout(() => setFocused(false), 150)}
-          placeholder={live ? 'Search a city…' : 'Pick a city to explore…'}
+          placeholder={live ? 'Cari kota…' : 'Pilih kota untuk dijelajahi…'}
           className="w-full bg-transparent text-sm text-ink-950 placeholder:text-ink-600/60 focus:outline-none"
           aria-label="Search city"
         />
@@ -111,7 +111,7 @@ function SunRow({ sunrise, sunset }) {
     <div className="glass-inner flex items-center justify-around rounded-2xl px-3 py-3">
       <div className="flex flex-col items-center gap-1">
         <span className="text-xs font-medium uppercase tracking-wide text-ink-600">
-          Sunrise
+          Matahari terbit
         </span>
         <span className="font-display text-sm font-semibold text-ink-950">
           {formatTime12(sunrise)}
@@ -120,7 +120,7 @@ function SunRow({ sunrise, sunset }) {
       <span className="h-8 w-px bg-ink-950/10" aria-hidden="true" />
       <div className="flex flex-col items-center gap-1">
         <span className="text-xs font-medium uppercase tracking-wide text-ink-600">
-          Sunset
+          Matahari terbenam
         </span>
         <span className="font-display text-sm font-semibold text-ink-950">
           {formatTime12(sunset)}
@@ -197,9 +197,9 @@ export default function FloatingSidebar() {
             </div>
 
             <div className="flex items-center justify-between text-xs">
-              <p className="text-ink-600">Feels like {feels}°C</p>
+              <p className="text-ink-600">Terasa seperti {feels}°C</p>
               <p className="font-medium text-ink-600">
-                H: <span className="font-semibold text-ink-950">{high}°</span> · L:{' '}
+                T: <span className="font-semibold text-ink-950">{high}°</span> · R:{' '}
                 <span className="font-semibold text-ink-950">{low}°</span>
               </p>
             </div>
@@ -210,38 +210,38 @@ export default function FloatingSidebar() {
               <Metric
                 icon={<Droplet />}
                 accent="text-sky-500"
-                label="Humidity"
+                label="Kelembapan"
                 value={`${current.main.humidity}%`}
               />
               <Metric
                 icon={<Cloud />}
                 accent="text-sky-700"
-                label="Clouds"
+                label="Awan"
                 value={`${current.clouds?.all ?? 0}%`}
               />
               <Metric
                 icon={<Dew />}
                 accent="text-cyan-500"
-                label="Dew point"
+                label="Titik embun"
                 value={`${dewPoint(current.main.temp, current.main.humidity)}°`}
               />
               <Metric
                 icon={<Gauge />}
                 accent="text-indigo-400"
-                label="Pressure"
+                label="Tekanan"
                 value={`${current.main.pressure} hPa`}
               />
               <Metric
                 icon={<Wind speed={current.wind.speed} deg={current.wind.deg} />}
                 accent="text-teal-500"
-                label="Wind"
+                label="Angin"
                 value={`${formatWind(current.wind.speed)} m/s`}
-                sub={`${windDegToCardinal(current.wind.deg)} · gust ${formatWind(current.wind.gust)} m/s`}
+                sub={`${windDegToCardinal(current.wind.deg)} · embusan ${formatWind(current.wind.gust)} m/s`}
               />
               <Metric
                 icon={<Visibility />}
                 accent="text-cyan-400"
-                label="Visibility"
+                label="Jarak pandang"
                 value={`${(current.visibility / 1000).toFixed(1)} km`}
               />
             </div>
@@ -251,7 +251,7 @@ export default function FloatingSidebar() {
 
       <div className="glass rounded-3xl p-4">
         <p className="mb-2.5 px-1 text-[11px] font-medium uppercase tracking-wide text-ink-600">
-          Map layers
+          Lapisan peta
         </p>
         <div className="flex flex-wrap gap-1.5">
           {MAP_LAYERS.map((l) => {

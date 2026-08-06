@@ -5,11 +5,11 @@ import { useWeatherData } from '../hooks/useWeatherData'
 
 /** Formats a seconds-ago value into a friendly label. */
 function agoLabel(seconds) {
-  if (seconds < 60) return 'just now'
+  if (seconds < 60) return 'baru saja'
   const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 60) return `${minutes} mnt lalu`
   const hours = Math.floor(minutes / 60)
-  return `${hours}h ago`
+  return `${hours} jam lalu`
 }
 
 /**
@@ -38,7 +38,7 @@ export default function DataFreshness() {
       transition={{ delay: 0.7 }}
       className="glass absolute left-6 bottom-32 z-10 hidden rounded-full px-3 py-1.5 text-xs font-medium text-ink-600 shadow-md lg:block"
     >
-      Updated {agoLabel(seconds)}
+      Diperbarui {agoLabel(seconds)}
     </motion.p>
   )
 }

@@ -13,10 +13,10 @@ const GRADIENTS = {
 /** Ticks rendered under each layer gradient. */
 const TICKS = {
   temp: ['-20°', '0°', '15°', '30°'],
-  precip: ['Light', 'Moderate', 'Heavy'],
-  clouds: ['Clear', 'Cloudy'],
-  wind: ['Calm', 'Strong'],
-  pressure: ['Low', 'High'],
+  precip: ['Ringan', 'Sedang', 'Lebat'],
+  clouds: ['Cerah', 'Berawan'],
+  wind: ['Tenang', 'Kencang'],
+  pressure: ['Rendah', 'Tinggi'],
 }
 
 /**

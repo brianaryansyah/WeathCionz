@@ -31,9 +31,9 @@ export default function TimelineSlider({ variant = 'desktop' }) {
     <div className="glass rounded-3xl px-4 py-3.5 lg:px-5 lg:py-4">
       <div className="mb-2 flex items-center justify-between px-1">
         <span className="text-[11px] font-medium uppercase tracking-wide text-ink-600">
-          Hourly forecast
+          Prakiraan per jam
         </span>
-        <span className="text-[11px] text-ink-600/80">Tap an hour to preview</span>
+        <span className="text-[11px] text-ink-600/80">Ketuk jam untuk pratinjau</span>
       </div>
       <div
         ref={railRef}
@@ -54,7 +54,7 @@ export default function TimelineSlider({ variant = 'desktop' }) {
               data-index={i}
               onClick={() => setSelectedIndex(i)}
               aria-pressed={isActive}
-              aria-label={`${label} ${formatTemp(item.main.temp)} degrees`}
+              aria-label={`${label} ${formatTemp(item.main.temp)} derajat`}
               className="group relative flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-3.5 py-2.5 transition-transform hover:-translate-y-0.5"
             >
               {showDay && (
@@ -97,7 +97,7 @@ export default function TimelineSlider({ variant = 'desktop' }) {
   )
 
   if (variant === 'dock') {
-    return <section aria-label="Hourly forecast">{rail}</section>
+    return <section aria-label="Prakiraan per jam">{rail}</section>
   }
 
   return (

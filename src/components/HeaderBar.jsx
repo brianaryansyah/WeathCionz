@@ -47,7 +47,7 @@ export default function HeaderBar() {
                 isDemo ? 'text-sun-500' : 'text-emerald-600'
               }`}
             >
-              {isDemo ? 'Demo' : 'Live'}
+              {isDemo ? 'Demo' : 'Langsung'}
             </span>
           </span>
           <span className="text-[11px] font-medium text-ink-700">{date}</span>
