@@ -10,6 +10,8 @@ import { useWeatherData } from '../hooks/useWeatherData'
 export default function HeaderBar() {
   const coords = useWeatherStore((s) => s.coords)
   const locationName = useWeatherStore((s) => s.locationName)
+  const accuracy = useWeatherStore((s) => s.accuracy)
+  const locateSource = useWeatherStore((s) => s.locateSource)
   const locateMe = useWeatherStore((s) => s.locateMe)
   const { current, refetch, isFetching, isDemo } = useWeatherData(coords)
   const tzOffset = current?.timezone
@@ -89,8 +91,18 @@ export default function HeaderBar() {
         </div>
       </nav>
 
-      <p className="mt-1.5 text-center text-[11px] font-medium text-ink-600">
-        {locationName}
+      <p className="mt-1.5 flex items-center justify-center gap-1.5 text-center text-[11px] font-medium text-ink-600">
+        <span className="truncate">{locationName}</span>
+        {accuracy != null && locateSource === 'gps' && (
+          <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-[10px] font-semibold text-sky-700">
+            ±{Math.round(accuracy)} m
+          </span>
+        )}
+        {locateSource === 'ip' && (
+          <span className="rounded-full bg-sun-400/20 px-2 py-0.5 text-[10px] font-semibold text-sun-500">
+            Perkiraan
+          </span>
+        )}
       </p>
     </motion.header>
   )

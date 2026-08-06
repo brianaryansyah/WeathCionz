@@ -104,6 +104,7 @@ export default function MapCanvas() {
   const coords = useWeatherStore((s) => s.coords)
   const locationName = useWeatherStore((s) => s.locationName)
   const focus = useWeatherStore((s) => s.focus)
+  const accuracy = useWeatherStore((s) => s.accuracy)
   const activeLayer = useWeatherStore((s) => s.activeLayer) || 'temp'
   const { current } = useWeatherData(coords)
 
@@ -210,6 +211,9 @@ export default function MapCanvas() {
             </span>
             <div className="relative">
               <div className="absolute inset-0 animate-ping rounded-full bg-sky-400/40" />
+              {accuracy != null && accuracy > 30 && (
+                <span className="pointer-events-none absolute -top-1/2 -left-1/2 flex h-[200%] w-[200%] items-center justify-center rounded-full border-2 border-sky-400/30 bg-sky-400/5" aria-hidden="true" />
+              )}
               <div className="glass-inner relative z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-white/20 text-white shadow-[0_4px_24px_rgba(56,189,248,0.8)] backdrop-blur-md">
                 <span className="font-display text-sm font-bold leading-none drop-shadow-md">{temp}</span>
               </div>
