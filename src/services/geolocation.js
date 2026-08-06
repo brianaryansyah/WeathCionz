@@ -11,10 +11,10 @@
  */
 
 /** Accuracy (metres) considered precise enough to stop refining early. */
-const STREET_ACCURACY = 30
+const STREET_ACCURACY = 5
 
 /** How long to keep listening for a sharper GPS fix before settling. */
-const SETTLE_WINDOW = 8000
+const SETTLE_WINDOW = 15000
 
 /**
  * Requests the browser's position, waiting for the most accurate fix
