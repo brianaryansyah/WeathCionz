@@ -129,6 +129,8 @@ export default function MapCanvas() {
     }
   }, [])
 
+  const lastFocus = useRef(focus)
+
   // Cinematic fly/fit-to when coordinates change. On mobile the target is
   // offset upward so the marker stays visible above the bottom sheet.
   useEffect(() => {
@@ -138,6 +140,14 @@ export default function MapCanvas() {
     const isMobile = window.innerWidth < 1024
     const offset = [0, isMobile ? -vh * 0.24 : -80]
     const duration = 2200
+
+    const focusChanged = focus !== lastFocus.current
+    lastFocus.current = focus
+
+    // Prevent camera hijacking when live GPS refines the position.
+    if (!focusChanged && Math.hypot(coords.lat - map.getCenter().lat, coords.lon - map.getCenter().lng) < 0.05) {
+      return
+    }
 
     if (focus?.bounds) {
       const [[w, s], [e, n]] = focus.bounds
