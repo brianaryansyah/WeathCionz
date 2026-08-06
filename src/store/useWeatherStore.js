@@ -5,7 +5,7 @@ import { reverseGeocode } from '../services/weatherApi'
 export const DEFAULT_CITY = { lat: -6.2088, lon: 106.8456, name: 'Jakarta' }
 
 /** Street-level zoom used when framing the user's exact position. */
-export const USER_ZOOM = 12
+export const USER_ZOOM = 17
 
 /** localStorage key for the last known position (instant restore). */
 const LAST_LOCATION_KEY = 'weathcionz:last-location'
