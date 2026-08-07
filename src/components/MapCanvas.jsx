@@ -248,12 +248,12 @@ export default function MapCanvas() {
         }}
       />
 
-      {/* Bright pastel vignette: keeps the edges airy and warm */}
+      {/* Soft bright vignette: keeps the edges airy and warm */}
       <div
         className="pointer-events-none absolute inset-0 z-10"
         style={{
           background:
-            'radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.7) 100%)',
+            'radial-gradient(circle at center, transparent 50%, rgba(255,255,255,0.05) 80%, rgba(0,0,0,0.4) 100%)',
         }}
       />
     </div>
