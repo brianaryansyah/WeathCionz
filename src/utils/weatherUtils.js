@@ -125,19 +125,6 @@ export function groupForecastByDay(list = []) {
   return Array.from(days.values())
 }
 
-/**
- * Extracts just the hourly timestamps + temps for a timeline strip.
- *
- * @param {Array<object>} list raw forecast list
- * @returns {Array<object>} [{dt, temp, icon}]
- */
-export function flattenHourly(list = []) {
-  return list.map((item) => ({
-    dt: item.dt,
-    temp: formatTemp(item.main.temp),
-    icon: item.weather[0]?.icon,
-  }))
-}
 
 /**
  * Formats a unix timestamp to a 24-hour Indonesian clock string.
