@@ -33,13 +33,28 @@ export default function DailyForecast({ variant = 'desktop', onExpand }) {
           </button>
         )}
       </div>
-      <ul className="flex flex-col gap-1">
+      <motion.ul 
+        className="flex flex-col gap-1"
+        initial="hidden"
+        animate="show"
+        variants={{
+          hidden: { opacity: 0 },
+          show: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+          }
+        }}
+      >
         {days.map((day) => {
           const isToday = day.label === formatDay(Date.now() / 1000)
           const pop = dayPop(day.entries)
           return (
-            <li
+            <motion.li
               key={day.key}
+              variants={{
+                hidden: { opacity: 0, x: 20 },
+                show: { opacity: 1, x: 0, transition: { type: 'spring', stiffness: 100 } }
+              }}
               className="flex items-center gap-3 rounded-xl px-2 py-2 transition-all hover:bg-sky-500/10 hover:shadow-inner hover:shadow-sky-500/20"
             >
               <span className="w-10 text-sm font-medium text-ink-950">
@@ -48,7 +63,7 @@ export default function DailyForecast({ variant = 'desktop', onExpand }) {
               <img
                 src={iconUrl(day.icon)}
                 alt={day.description || day.label}
-                className="h-6 w-6"
+                className="h-6 w-6 drop-shadow-sm"
                 loading="lazy"
               />
               <div className="flex-1">
@@ -70,10 +85,10 @@ export default function DailyForecast({ variant = 'desktop', onExpand }) {
                   </div>
                 )}
               </div>
-            </li>
+            </motion.li>
           )
         })}
-      </ul>
+      </motion.ul>
       {onExpand && (
         <button 
           onClick={onExpand}
