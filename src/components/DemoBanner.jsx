@@ -18,7 +18,9 @@ export default function DemoBanner({ onDismiss }) {
       <div className="glass flex items-start gap-3 rounded-2xl px-4 py-3">
         <span className="mt-0.5 text-base leading-none" aria-hidden="true">⚡</span>
         <div className="flex-1">
-          <p className="text-xs font-semibold text-ink-950">Data langsung tidak tersedia</p>
+          <a href="https://open-meteo.com/" target="_blank" rel="noreferrer" aria-label="Open-Meteo website">
+            <p className="text-xs font-semibold text-ink-950">Data langsung tidak tersedia</p>
+          </a>
           <p className="mt-0.5 text-[11px] leading-relaxed text-ink-600">
             Cuaca memakai API Open-Meteo gratis (tanpa kunci). Jika data tetap
             gagal, periksa koneksi Anda lalu tekan segarkan.
