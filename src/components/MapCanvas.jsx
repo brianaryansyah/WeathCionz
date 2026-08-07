@@ -172,7 +172,7 @@ export default function MapCanvas() {
   const colorRampCircle = CIRCLE_COLOR_RAMPS[activeLayer] || CIRCLE_COLOR_RAMPS.temp
 
   return (
-    <div className="absolute inset-0 z-0 bg-transparent" role="region" aria-label="Interactive weather map">
+    <div className="absolute inset-0 z-0 bg-transparent" role="application" aria-label="Interactive weather map">
       <Map
         ref={mapRef}
         initialViewState={{
