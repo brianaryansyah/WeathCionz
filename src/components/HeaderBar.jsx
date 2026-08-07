@@ -90,19 +90,26 @@ export default function HeaderBar() {
         </div>
       </nav>
 
-      <p className="mt-1.5 flex items-center justify-center gap-1.5 text-center text-[11px] font-medium text-ink-600">
-        <span className="truncate">{locationName}</span>
-        {accuracy != null && locateSource === 'gps' && (
-          <span className="rounded-full bg-sky-500/10 px-2 py-0.5 text-[10px] font-semibold text-sky-700">
-            ±{Math.round(accuracy)} m
-          </span>
-        )}
-        {locateSource === 'ip' && (
-          <span className="rounded-full bg-sun-400/20 px-2 py-0.5 text-[10px] font-semibold text-sun-500">
-            Perkiraan
-          </span>
-        )}
-      </p>
+      <motion.div 
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="mt-2.5 mx-auto max-w-fit"
+      >
+        <p className="glass-inner flex items-center justify-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold text-ink-800 shadow-sm">
+          <span className="truncate">{locationName}</span>
+          {accuracy != null && locateSource === 'gps' && (
+            <span className="rounded-full bg-sky-500/15 px-2 py-0.5 text-[10px] font-bold text-sky-700">
+              ±{Math.round(accuracy)} m
+            </span>
+          )}
+          {locateSource === 'ip' && (
+            <span className="rounded-full bg-sun-400/25 px-2 py-0.5 text-[10px] font-bold text-sun-600">
+              Perkiraan
+            </span>
+          )}
+        </p>
+      </motion.div>
     </motion.header>
   )
 }
