@@ -8,7 +8,7 @@ import MapLegend from './components/MapLegend'
 import DataFreshness from './components/DataFreshness'
 import DemoBanner from './components/DemoBanner'
 import LocationPopup from './components/LocationPopup'
-import ExpandedForecastTable from './components/ExpandedForecastTable'
+const ExpandedForecastTable = lazy(() => import('./components/ExpandedForecastTable'))
 import { useWeatherStore } from './store/useWeatherStore'
 import { useWeatherData } from './hooks/useWeatherData'
 import { useGeolocation } from './hooks/useGeolocation'
@@ -73,10 +73,12 @@ export default function App() {
         <DemoBanner />
       </div>
       
-      <ExpandedForecastTable 
-        isOpen={isExpandedOpen} 
-        onClose={() => setIsExpandedOpen(false)} 
-      />
+      <Suspense fallback={null}>
+        <ExpandedForecastTable 
+          isOpen={isExpandedOpen} 
+          onClose={() => setIsExpandedOpen(false)} 
+        />
+      </Suspense>
     </div>
   )
 }
