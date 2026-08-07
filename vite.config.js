@@ -8,15 +8,5 @@ export default defineConfig({
   server: {
     host: true,
     port: 5173,
-  },
-  build: {
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'framer-motion', 'zustand', '@tanstack/react-query'],
-          map: ['react-map-gl', 'maplibre-gl'],
-        },
-      },
-    },
-  },
+  }
 })
