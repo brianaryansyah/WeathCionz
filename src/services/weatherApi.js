@@ -54,8 +54,10 @@ function mapWmoCode(code, isDay = 1) {
  * exact latitude/longitude provided (via Open-Meteo) so the forecast
  * matches the user's selected location — never a hard-coded city.
  */
+const OPEN_METEO_URL = 'https://api.open-meteo.com/v1/forecast'
+
 export async function fetchCurrentWeather({ lat, lon }) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min&timezone=auto`
+  const url = `${OPEN_METEO_URL}?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,is_day,weather_code,cloud_cover,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&daily=sunrise,sunset,temperature_2m_max,temperature_2m_min&timezone=auto`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Open-Meteo request failed (${res.status})`)
 
@@ -108,7 +110,7 @@ export async function fetchCurrentWeather({ lat, lon }) {
  * Fetches hourly & daily forecast for a coordinate using Open-Meteo.
  */
 export async function fetchForecast({ lat, lon }) {
-  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=auto`
+  const url = `${OPEN_METEO_URL}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,precipitation_probability&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=auto`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Forecast request failed (${res.status})`)
 
