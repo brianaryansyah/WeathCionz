@@ -115,7 +115,7 @@ export default function TimelineSlider({ variant = 'desktop' }) {
               onClick={() => setSelectedIndex(i)}
               aria-pressed={isActive}
               aria-label={`${label} ${formatTemp(item.main.temp)} derajat`}
-              className={`group relative flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-3.5 py-2.5 transition-transform hover:-translate-y-0.5 ${
+              className={`group relative flex shrink-0 flex-col items-center gap-1.5 rounded-2xl px-3.5 py-2.5 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 ${
                 item.isNow && !isActive ? 'bg-sky-500/5' : ''
               }`}
             >
