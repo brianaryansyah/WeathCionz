@@ -3,6 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "description": "Premium dynamic weather forecasting web app built with React, Vite, and MapLibre.",
+  "keywords": ["weather", "forecast", "maplibre", "react", "framer-motion", "zustand", "glassmorphism"],
   "type": "module",
   "scripts": {
     "dev": "vite",
