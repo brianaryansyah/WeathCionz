@@ -47,7 +47,7 @@ function SearchBar() {
           onFocus={() => setFocused(true)}
           onBlur={() => window.setTimeout(() => setFocused(false), 150)}
           placeholder={live ? 'Cari kelurahan/desa...' : 'Pilih kota untuk dijelajahi…'}
-          className="w-full bg-transparent text-sm text-ink-950 placeholder:text-ink-600/60 focus:outline-none"
+          className="w-full bg-transparent text-sm text-ink-950 placeholder:text-ink-600/60 focus:outline-none focus-visible:ring-0"
           aria-label="Search city"
         />
         {isFetching && (
