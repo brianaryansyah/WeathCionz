@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useMemo } from 'react'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { groupForecastByDay, formatDay, formatTemp, iconUrl } from '../utils/weatherUtils'
@@ -11,7 +12,7 @@ import { groupForecastByDay, formatDay, formatTemp, iconUrl } from '../utils/wea
 export default function DailyForecast({ variant = 'desktop', onExpand }) {
   const coords = useWeatherStore((s) => s.coords)
   const { forecast } = useWeatherData(coords)
-  const days = groupForecastByDay(forecast?.list || []).slice(0, 5)
+  const days = useMemo(() => groupForecastByDay(forecast?.list || []).slice(0, 5), [forecast?.list])
 
   if (days.length === 0) return null
 
