@@ -81,37 +81,37 @@
   .glass {
     background: linear-gradient(
       150deg,
-      rgba(255, 255, 255, 0.75),
-      rgba(255, 255, 255, 0.5)
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.4)
     );
-    backdrop-filter: blur(32px) saturate(200%);
-    -webkit-backdrop-filter: blur(32px) saturate(200%);
-    border: 1px solid rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(40px) saturate(200%);
+    -webkit-backdrop-filter: blur(40px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.6);
     box-shadow:
-      0 24px 60px -20px rgba(2, 132, 199, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      0 30px 60px -20px rgba(2, 132, 199, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 
   /* Inner sub-panel */
   .glass-inner {
-    background: rgba(255, 255, 255, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(16px);
+    background: rgba(255, 255, 255, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
   }
 
   /* Elevated hover lift for interactive cards */
   .glass-hover {
     transition:
-      transform 0.25s ease,
-      border-color 0.25s ease,
-      box-shadow 0.25s ease;
+      transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .glass-hover:hover {
-    transform: translateY(-2px);
-    border-color: rgba(14, 165, 233, 0.5);
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(56, 189, 248, 0.5);
     box-shadow:
-      0 26px 60px -22px rgba(14, 165, 233, 0.45),
-      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+      0 32px 64px -24px rgba(14, 165, 233, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
   }
 
   /* Primary control button */
