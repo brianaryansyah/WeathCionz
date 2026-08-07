@@ -30,7 +30,7 @@ export default function MapLegend({ variant = 'desktop' }) {
   const ticks = TICKS[layer.id]
 
   const card = (
-    <div className="glass rounded-2xl px-4 py-3 shadow-xl backdrop-blur-md border border-white/20">
+    <div className="glass glass-hover rounded-2xl px-4 py-3 shadow-xl backdrop-blur-md border border-white/20">
       <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ink-950">
         <span className="h-2 w-2 rounded-full" style={{ backgroundColor: layer.color }} />
         {layer.label}
