@@ -98,16 +98,32 @@ export default function ExpandedForecastTable({ isOpen, onClose }) {
                 </div>
 
                 {/* Table Body (Location Row) */}
-                <div className="mt-6 grid gap-4" style={{ gridTemplateColumns: `repeat(${daysWithDetails.length}, minmax(0, 1fr))` }}>
+                <motion.div 
+                  initial="hidden"
+                  animate="show"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: {
+                      opacity: 1,
+                      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
+                    }
+                  }}
+                  className="mt-6 grid gap-4" 
+                  style={{ gridTemplateColumns: `repeat(${daysWithDetails.length}, minmax(0, 1fr))` }}
+                >
                   {daysWithDetails.map((day) => (
-                    <div 
+                    <motion.div 
                       key={day.key} 
-                      className="glass-inner flex flex-col items-center rounded-2xl p-4 text-center transition-transform hover:-translate-y-1 hover:bg-white/20"
+                      variants={{
+                        hidden: { opacity: 0, y: 30 },
+                        show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+                      }}
+                      className="glass-inner glass-hover flex flex-col items-center rounded-2xl p-4 text-center"
                     >
                       <img
                         src={iconUrl(day.icon)}
                         alt={day.description}
-                        className="h-16 w-16 drop-shadow-md"
+                        className="h-16 w-16 drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]"
                         loading="lazy"
                       />
                       <span className="mt-2 text-xs font-bold capitalize text-ink-900">
@@ -136,9 +152,9 @@ export default function ExpandedForecastTable({ isOpen, onClose }) {
                           </span>
                         </div>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
-                </div>
+                </motion.div>
               </div>
             </div>
           </motion.div>
