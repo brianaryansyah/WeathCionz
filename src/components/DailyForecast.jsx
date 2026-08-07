@@ -93,6 +93,7 @@ export default function DailyForecast({ variant = 'desktop', onExpand }) {
       {onExpand && (
         <button 
           onClick={onExpand}
+          aria-expanded="false"
           className="mt-3 w-full rounded-xl bg-white/30 py-2.5 text-xs font-semibold text-ink-800 transition-colors hover:bg-white/50 hover:text-ink-950"
         >
           Lihat Detail Lengkap (BMKG Style)
