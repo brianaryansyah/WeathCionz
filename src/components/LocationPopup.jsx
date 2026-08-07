@@ -14,6 +14,8 @@ export default function LocationPopup({ source = 'gps', onRetry }) {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
       className="absolute inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md"
+      role="alertdialog"
+      aria-labelledby="location-popup-title"
     >
       <div className="glass flex flex-col items-center gap-4 rounded-3xl px-8 py-6 text-center shadow-2xl">
         <div className="relative flex h-12 w-12 items-center justify-center">
