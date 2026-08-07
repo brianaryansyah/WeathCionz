@@ -253,21 +253,28 @@ export default function FloatingSidebar({ onExpand }) {
         <p className="mb-2.5 px-1 text-[11px] font-medium uppercase tracking-wide text-ink-600">
           Lapisan peta
         </p>
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5 p-1 glass-inner rounded-2xl w-fit">
           {MAP_LAYERS.map((l) => {
             const isActive = activeLayer === l.id
             return (
               <button
                 key={l.id}
                 onClick={() => setActiveLayer(l.id)}
-                className={`rounded-full px-3 py-1.5 text-xs font-semibold transition-all active:scale-95 ${
+                className={`relative rounded-xl px-3 py-1.5 text-xs font-semibold transition-colors z-10 ${
                   isActive
-                    ? 'text-white shadow-md'
-                    : 'glass-inner text-ink-800 hover:text-ink-950 hover:bg-white/40'
+                    ? 'text-white'
+                    : 'text-ink-800 hover:text-ink-950'
                 }`}
-                style={isActive ? { backgroundColor: l.color, boxShadow: `0 4px 14px ${l.color}80` } : {}}
               >
-                {l.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeLayerIndicator"
+                    className="absolute inset-0 -z-10 rounded-xl"
+                    style={{ backgroundColor: l.color, boxShadow: `0 4px 14px ${l.color}80` }}
+                    transition={{ type: "spring", stiffness: 300, damping: 25 }}
+                  />
+                )}
+                <span className="relative z-10">{l.label}</span>
               </button>
             )
           })}
