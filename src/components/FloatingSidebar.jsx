@@ -36,7 +36,10 @@ function SearchBar() {
 
   return (
     <div className="relative">
-      <div className="glass flex items-center gap-3 rounded-2xl px-4 py-3">
+      <div 
+        className={`glass flex items-center gap-3 rounded-2xl px-4 py-3 ${focused ? 'ring-2 ring-sky-400/50' : ''}`}
+        role="search"
+      >
         <svg className="h-4 w-4 shrink-0 text-sky-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <circle cx="11" cy="11" r="7" />
           <path d="m20 20-3.5-3.5" />
