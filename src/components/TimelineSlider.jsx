@@ -140,7 +140,7 @@ export default function TimelineSlider({ variant = 'desktop' }) {
               <img
                 src={iconUrl(item.weather[0].icon)}
                 alt=""
-                className="relative h-7 w-7"
+                className="relative h-7 w-7 drop-shadow-[0_2px_4px_rgba(0,0,0,0.15)]"
                 loading="lazy"
               />
               <span
