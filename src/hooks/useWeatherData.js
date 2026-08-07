@@ -57,6 +57,7 @@ export function useWeatherData(coords) {
     current: currentData,
     forecast: forecastData,
     isLoading: live && (current.isLoading || forecast.isLoading),
+    isFetching: live && (current.isFetching || forecast.isFetching),
     isError: live && (current.isError || forecast.isError),
     isDemo,
     refetch,
