@@ -43,7 +43,7 @@ export default function App() {
   return (
     <div className="relative h-viewport w-screen overflow-hidden isolate bg-black">
       <Suspense
-        fallback={<div className="absolute inset-0 animate-pulse bg-slate-900" />}
+        fallback={<div className="absolute inset-0 animate-pulse bg-gradient-to-br from-slate-900 to-slate-800" />}
       >
         <MapCanvas />
       </Suspense>
