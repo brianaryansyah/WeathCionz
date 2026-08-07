@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useEffect, useState, useMemo } from 'react'
 import { motion } from 'framer-motion'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
