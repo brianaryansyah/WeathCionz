@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
@@ -8,10 +9,10 @@ export default function ExpandedForecastTable({ isOpen, onClose }) {
   const locationName = useWeatherStore((s) => s.locationName)
   const { forecast } = useWeatherData(coords)
   
-  const days = groupForecastByDay(forecast?.list || []).slice(0, 7) // up to 7 days
+  const days = useMemo(() => groupForecastByDay(forecast?.list || []).slice(0, 7), [forecast?.list])
   
   // Calculate humidity ranges for each day
-  const daysWithDetails = days.map(day => {
+  const daysWithDetails = useMemo(() => days.map(day => {
     let minHum = 100
     let maxHum = 0
     let minWind = 100
@@ -33,7 +34,7 @@ export default function ExpandedForecastTable({ isOpen, onClose }) {
       minWind,
       maxWind
     }
-  })
+  }), [days])
 
   return (
     <AnimatePresence>
