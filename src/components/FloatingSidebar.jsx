@@ -260,6 +260,7 @@ export default function FloatingSidebar({ onExpand }) {
               <button
                 key={l.id}
                 onClick={() => setActiveLayer(l.id)}
+                aria-pressed={isActive}
                 className={`relative rounded-xl px-3 py-1.5 text-xs font-semibold transition-colors z-10 ${
                   isActive
                     ? 'text-white'
