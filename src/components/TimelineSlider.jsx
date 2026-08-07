@@ -19,42 +19,43 @@ export default function TimelineSlider({ variant = 'desktop' }) {
   
   const rawList = forecast?.list || []
   
-  // Calculate the "Now" index for the full raw list
-  const nowSec = Date.now() / 1000
-  let closestRawIdx = 0
-  let minDiff = Infinity
-  rawList.forEach((item, i) => {
-    const diff = Math.abs(item.dt - nowSec)
-    if (diff < minDiff) {
-      minDiff = diff
-      closestRawIdx = i
-    }
-  })
+  // Calculate the "Now" index and the timeline list
+  const { closestRawIdx, list } = useMemo(() => {
+    const nowSec = Date.now() / 1000
+    let closestIdx = 0
+    let minDiff = Infinity
+    rawList.forEach((item, i) => {
+      const diff = Math.abs(item.dt - nowSec)
+      if (diff < minDiff) {
+        minDiff = diff
+        closestIdx = i
+      }
+    })
 
-  // Prepare the list based on history toggle
-  let list = []
-  if (showHistory) {
-    list = [...rawList]
-    if (current && list[closestRawIdx]) {
-      list[closestRawIdx] = {
-        ...list[closestRawIdx],
-        isNow: true,
-        main: { ...list[closestRawIdx].main, temp: current.main.temp },
-        weather: current.weather
+    let generatedList = []
+    if (showHistory) {
+      generatedList = [...rawList]
+      if (current && generatedList[closestIdx]) {
+        generatedList[closestIdx] = {
+          ...generatedList[closestIdx],
+          isNow: true,
+          main: { ...generatedList[closestIdx].main, temp: current.main.temp },
+          weather: current.weather
+        }
+      }
+    } else {
+      generatedList = rawList.filter(item => item.dt >= nowSec - 3600)
+      if (generatedList.length > 0 && current) {
+        generatedList[0] = {
+          ...generatedList[0],
+          isNow: true,
+          main: { ...generatedList[0].main, temp: current.main.temp },
+          weather: current.weather
+        }
       }
     }
-  } else {
-    // Only keep future hours (minus 1 hour buffer)
-    list = rawList.filter(item => item.dt >= nowSec - 3600)
-    if (list.length > 0 && current) {
-      list[0] = {
-        ...list[0],
-        isNow: true,
-        main: { ...list[0].main, temp: current.main.temp },
-        weather: current.weather
-      }
-    }
-  }
+    return { closestRawIdx: closestIdx, list: generatedList }
+  }, [rawList, showHistory, current])
 
   const handleToggleHistory = () => {
     if (!showHistory) {
