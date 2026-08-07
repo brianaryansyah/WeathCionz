@@ -58,10 +58,10 @@ export default function HeaderBar() {
         <span className="hidden h-5 w-px bg-ink-950/10 sm:block" aria-hidden="true" />
 
         <div className="flex gap-2">
-          <button
-            onClick={locateMe}
-            aria-label="Temukan lokasi saya"
+          <button 
+            onClick={() => locateMe()} 
             className="flex h-8 w-8 items-center justify-center rounded-full text-white transition-transform active:scale-95 bg-gradient-to-br from-sky-500 to-cyan-400 shadow-md shadow-cyan-500/30 hover:brightness-110"
+            aria-label="Locate me"
           >
             <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="3 11 22 2 13 21 11 13 3 11" />
