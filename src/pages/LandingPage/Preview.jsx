@@ -11,7 +11,7 @@ import {
 
 export default function Preview() {
   return (
-    <section id="preview" className="py-24 px-6 relative z-10">
+    <section id="preview" className="py-24 px-6 relative z-10 bg-sage-50">
       <div className="container max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <motion.h2 
@@ -21,7 +21,7 @@ export default function Preview() {
             className="text-4xl lg:text-6xl font-bold font-display text-slate-900 mb-6 tracking-tight"
           >
             Not just another <br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-teal-500">
               weather dashboard.
             </span>
           </motion.h2>
@@ -30,7 +30,7 @@ export default function Preview() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-lg text-slate-600 max-w-2xl mx-auto"
+            className="text-lg text-sage-dark/80 max-w-2xl mx-auto"
           >
             Get access to interactive 3D map layers, predictive hourly metrics, and beautifully crafted widgets that make reading weather a joy.
           </motion.p>
