@@ -1,7 +1,7 @@
 import { motion } from 'motion/react'
 import { Link } from 'react-router-dom'
 import GlobeAnimation from '../../components/ui/GlobeAnimation'
-import { CloudSun, CloudRain, Sun } from 'lucide-react'
+import { CloudSun, Sun } from 'lucide-react'
 
 export default function Hero() {
   const containerVariants = {
