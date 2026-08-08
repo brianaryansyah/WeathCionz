@@ -5,10 +5,10 @@ import { CloudSun } from 'lucide-react'
 export default function Navbar() {
   return (
     <motion.nav
-      initial={{ y: -100, opacity: 0 }}
+      initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 mx-4 mt-4 glass rounded-3xl"
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      className="fixed top-6 left-4 right-4 md:left-auto md:right-auto md:w-full max-w-3xl md:mx-auto z-50 flex items-center justify-between px-6 py-3 glass-dark rounded-full"
     >
       <div className="flex items-center gap-2">
         <CloudSun className="w-8 h-8 text-sky-500" />
@@ -23,9 +23,9 @@ export default function Navbar() {
 
       <Link 
         to="/app"
-        className="px-6 py-2.5 text-sm font-semibold rounded-full btn-primary"
+        className="px-5 py-2 text-sm font-semibold rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/5"
       >
-        Try the App
+        Try App
       </Link>
     </motion.nav>
   )
