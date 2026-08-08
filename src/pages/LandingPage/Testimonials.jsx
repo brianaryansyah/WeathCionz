@@ -38,7 +38,7 @@ export default function Testimonials() {
               transition={{ delay: i * 0.1, duration: 0.5 }}
               className="glass p-8 rounded-3xl flex flex-col justify-between"
             >
-              <p className="text-white/80 italic mb-6 leading-relaxed">"{t.content}"</p>
+              <p className="text-white/80 italic mb-6 leading-relaxed">&quot;{t.content}&quot;</p>
               <div>
                 <h4 className="text-white font-bold">{t.name}</h4>
                 <p className="text-sm text-sky-400">{t.role}</p>
