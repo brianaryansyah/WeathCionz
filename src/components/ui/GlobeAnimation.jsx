@@ -6,17 +6,21 @@ export default function GlobeAnimation({ className = "" }) {
 
   useEffect(() => {
     let phi = 0
-    let width = 0
-
-    const onResize = () => {
-      if (canvasRef.current) {
-        width = canvasRef.current.offsetWidth
-      }
+    let width = 500 // Initial fallback
+    
+    if (canvasRef.current) {
+      width = canvasRef.current.offsetWidth
     }
-    window.addEventListener('resize', onResize)
-    onResize()
 
-    if (!canvasRef.current) return
+    const observer = new ResizeObserver((entries) => {
+      if (entries[0] && entries[0].contentRect.width > 0) {
+        width = entries[0].contentRect.width
+      }
+    })
+    
+    if (canvasRef.current) {
+      observer.observe(canvasRef.current)
+    }
 
     const globe = createGlobe(canvasRef.current, {
       devicePixelRatio: 2,
@@ -24,14 +28,14 @@ export default function GlobeAnimation({ className = "" }) {
       height: width * 2,
       phi: 0,
       theta: 0.3,
-      dark: 1, // 1 for dark theme
+      dark: 0, // Light theme
       diffuse: 1.2,
       scale: 1,
       mapSamples: 16000,
       mapBrightness: 6,
-      baseColor: [0.05, 0.05, 0.05], // Very dark grey, almost black
-      markerColor: [0.1, 0.8, 1], // Bright sky blue
-      glowColor: [0, 0.3, 0.7], // Indigo glow
+      baseColor: [0.95, 0.95, 0.95], // Off-white/light gray globe
+      markerColor: [0.05, 0.65, 0.95], // Crisp blue markers
+      glowColor: [0.9, 0.95, 1], // Soft light-blue glow matching white bg
       markers: [
         { location: [37.7595, -122.4367], size: 0.03 }, // San Francisco
         { location: [40.7128, -74.0060], size: 0.05 }, // New York
@@ -51,7 +55,7 @@ export default function GlobeAnimation({ className = "" }) {
 
     return () => {
       globe.destroy()
-      window.removeEventListener('resize', onResize)
+      observer.disconnect()
     }
   }, [])
 
