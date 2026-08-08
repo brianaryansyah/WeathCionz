@@ -33,9 +33,9 @@ export default function Hero() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="container max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-16"
+        className="container max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12 lg:gap-20"
       >
-        <div className="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start z-10 mt-12 lg:mt-0">
+        <div className="flex-1 w-full text-left flex flex-col items-start z-10 mt-12 lg:mt-0">
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-dark border border-white/5 mb-6 text-sky-400 font-medium text-sm">
             <span className="live-dot" /> Live Global Weather
           </motion.div>
