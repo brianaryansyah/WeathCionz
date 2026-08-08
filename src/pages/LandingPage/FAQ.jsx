@@ -35,10 +35,11 @@ export default function FAQ() {
             return (
               <motion.div 
                 key={i}
+                layout
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="glass rounded-2xl overflow-hidden"
+                viewport={{ once: true, margin: "-100px" }}
+                className="glass-dark rounded-2xl overflow-hidden border border-white/5"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
@@ -58,7 +59,7 @@ export default function FAQ() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="px-6 pb-6 text-white/70"
+                      className="px-6 pb-6 text-white/70 leading-relaxed"
                     >
                       {faq.a}
                     </motion.div>
