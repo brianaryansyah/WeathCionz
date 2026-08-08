@@ -24,36 +24,43 @@ export default function Features() {
     <section id="features" className="py-24 px-6 relative z-10">
       <div className="container max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-slate-900 mb-6">
-            Boring Weather Apps? <span className="text-sky-600">No More.</span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-sage-dark mb-6">
+            Boring Weather Apps? <span className="text-sage-main">No More.</span>
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-sage-dark/80 max-w-2xl mx-auto">
             Say goodbye to standard lists and flat icons. WeathCionz brings weather to life with an experience designed for the modern web.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {features.map((item, i) => (
-            <motion.div 
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+        >
+          {features.map((feature, index) => (
+            <motion.div
+              key={index}
+              variants={itemVariants}
               className="p-8 rounded-3xl glass-panel glass-panel-hover group relative overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-sky-500/5 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-br from-sage-main/10 to-transparent pointer-events-none" />
               
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-sky-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <item.icon className="w-7 h-7 text-sky-600" />
+                <div className="w-14 h-14 rounded-2xl bg-sage-light/40 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <feature.icon className="w-7 h-7 text-sage-main" />
                 </div>
-                <h3 className="text-xl font-bold font-display text-slate-900 mb-4">{item.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{item.description}</p>
+                
+                <h3 className="text-xl font-bold font-display text-sage-dark mb-4">{feature.title}</h3>
+                <p className="text-sage-dark/80 leading-relaxed">
+                  {feature.desc}
+                </p>
               </div>
             </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   )
