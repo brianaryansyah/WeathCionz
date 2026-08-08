@@ -24,10 +24,10 @@ export default function Testimonials() {
     <section className="py-24 px-6 relative z-10">
       <div className="container max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-slate-900 mb-6">
-            Loved by <span className="text-sky-600">Meteorologists</span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-sage-dark mb-6">
+            Loved by <span className="text-sage-main">Meteorologists</span>
           </h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+          <p className="text-lg text-sage-dark/80 max-w-2xl mx-auto">
             See what professionals are saying about WeathCionz.
           </p>
         </div>
@@ -42,17 +42,17 @@ export default function Testimonials() {
               transition={{ delay: i * 0.05, duration: 0.4 }}
               className="glass-panel p-8 rounded-3xl relative"
             >
-              <Quote className="w-10 h-10 text-sky-100 absolute top-6 right-6 opacity-50" />
+              <Quote className="w-10 h-10 text-sage-main/20 absolute top-6 right-6 opacity-50" />
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center text-sky-600 font-bold text-xl">
+                <div className="w-12 h-12 rounded-full bg-sage-light/40 flex items-center justify-center text-sage-main font-bold text-xl">
                   {testimonial.name[0]}
                 </div>
                 <div>
-                  <h4 className="text-slate-900 font-bold">{testimonial.name}</h4>
-                  <p className="text-slate-500 text-sm">{testimonial.role}</p>
+                  <h4 className="text-sage-dark font-bold">{testimonial.name}</h4>
+                  <p className="text-sage-dark/60 text-sm">{testimonial.role}</p>
                 </div>
               </div>
-              <p className="text-slate-600 leading-relaxed italic">
+              <p className="text-sage-dark/80 leading-relaxed italic">
                 &quot;{testimonial.content}&quot;
               </p>
             </motion.div>
