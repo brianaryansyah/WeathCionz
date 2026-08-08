@@ -23,10 +23,13 @@ export default function FAQ() {
   return (
     <section id="faq" className="py-24 px-6 relative z-10">
       <div className="container max-w-3xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-white mb-6">
-            Got <span className="text-sky-400">Questions?</span>
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-slate-900 mb-6">
+            Frequently Asked <span className="text-sky-600">Questions</span>
           </h2>
+          <p className="text-lg text-slate-600 max-w-2xl mx-auto">
+            Everything you need to know about WeathCionz.
+          </p>
         </div>
 
         <div className="space-y-4">
@@ -39,18 +42,18 @@ export default function FAQ() {
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
-                className="glass-dark rounded-2xl overflow-hidden border border-white/5"
+                className="glass-panel overflow-hidden rounded-2xl transition-all"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
-                  className="w-full flex items-center justify-between p-6 text-left focus:outline-none"
+                  className="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none"
                 >
-                  <span className="text-lg font-semibold text-white">{faq.q}</span>
+                  <span className="text-lg font-bold font-display text-slate-900 pr-8">{faq.q}</span>
                   <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <ChevronDown className="w-5 h-5 text-white/60" />
+                    <ChevronDown className="w-5 h-5 text-slate-400" />
                   </motion.div>
                 </button>
                 <AnimatePresence>
@@ -59,9 +62,11 @@ export default function FAQ() {
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
-                      className="px-6 pb-6 text-white/70 leading-relaxed"
+                      className="px-8 pb-6"
                     >
-                      {faq.a}
+                      <p className="text-slate-600 leading-relaxed">
+                        {faq.a}
+                      </p>
                     </motion.div>
                   )}
                 </AnimatePresence>
