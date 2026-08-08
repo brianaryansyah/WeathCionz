@@ -61,43 +61,45 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        <motion.div variants={itemVariants} className="flex-1 w-full max-w-md hidden md:block">
+        <motion.div variants={itemVariants} className="flex-1 w-full max-w-sm hidden lg:block mx-auto">
           <LiquidGlassCard 
-            draggable={false}
+            draggable={true}
             blurIntensity="xl" 
             shadowIntensity="md"
-            glowIntensity="sm"
+            glowIntensity="md"
             borderRadius="32px"
-            className="w-full aspect-[4/5] p-8 flex flex-col items-center justify-between bg-white/5 border border-white/10 relative overflow-hidden"
+            className="w-full p-8 flex flex-col items-center justify-between glass-dark border border-white/10 relative overflow-hidden shadow-2xl"
           >
             {/* Ambient inner glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-sky-400/10 to-transparent pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-sky-400/20 to-transparent pointer-events-none" />
             
-            <div className="w-full flex justify-between items-start text-white/90">
+            <div className="w-full flex justify-between items-start text-white relative z-10">
               <div>
-                <p className="text-sm font-medium">Currently</p>
-                <p className="text-2xl font-bold font-display">New York</p>
+                <p className="text-sm font-medium text-white/60">Currently</p>
+                <p className="text-2xl font-bold font-display tracking-tight">New York</p>
               </div>
-              <CloudSun className="w-10 h-10 text-sky-400" />
+              <div className="p-3 bg-white/10 rounded-2xl">
+                <CloudSun className="w-8 h-8 text-sky-300" />
+              </div>
             </div>
 
-            <div className="text-center my-8">
-              <h2 className="text-8xl font-bold font-display text-white tracking-tighter">
+            <div className="text-center my-12 relative z-10">
+              <h2 className="text-8xl font-bold font-display text-white tracking-tighter drop-shadow-lg">
                 72°
               </h2>
-              <p className="text-xl text-white/70 mt-2">Partly Cloudy</p>
+              <p className="text-xl text-sky-200 mt-2 font-medium">Partly Cloudy</p>
             </div>
 
-            <div className="w-full grid grid-cols-3 gap-2">
+            <div className="w-full grid grid-cols-3 gap-3 relative z-10">
               {[
-                { time: '10 AM', icon: Sun, temp: '74°' },
-                { time: '11 AM', icon: CloudSun, temp: '76°' },
-                { time: '12 PM', icon: CloudRain, temp: '71°' },
+                { time: '10 AM', icon: Sun, temp: '74°', color: 'text-yellow-400' },
+                { time: '11 AM', icon: CloudSun, temp: '76°', color: 'text-sky-300' },
+                { time: '12 PM', icon: CloudRain, temp: '71°', color: 'text-blue-400' },
               ].map((item, i) => (
-                <div key={i} className="flex flex-col items-center gap-2 p-3 rounded-2xl bg-white/5 border border-white/5">
-                  <span className="text-xs text-white/60">{item.time}</span>
-                  <item.icon className="w-5 h-5 text-white/80" />
-                  <span className="text-sm font-semibold text-white">{item.temp}</span>
+                <div key={i} className="flex flex-col items-center gap-3 p-4 rounded-2xl glass-dark border border-white/5 hover:bg-white/10 transition-colors">
+                  <span className="text-xs text-white/60 font-medium">{item.time}</span>
+                  <item.icon className={`w-6 h-6 ${item.color}`} />
+                  <span className="text-sm font-bold text-white">{item.temp}</span>
                 </div>
               ))}
             </div>
