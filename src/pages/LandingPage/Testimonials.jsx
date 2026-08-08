@@ -34,9 +34,9 @@ export default function Testimonials() {
               key={i}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="glass p-8 rounded-3xl flex flex-col justify-between"
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ delay: i * 0.05, duration: 0.4 }}
+              className="glass-dark glass-dark-hover p-8 rounded-3xl flex flex-col justify-between"
             >
               <p className="text-white/80 italic mb-6 leading-relaxed">&quot;{t.content}&quot;</p>
               <div>
