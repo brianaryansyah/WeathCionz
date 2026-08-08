@@ -67,17 +67,9 @@ export default function GlobeAnimation({ className = "" }) {
         style={{
           width: '100%',
           height: '100%',
-          contain: 'layout paint size',
-          opacity: 0,
-          animation: 'fade-in-globe 1.5s ease-out 0.2s forwards'
+          contain: 'layout paint size'
         }}
       />
-      <style>{`
-        @keyframes fade-in-globe {
-          0% { opacity: 0; transform: scale(0.9) translateY(40px); }
-          100% { opacity: 1; transform: scale(1) translateY(0); }
-        }
-      `}</style>
     </div>
   )
 }
