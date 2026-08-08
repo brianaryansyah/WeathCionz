@@ -22,7 +22,7 @@ export default function Hero() {
   }
 
   return (
-    <section className="relative pt-48 pb-24 px-6 min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
+    <section className="relative pt-40 md:pt-48 pb-20 md:pb-24 px-6 min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
       {/* Dynamic Background Elements */}
       <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-sky-500/20 rounded-full blur-[120px]" />
