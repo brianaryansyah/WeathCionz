@@ -8,9 +8,9 @@ export default function Navbar() {
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed top-6 left-4 right-4 md:left-auto md:right-auto md:w-full max-w-3xl md:mx-auto z-50 flex items-center justify-between px-6 py-3 glass-dark rounded-full"
+      className="fixed top-6 left-4 right-4 md:left-8 md:right-8 z-50 flex items-center justify-between px-8 py-4 glass-dark rounded-full border border-white/10 shadow-lg backdrop-blur-xl"
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3 w-48">
         <CloudSun className="w-8 h-8 text-sky-500" />
         <span className="text-xl font-bold font-display text-white">WeathCionz</span>
       </div>
@@ -21,12 +21,14 @@ export default function Navbar() {
         <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
       </div>
 
-      <Link 
-        to="/app"
-        className="px-5 py-2 text-sm font-semibold rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/5"
-      >
-        Try App
-      </Link>
+      <div className="w-48 flex justify-end">
+        <Link 
+          to="/app"
+          className="px-6 py-2.5 text-sm font-semibold rounded-full bg-sky-500 hover:bg-sky-400 text-white transition-colors shadow-[0_0_15px_rgba(14,165,233,0.5)]"
+        >
+          Launch App
+        </Link>
+      </div>
     </motion.nav>
   )
 }
