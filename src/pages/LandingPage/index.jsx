@@ -1,3 +1,4 @@
+import { MotionConfig } from 'motion/react'
 import Navbar from './Navbar'
 import Hero from './Hero'
 import Features from './Features'
@@ -15,15 +16,17 @@ export default function LandingPage() {
         <div className="absolute bottom-0 right-1/4 w-[40vw] h-[40vw] bg-indigo-600/10 rounded-full blur-[100px]" />
       </div>
 
-      <Navbar />
-      <main>
-        <Hero />
-        <Features />
-        <Preview />
-        <Testimonials />
-        <FAQ />
-      </main>
-      <Footer />
+      <MotionConfig reducedMotion="user">
+        <Navbar />
+        <main>
+          <Hero />
+          <Features />
+          <Preview />
+          <Testimonials />
+          <FAQ />
+        </main>
+        <Footer />
+      </MotionConfig>
     </div>
   )
 }
