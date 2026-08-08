@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { Quote } from 'lucide-react'
 
 const testimonials = [
   {
