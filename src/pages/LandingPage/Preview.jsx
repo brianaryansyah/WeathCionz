@@ -23,22 +23,28 @@ export default function Preview() {
         </div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="p-8 w-full gap-8 py-16 rounded-[40px] overflow-hidden"
-          style={{
-            background: 'url("https://images.unsplash.com/photo-1590867286251-8e26d9f255c0?q=80&w=1200&auto=format&fit=crop") center / cover no-repeat',
-          }}
+          className="p-4 md:p-8 w-full gap-8 py-16 rounded-[40px] overflow-hidden relative border border-white/10"
         >
-          <div className="grid w-full max-w-xl grid-cols-2 gap-4 mx-auto">
+          {/* Subtle blurred background image */}
+          <div 
+            className="absolute inset-0 opacity-30 z-0"
+            style={{
+              background: 'url("https://images.unsplash.com/photo-1590867286251-8e26d9f255c0?q=80&w=1200&auto=format&fit=crop") center / cover no-repeat',
+              filter: 'blur(10px) brightness(0.7)'
+            }}
+          />
+          
+          <div className="grid w-full max-w-xl grid-cols-2 gap-4 mx-auto relative z-10">
             {/* Hourly Forecast Card */}
             <LiquidGlassCard
-              shadowIntensity="xs"
-              borderRadius="16px"
-              glowIntensity="none"
-              className="col-span-2 p-6 text-white bg-white/10"
+              shadowIntensity="md"
+              borderRadius="24px"
+              glowIntensity="sm"
+              className="col-span-2 p-6 text-white glass-dark border border-white/5"
             >
               <div className="flex justify-between text-sm font-medium">
                 <div className="flex flex-col items-center gap-2">
@@ -76,10 +82,10 @@ export default function Preview() {
 
             {/* Current Weather Card */}
             <LiquidGlassCard
-              shadowIntensity="xs"
-              borderRadius="16px"
-              glowIntensity="none"
-              className="p-6 text-white bg-white/10 flex flex-col items-start justify-center aspect-square"
+              shadowIntensity="md"
+              borderRadius="24px"
+              glowIntensity="sm"
+              className="p-6 text-white glass-dark border border-white/5 flex flex-col items-start justify-center aspect-square hover:bg-white/5 transition-colors"
             >
               <div className="text-5xl font-semibold">+18°C</div>
               <div className="text-sm mt-2 text-white/80">Cloudy +18°/+5°</div>
@@ -87,10 +93,10 @@ export default function Preview() {
 
             {/* Time and Location Card */}
             <LiquidGlassCard
-              shadowIntensity="xs"
-              borderRadius="16px"
-              glowIntensity="none"
-              className="p-6 text-white bg-white/10 flex flex-col items-start justify-center aspect-square"
+              shadowIntensity="md"
+              borderRadius="24px"
+              glowIntensity="sm"
+              className="p-6 text-white glass-dark border border-white/5 flex flex-col items-start justify-center aspect-square hover:bg-white/5 transition-colors"
             >
               <div className="text-5xl font-semibold">17:32</div>
               <div className="text-sm mt-2 text-white/80">Sun, November 19</div>
@@ -102,10 +108,10 @@ export default function Preview() {
 
             {/* Daily Forecast Card */}
             <LiquidGlassCard
-              shadowIntensity="xs"
-              borderRadius="16px"
-              glowIntensity="none"
-              className="col-span-2 bg-white/10 p-6 text-white flex flex-col gap-4"
+              shadowIntensity="md"
+              borderRadius="24px"
+              glowIntensity="sm"
+              className="col-span-2 glass-dark border border-white/5 p-6 text-white flex flex-col gap-4"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
