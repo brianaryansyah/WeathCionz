@@ -14,12 +14,26 @@ export default function Preview() {
     <section id="preview" className="py-24 px-6 relative z-10">
       <div className="container max-w-5xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-white mb-6">
-            Experience the UI
-          </h2>
-          <p className="text-lg text-white/60 max-w-2xl mx-auto">
-            Drag, hover, and interact with our Liquid Glass components. Built with Motion for React.
-          </p>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl lg:text-6xl font-bold font-display text-slate-900 mb-6 tracking-tight"
+          >
+            Not just another <br/>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">
+              weather dashboard.
+            </span>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-lg text-slate-600 max-w-2xl mx-auto"
+          >
+            Get access to interactive 3D map layers, predictive hourly metrics, and beautifully crafted widgets that make reading weather a joy.
+          </motion.p>
         </div>
 
         <motion.div
@@ -27,7 +41,7 @@ export default function Preview() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.6 }}
-          className="p-4 md:p-8 w-full gap-8 py-16 rounded-[40px] overflow-hidden relative border border-white/10"
+          className="p-4 md:p-8 w-full gap-8 py-16 rounded-[40px] overflow-hidden relative border border-slate-200"
         >
           {/* Subtle blurred background image */}
           <div 
