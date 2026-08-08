@@ -35,14 +35,14 @@ export default function Hero() {
         animate="visible"
         className="container max-w-5xl mx-auto flex flex-col lg:flex-row items-center gap-16"
       >
-        <div className="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start z-10">
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass mb-6 text-sky-400 font-medium text-sm">
+        <div className="flex-1 text-center lg:text-left flex flex-col items-center lg:items-start z-10 mt-12 lg:mt-0">
+          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-dark border border-white/5 mb-6 text-sky-400 font-medium text-sm">
             <span className="live-dot" /> Live Global Weather
           </motion.div>
           
-          <motion.h1 variants={itemVariants} className="text-5xl lg:text-7xl font-bold font-display text-white leading-tight mb-6 tracking-tight">
+          <motion.h1 variants={itemVariants} className="text-6xl lg:text-8xl font-bold font-display text-white leading-[1.1] mb-6 tracking-tighter">
             Predict the Sky.<br/>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-600">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">
               Own the Day.
             </span>
           </motion.h1>
@@ -54,7 +54,7 @@ export default function Hero() {
           <motion.div variants={itemVariants} className="flex items-center gap-4">
             <Link 
               to="/app"
-              className="px-8 py-4 text-base font-semibold rounded-full btn-primary hover:scale-105 transition-transform"
+              className="px-10 py-5 text-lg font-bold rounded-full btn-primary hover:-translate-y-1 inline-flex items-center gap-2"
             >
               Lihat Cuaca Sekarang
             </Link>
