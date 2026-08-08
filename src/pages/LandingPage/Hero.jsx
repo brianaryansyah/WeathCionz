@@ -51,13 +51,27 @@ export default function Hero() {
             Increase your awareness with real-time global weather tracking. WeathCionz brings you the most beautiful and accurate real-time forecasting experience with interactive 3D maps.
           </motion.p>
           
-          <motion.div variants={itemVariants} className="flex items-center gap-4">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center gap-4">
             <Link 
               to="/app"
-              className="px-10 py-5 text-lg font-bold rounded-full btn-primary hover:-translate-y-1 inline-flex items-center gap-2"
+              className="px-8 py-4 text-base font-bold rounded-2xl btn-primary hover:-translate-y-1 inline-flex items-center gap-3 w-full sm:w-auto justify-center"
             >
-              Lihat Cuaca Sekarang
+              <CloudSun className="w-6 h-6" />
+              <div className="flex flex-col items-start text-left">
+                <span className="text-[10px] uppercase tracking-wider font-medium opacity-80 leading-none">Available Now</span>
+                <span className="leading-none mt-1">Launch Web App</span>
+              </div>
             </Link>
+            <a 
+              href="#features"
+              className="px-8 py-4 text-base font-bold rounded-2xl glass-dark glass-dark-hover inline-flex items-center gap-3 w-full sm:w-auto justify-center border border-white/10"
+            >
+              <Sun className="w-6 h-6 text-sky-400" />
+              <div className="flex flex-col items-start text-left">
+                <span className="text-[10px] uppercase tracking-wider font-medium opacity-80 leading-none text-sky-200">Explore</span>
+                <span className="leading-none mt-1 text-white">View Features</span>
+              </div>
+            </a>
           </motion.div>
         </div>
 
