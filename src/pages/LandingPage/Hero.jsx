@@ -40,15 +40,15 @@ export default function Hero() {
             <span className="live-dot" /> Live Global Weather
           </motion.div>
           
-          <motion.h1 variants={itemVariants} className="text-6xl lg:text-8xl font-bold font-display text-white leading-[1.1] mb-6 tracking-tighter">
-            Predict the Sky.<br/>
+          <motion.h1 variants={itemVariants} className="text-5xl lg:text-7xl font-bold font-display text-white leading-[1.1] mb-6 tracking-tighter">
+            Global Weather<br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-500">
-              Own the Day.
+              Prediction at Your Fingertips
             </span>
           </motion.h1>
           
           <motion.p variants={itemVariants} className="text-lg text-white/70 mb-10 max-w-xl leading-relaxed">
-            WeathCionz brings you the most beautiful and accurate real-time weather forecasting experience. Explore interactive 3D maps and hourly insights wrapped in a premium glassmorphism interface.
+            Increase your awareness with real-time global weather tracking. WeathCionz brings you the most beautiful and accurate real-time forecasting experience with interactive 3D maps.
           </motion.p>
           
           <motion.div variants={itemVariants} className="flex items-center gap-4">
