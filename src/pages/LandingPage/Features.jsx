@@ -39,8 +39,8 @@ export default function Features() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="glass p-8 rounded-3xl"
+              transition={{ delay: i * 0.05, duration: 0.4 }}
+              className="glass-dark glass-dark-hover p-8 rounded-3xl"
             >
               <div className="w-12 h-12 rounded-2xl bg-sky-500/20 flex items-center justify-center mb-6">
                 <item.icon className="w-6 h-6 text-sky-400" />
