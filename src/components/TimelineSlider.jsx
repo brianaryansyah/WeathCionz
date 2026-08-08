@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useMemo } from 'react'
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { formatHour, formatDay, formatTemp, iconUrl } from '../utils/weatherUtils'
@@ -17,7 +17,7 @@ export default function TimelineSlider({ variant = 'desktop' }) {
   const [showHistory, setShowHistory] = useState(false)
   const railRef = useRef(null)
   
-  const rawList = forecast?.list || []
+  const rawList = useMemo(() => forecast?.list || [], [forecast?.list])
   
   // Calculate the "Now" index and the timeline list
   const { closestRawIdx, list } = useMemo(() => {
