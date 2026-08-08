@@ -4,27 +4,11 @@
   --font-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
   --font-sans: 'Inter', system-ui, sans-serif;
 
-  /* WeathCionz light, airy weather palette */
-  --color-sky-950: #0c4a6e;
-  --color-sky-900: #075985;
-  --color-sky-800: #0369a1;
-  --color-sky-700: #0284c7;
-  --color-sky-600: #0ea5e9;
-  --color-sky-500: #38bdf8;
-  --color-sky-400: #7dd3fc;
-  --color-sky-300: #bae6fd;
-  --color-sky-200: #e0f2fe;
-  --color-sky-100: #f0f9ff;
-
-  --color-sun-400: #fbbf24;
-  --color-sun-500: #f59e0b;
-  --color-orchid-400: #a78bfa;
-  --color-orchid-500: #8b5cf6;
-
-  /* Ink for readable dark-on-light text */
-  --color-ink-950: #0f172a;
-  --color-ink-800: #1e293b;
-  --color-ink-600: #475569;
+  /* Sage/Mint Monochromatic Palette */
+  --color-sage-dark: #658e7c;
+  --color-sage-main: #88bda4;
+  --color-sage-light: #b2d3c0;
+  --color-sage-bg: #e6f0e6;
 }
 
 @layer base {
@@ -42,8 +26,8 @@
   body {
     margin: 0;
     font-family: var(--font-sans);
-    background: linear-gradient(180deg, #fdfbf7 0%, #fdfbf7 60%, #f4eee0 100%); /* Soft pastel cream */
-    color: var(--color-ink-950);
+    background: var(--color-sage-bg);
+    color: var(--color-sage-dark);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
   }
@@ -99,14 +83,14 @@
     backdrop-filter: blur(20px);
   }
 
-  /* Clean light glass panel */
+  /* Clean light glass panel (Sage) */
   .glass-panel {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(230, 240, 230, 0.6);
     backdrop-filter: blur(24px) saturate(150%);
     -webkit-backdrop-filter: blur(24px) saturate(150%);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(101, 142, 124, 0.15);
     box-shadow:
-      0 10px 40px -10px rgba(0, 0, 0, 0.05),
+      0 10px 40px -10px rgba(101, 142, 124, 0.1),
       inset 0 1px 0 rgba(255, 255, 255, 0.8);
   }
 
@@ -118,27 +102,27 @@
   }
   .glass-panel-hover:hover {
     transform: translateY(-4px) scale(1.02);
-    border-color: rgba(14, 165, 233, 0.2);
+    border-color: rgba(136, 189, 164, 0.4);
     box-shadow:
-      0 20px 40px -20px rgba(14, 165, 233, 0.15),
+      0 20px 40px -20px rgba(136, 189, 164, 0.25),
       inset 0 1px 0 rgba(255, 255, 255, 1);
   }
 
   /* Primary control button */
   .btn-primary {
-    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    background: var(--color-sage-main);
     color: #ffffff;
     font-weight: 600;
     box-shadow:
-      0 10px 24px -8px rgba(14, 165, 233, 0.6),
+      0 10px 24px -8px rgba(136, 189, 164, 0.6),
       inset 0 1px 0 rgba(255, 255, 255, 0.4);
     transition: all 0.3s ease;
   }
   .btn-primary:hover {
-    filter: brightness(1.1);
+    filter: brightness(1.05);
     box-shadow:
-      0 12px 28px -6px rgba(14, 165, 233, 0.8),
-      0 0 15px rgba(56, 189, 248, 0.5),
+      0 12px 28px -6px rgba(136, 189, 164, 0.8),
+      0 0 15px rgba(136, 189, 164, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.5);
   }
   /* Live pulsing dot */
