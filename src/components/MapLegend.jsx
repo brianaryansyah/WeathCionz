@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 import { useWeatherStore, MAP_LAYERS } from '../store/useWeatherStore'
 
 /** Shared legend gradients per layer type. */
