@@ -1,6 +1,7 @@
 import { MotionConfig } from 'motion/react'
 import Navbar from './Navbar'
 import Hero from './Hero'
+import InfiniteMarquee from '../../components/ui/InfiniteMarquee'
 import Features from './Features'
 import Preview from './Preview'
 import Testimonials from './Testimonials'
@@ -20,6 +21,7 @@ export default function LandingPage() {
         <Navbar />
         <main>
           <Hero />
+          <InfiniteMarquee />
           <Features />
           <Preview />
           <Testimonials />
