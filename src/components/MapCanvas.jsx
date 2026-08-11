@@ -138,7 +138,7 @@ export default function MapCanvas() {
     if (!map || !coords) return
     const vh = map.getContainer().clientHeight || window.innerHeight
     const isMobile = window.innerWidth < 1024
-    const offset = [0, isMobile ? -vh * 0.24 : -80]
+    const offset = [0, 0] // Map exactly in the center
     const duration = 2200
 
     const focusChanged = focus !== lastFocus.current
@@ -160,7 +160,7 @@ export default function MapCanvas() {
     } else {
       map.flyTo({
         center: [coords.lon, coords.lat],
-        zoom: focus?.zoom ?? 6,
+        zoom: focus?.zoom ?? 12,
         offset,
         duration,
         essential: true,
@@ -178,7 +178,7 @@ export default function MapCanvas() {
         initialViewState={{
           longitude: coords.lon,
           latitude: coords.lat,
-          zoom: 1.5,
+          zoom: 12,
         }}
         mapStyle={SATELLITE_STYLE}
         projection="globe"
