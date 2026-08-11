@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { useDebounce } from '../hooks/useDebounce'
 import { useSearchCities } from '../hooks/useSearchCities'
 import { useWeatherStore, MAP_LAYERS } from '../store/useWeatherStore'
