@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'motion/react'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { groupForecastByDay, iconUrl, formatTemp } from '../utils/weatherUtils'
