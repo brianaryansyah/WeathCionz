@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion } from 'motion/react'
 
 /**
  * Fullscreen overlay shown while the app resolves the user's position.
