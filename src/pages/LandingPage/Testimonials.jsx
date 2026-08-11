@@ -23,14 +23,20 @@ export default function Testimonials() {
   return (
     <section className="py-24 px-6 relative z-10">
       <div className="container max-w-5xl mx-auto">
-        <div className="text-center mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
           <h2 className="text-3xl md:text-5xl font-bold font-display text-sage-dark mb-6">
-            Loved by <span className="text-sage-main">Meteorologists</span>
+            Loved by <span className="text-sage-main">Weather Enthusiasts</span>
           </h2>
           <p className="text-lg text-sage-dark/80 max-w-2xl mx-auto">
-            See what professionals are saying about WeathCionz.
+            Don't just take our word for it. Here's what our beta users are saying about the new standard in weather tracking.
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((testimonial, i) => (
