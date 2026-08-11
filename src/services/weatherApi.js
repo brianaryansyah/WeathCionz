@@ -134,7 +134,26 @@ export async function fetchForecast({ lat, lon }) {
     }
   })
 
-  return { list }
+  // Parse Daily data correctly
+  const dCodes = data.daily?.weather_code || []
+  const dMax = data.daily?.temperature_2m_max || []
+  const dMin = data.daily?.temperature_2m_min || []
+  
+  const daily = (data.daily?.time || []).map((tStr, i) => {
+    const timeSec = new Date(tStr).getTime() / 1000
+    const w = mapWmoCode(dCodes[i] || 0, 1)
+    return {
+      dt: timeSec,
+      main: {
+        temp: Math.round(dMax[i]), // show max as primary
+        temp_max: Math.round(dMax[i]),
+        temp_min: Math.round(dMin[i]),
+      },
+      weather: [{ icon: w.icon, description: w.desc }],
+    }
+  })
+
+  return { list, daily }
 }
 
 /**
