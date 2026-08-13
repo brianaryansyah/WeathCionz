@@ -93,7 +93,7 @@ export default function WeatherApp() {
         {/* Row 2 */}
         <div className="col-span-12 lg:col-span-3 flex flex-col justify-between">
           <CityCards />
-          <AirQualityCard humidityValue={humidityVal} />
+          <AirQualityCard />
         </div>
         
         <TemperatureChart data={chartData} />
