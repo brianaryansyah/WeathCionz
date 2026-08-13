@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { CloudSun } from 'lucide-react'
-import { motion, AnimatePresence } from 'motion/react'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -15,48 +14,40 @@ export default function Navbar() {
   }, [])
 
   return (
-    <motion.nav 
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+    <header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled 
-          ? 'py-4 bg-sage-bg/80 backdrop-blur-lg border-b border-sage-main/10 shadow-sm' 
-          : 'py-6 bg-transparent'
+          ? 'py-3 glass-header shadow-sm' 
+          : 'py-5 bg-transparent border-transparent'
       }`}
     >
       <div className="container max-w-7xl mx-auto px-6 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-3 w-48 group">
-          <motion.div whileHover={{ rotate: 180 }} transition={{ duration: 0.6 }}>
-            <CloudSun className="w-8 h-8 text-sage-main group-hover:text-sage-dark transition-colors" />
-          </motion.div>
-          <span className="text-xl font-bold font-display text-sage-dark tracking-tight">WeathCionz</span>
+        <Link to="/" className="flex items-center gap-2 w-48 group">
+          <CloudSun className="w-7 h-7 text-primary transition-transform duration-300 group-hover:scale-105" />
+          <span className="text-xl font-bold font-display text-foreground tracking-tight">WeathCionz</span>
         </Link>
         
-        <div className="hidden md:flex items-center gap-10 text-sm font-semibold text-sage-dark/80">
-          <a href="#features" className="relative group hover:text-sage-dark transition-colors">
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
+          <a href="#features" className="hover:text-foreground transition-colors">
             Features
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-sage-main transition-all duration-300 group-hover:w-full"></span>
           </a>
-          <a href="#preview" className="relative group hover:text-sage-dark transition-colors">
+          <a href="#preview" className="hover:text-foreground transition-colors">
             Preview
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-sage-main transition-all duration-300 group-hover:w-full"></span>
           </a>
-          <a href="#faq" className="relative group hover:text-sage-dark transition-colors">
+          <a href="#faq" className="hover:text-foreground transition-colors">
             FAQ
-            <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-sage-main transition-all duration-300 group-hover:w-full"></span>
           </a>
-        </div>
+        </nav>
 
         <div className="w-48 flex justify-end">
           <Link 
             to="/app"
-            className="px-6 py-2.5 text-sm font-bold bg-sage-dark text-white rounded-xl hover:bg-sage-main hover:-translate-y-0.5 hover:shadow-lg hover:shadow-sage-main/30 transition-all duration-300 inline-flex items-center gap-2 shadow-md shadow-sage-dark/20"
+            className="px-5 py-2.5 text-sm font-semibold btn-primary inline-flex items-center gap-2 shadow-sm"
           >
             Launch App
           </Link>
         </div>
       </div>
-    </motion.nav>
+    </header>
   )
 }
