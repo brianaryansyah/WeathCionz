@@ -37,34 +37,8 @@ export default function WeatherApp() {
   // 3. Air Quality (we map humidity for now to fit design)
   const humidityVal = current ? `${current.main.humidity}%` : '45%'
 
-  // 4. Temperature Chart
-  let chartData = [
-    { label: 'Morning', temp: '20°', icon: '04d', active: false, offset: 'mt-12' },
-    { label: 'Afternoon', temp: '24°', icon: '01d', active: true, offset: 'mt-4' },
-    { label: 'Evening', temp: '28°', icon: '02d', active: false, offset: 'mt-0' },
-    { label: 'Night', temp: '22°', icon: '10n', active: false, offset: 'mt-8' },
-  ]
-  
-  if (forecast?.list?.length >= 4) {
-    const list = forecast.list.slice(0, 4)
-    const offsets = ['mt-12', 'mt-4', 'mt-0', 'mt-8']
-    chartData = list.map((item, idx) => {
-      const date = new Date(item.dt * 1000)
-      const hour = date.getHours()
-      let label = 'Morning'
-      if (hour >= 12 && hour < 17) label = 'Afternoon'
-      else if (hour >= 17 && hour < 21) label = 'Evening'
-      else if (hour >= 21 || hour < 6) label = 'Night'
-      
-      return {
-        label: label,
-        temp: `${Math.round(item.main.temp)}°`,
-        icon: item.weather[0].icon,
-        active: idx === 1,
-        offset: offsets[idx]
-      }
-    })
-  }
+  // 4. Temperature Chart (Data processing is now inside the component)
+  const forecastList = forecast?.list || []
 
   // 5. Tomorrow Forecast
   const tomorrow = forecast?.daily?.[1] || forecast?.daily?.[0]
@@ -96,7 +70,7 @@ export default function WeatherApp() {
           <AirQualityCard />
         </div>
         
-        <TemperatureChart data={chartData} />
+        <TemperatureChart forecastList={forecastList} />
         
         <TomorrowCard 
           locationName={locationName}
