@@ -17,7 +17,8 @@ const CONDITION_COLORS = {
 
 export default function WeatherIcon({ code, className = 'h-16 w-16' }) {
   if (!code) return null
-  const group = String(code).replace(/\d$/, '')
+  // Fix: standard OWM codes are like '01d' or '04n'. Extract the first two digits.
+  const group = String(code).slice(0, 2)
   const isDay = String(code).endsWith('d')
   const color = CONDITION_COLORS[group] || '#0ea5e9'
   const common = {
