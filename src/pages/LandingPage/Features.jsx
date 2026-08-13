@@ -1,5 +1,5 @@
 import { motion } from 'motion/react'
-import { Map, Zap, Layers } from 'lucide-react'
+import { Map, Zap, ShieldCheck } from 'lucide-react'
 
 const features = [
   {
@@ -13,28 +13,28 @@ const features = [
     description: 'Explore global weather patterns with our immersive MapLibre powered 3D visualizations.'
   },
   {
-    icon: Layers,
-    title: 'Premium Glassmorphism',
-    description: 'A UI that adapts to the weather. Beautifully frosted glass overlays over dynamic sky backgrounds.'
+    icon: ShieldCheck,
+    title: 'Professional Accuracy',
+    description: 'Data sourced from authoritative meteorological networks for the most reliable forecasts.'
   }
 ]
 
 export default function Features() {
   return (
-    <section id="features" className="py-24 px-6 relative z-10">
+    <section id="features" className="py-24 px-6 relative z-10 bg-background">
       <div className="container max-w-5xl mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-sage-dark mb-6">
-            Boring Weather Apps? <span className="text-sage-main">No More.</span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-6">
+            Intelligent Forecasting. <span className="text-primary">No Compromises.</span>
           </h2>
-          <p className="text-lg text-sage-dark/80 max-w-2xl mx-auto">
-            Say goodbye to standard lists and flat icons. WeathCionz brings weather to life with an experience designed for the modern web.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Say goodbye to clunky interfaces. WeathCionz brings weather to life with an experience designed for clarity and precision.
           </p>
         </motion.div>
 
@@ -42,29 +42,19 @@ export default function Features() {
           {features.map((feature, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: i * 0.1, type: 'spring', stiffness: 100, damping: 20 }}
-              whileHover={{ 
-                y: -15, 
-                scale: 1.02,
-                boxShadow: "0 30px 60px -15px rgba(107, 158, 134, 0.3)",
-                borderColor: "rgba(107, 158, 134, 0.4)",
-                transition: { type: 'spring', stiffness: 400, damping: 15 }
-              }}
-              whileTap={{ scale: 0.95 }}
-              className="p-8 rounded-3xl glass-panel group relative overflow-hidden border border-sage-main/10 cursor-pointer"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              className="p-8 minimal-card group relative overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-sage-main/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-2xl bg-sage-light/30 flex items-center justify-center mb-6 group-hover:bg-sage-main/20 group-hover:scale-110 group-hover:rotate-[15deg] transition-all duration-300">
-                  <feature.icon className="w-7 h-7 text-sage-main group-hover:text-sage-dark transition-colors duration-300" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-6 transition-colors duration-300 group-hover:bg-primary/20">
+                  <feature.icon className="w-6 h-6 text-primary" />
                 </div>
                 
-                <h3 className="text-xl font-bold font-display text-sage-dark mb-4 group-hover:-translate-y-1 transition-transform duration-300">{feature.title}</h3>
-                <p className="text-sage-dark/80 leading-relaxed group-hover:-translate-y-1 transition-transform duration-300 delay-75">
+                <h3 className="text-xl font-bold font-display text-foreground mb-3">{feature.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">
                   {feature.description}
                 </p>
               </div>
