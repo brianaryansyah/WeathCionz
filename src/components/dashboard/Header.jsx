@@ -1,12 +1,22 @@
 import React, { useState } from 'react';
 import { Search, CalendarDays, MessageSquare, Bell, Loader2 } from 'lucide-react';
-import { useWeatherStore, USER_ZOOM } from '../../store/useWeatherStore';
+import { useWeatherStore } from '../../store/useWeatherStore';
 import { geocodeCity } from '../../services/weatherApi';
+import { useNow } from '../../hooks/useNow';
 
 export default function Header() {
   const [query, setQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const locate = useWeatherStore((s) => s.locate);
+  const { now, time } = useNow();
+
+  const hour = now.getHours();
+  let greeting = 'Good Evening';
+  if (hour >= 5 && hour < 12) greeting = 'Good Morning';
+  else if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
+
+  // Format time without seconds for a cleaner look
+  const timeString = time.split(':').slice(0, 2).join(':');
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -43,8 +53,8 @@ export default function Header() {
           />
         </div>
         <div className="flex flex-col">
-          <span className="text-[13px] text-slate-500 font-medium">Hello,</span>
-          <span className="text-[17px] font-bold text-slate-900 leading-tight">Sajibur Rahman</span>
+          <span className="text-[13px] text-slate-500 font-medium">{timeString}</span>
+          <span className="text-[17px] font-bold text-slate-900 leading-tight">{greeting}!</span>
         </div>
       </div>
 
