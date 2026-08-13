@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import DashboardLayout from './components/dashboard/DashboardLayout'
 import Sidebar from './components/dashboard/Sidebar'
 import Header from './components/dashboard/Header'
@@ -13,8 +13,11 @@ import { useWeatherData } from './hooks/useWeatherData'
 import { useGeolocation } from './hooks/useGeolocation'
 import LocationPopup from './components/LocationPopup'
 import { AnimatePresence } from 'motion/react'
+import MapCanvas from './components/MapCanvas'
+import ExpandedForecastTable from './components/ExpandedForecastTable'
 
 export default function WeatherApp() {
+  const [activeTab, setActiveTab] = useState('dashboard')
   const coords = useWeatherStore((s) => s.coords)
   const locationName = useWeatherStore((s) => s.locationName) || 'Dhaka, Bangladesh'
   const { current, forecast } = useWeatherData(coords)
@@ -34,10 +37,7 @@ export default function WeatherApp() {
   const dayName = now.toLocaleDateString('en-US', { weekday: 'long' })
   const weatherDesc = current?.weather[0]?.main || 'Mostly Sunny'
 
-  // 3. Air Quality (we map humidity for now to fit design)
-  const humidityVal = current ? `${current.main.humidity}%` : '45%'
-
-  // 4. Temperature Chart (Data processing is now inside the component)
+  // 4. Temperature Chart
   const forecastList = forecast?.list || []
 
   // 5. Tomorrow Forecast
@@ -48,36 +48,57 @@ export default function WeatherApp() {
 
   return (
     <>
-      <DashboardLayout sidebar={<Sidebar />} header={<Header />}>
-        {/* Row 1 */}
-        <WeatherNowCard 
-          locationName={locationName}
-          temp={temp}
-          feelsLike={feelsLike}
-          visibility={visibility}
-          humidity={humidity}
-          iconCode={iconCode}
-        />
-        <MapCard 
-          temp={temp}
-          day={dayName}
-          desc={weatherDesc}
-        />
+      <DashboardLayout 
+        sidebar={<Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />} 
+        header={<Header />}
+      >
+        {activeTab === 'dashboard' && (
+          <>
+            {/* Row 1 */}
+            <WeatherNowCard 
+              locationName={locationName}
+              temp={temp}
+              feelsLike={feelsLike}
+              visibility={visibility}
+              humidity={humidity}
+              iconCode={iconCode}
+            />
+            <MapCard 
+              temp={temp}
+              day={dayName}
+              desc={weatherDesc}
+            />
 
-        {/* Row 2 */}
-        <div className="col-span-12 lg:col-span-3 flex flex-col justify-between">
-          <CityCards />
-          <AirQualityCard />
-        </div>
-        
-        <TemperatureChart forecastList={forecastList} />
-        
-        <TomorrowCard 
-          locationName={locationName}
-          temp={tomorrowTemp}
-          desc={tomorrowDesc}
-          iconCode={tomorrowIcon}
-        />
+            {/* Row 2 */}
+            <div className="col-span-12 lg:col-span-3 flex flex-col justify-between">
+              <CityCards />
+              <AirQualityCard />
+            </div>
+            
+            <TemperatureChart forecastList={forecastList} />
+            
+            <TomorrowCard 
+              locationName={locationName}
+              temp={tomorrowTemp}
+              desc={tomorrowDesc}
+              iconCode={tomorrowIcon}
+            />
+          </>
+        )}
+
+        {activeTab === 'map' && (
+          <div className="col-span-12 relative min-h-[700px] rounded-[2rem] overflow-hidden shadow-sm border border-slate-100/60">
+            <React.Suspense fallback={<div className="absolute inset-0 bg-sky-200 animate-pulse" />}>
+              <MapCanvas />
+            </React.Suspense>
+          </div>
+        )}
+
+        {activeTab === 'calendar' && (
+          <div className="col-span-12">
+            <ExpandedForecastTable />
+          </div>
+        )}
       </DashboardLayout>
 
       {/* Geolocation Popup (invisible overlay unless locating) */}

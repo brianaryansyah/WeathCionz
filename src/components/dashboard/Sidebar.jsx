@@ -1,13 +1,11 @@
 import React from 'react';
-import { Cloud, LayoutDashboard, MessageSquare, MapPin, CalendarDays, Sliders, LogOut } from 'lucide-react';
+import { Cloud, LayoutDashboard, MapPin, CalendarDays } from 'lucide-react';
 
-export default function Sidebar() {
+export default function Sidebar({ activeTab, setActiveTab }) {
   const menuItems = [
-    { icon: LayoutDashboard, active: true },
-    { icon: MessageSquare, active: false },
-    { icon: MapPin, active: false },
-    { icon: CalendarDays, active: false },
-    { icon: Sliders, active: false },
+    { id: 'dashboard', icon: LayoutDashboard },
+    { id: 'map', icon: MapPin },
+    { id: 'calendar', icon: CalendarDays },
   ];
 
   return (
@@ -20,32 +18,27 @@ export default function Sidebar() {
 
       {/* Nav Items */}
       <div className="flex-1 w-full flex flex-col items-center gap-6">
-        {menuItems.map((item, index) => {
+        {menuItems.map((item) => {
           const Icon = item.icon;
+          const isActive = activeTab === item.id;
           return (
             <button 
-              key={index}
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
               className={`relative flex items-center justify-center w-12 h-12 rounded-[14px] transition-all ${
-                item.active 
+                isActive 
                   ? 'text-orange-500 bg-orange-50/80 shadow-sm' 
                   : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
               }`}
             >
               <Icon className="w-[22px] h-[22px]" strokeWidth={2.5} />
               {/* Active Indicator Line */}
-              {item.active && (
+              {isActive && (
                 <div className="absolute -left-4 w-1.5 h-8 bg-orange-500 rounded-r-md" />
               )}
             </button>
           );
         })}
-      </div>
-
-      {/* Logout */}
-      <div className="mt-auto pt-8 w-full flex justify-center">
-        <button className="flex items-center justify-center w-12 h-12 text-slate-400 hover:text-slate-600 hover:bg-slate-50 rounded-[14px] transition-all">
-          <LogOut className="w-[22px] h-[22px]" strokeWidth={2.5} />
-        </button>
       </div>
     </div>
   );
