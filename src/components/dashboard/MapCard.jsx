@@ -1,9 +1,24 @@
 import React, { Suspense, lazy } from 'react';
-import { Plus, Minus, Target, Layers } from 'lucide-react';
+import { Plus, Minus, Target, Layers, Loader2 } from 'lucide-react';
+import { useWeatherStore, MAP_LAYERS } from '../../store/useWeatherStore';
 
 const MapCanvas = lazy(() => import('../MapCanvas'));
 
 export default function MapCard({ temp = '25', day = 'Monday', desc = 'Mostly Sunny' }) {
+  const locateMe = useWeatherStore((s) => s.locateMe);
+  const isLocating = useWeatherStore((s) => s.isLocating);
+  const activeLayer = useWeatherStore((s) => s.activeLayer);
+  const setActiveLayer = useWeatherStore((s) => s.setActiveLayer);
+
+  const handleZoomIn = () => window.dispatchEvent(new CustomEvent('map-zoom-in'));
+  const handleZoomOut = () => window.dispatchEvent(new CustomEvent('map-zoom-out'));
+
+  const cycleLayer = () => {
+    const currentIndex = MAP_LAYERS.findIndex((l) => l.id === activeLayer);
+    const nextIndex = (currentIndex + 1) % MAP_LAYERS.length;
+    setActiveLayer(MAP_LAYERS[nextIndex].id);
+  };
+
   return (
     <div className="col-span-12 lg:col-span-7 rounded-[2rem] relative overflow-hidden bg-sky-200 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] min-h-[340px] border border-white/40">
       {/* Map Background */}
@@ -26,21 +41,36 @@ export default function MapCard({ temp = '25', day = 'Monday', desc = 'Mostly Su
       <div className="absolute right-6 top-1/2 -translate-y-1/2 z-10 flex flex-col gap-3">
         {/* Zoom Controls */}
         <div className="flex flex-col bg-[#F6753B] rounded-full shadow-md overflow-hidden border border-[#F6753B]">
-          <button className="p-2.5 text-white hover:bg-[#e86629] transition-colors flex items-center justify-center">
+          <button onClick={handleZoomIn} className="p-2.5 text-white hover:bg-[#e86629] transition-colors flex items-center justify-center">
             <Plus className="w-[18px] h-[18px]" strokeWidth={2.5} />
           </button>
           <div className="w-full h-[1px] bg-white/20 mx-auto max-w-[20px]" />
-          <button className="p-2.5 text-white hover:bg-[#e86629] transition-colors flex items-center justify-center">
+          <button onClick={handleZoomOut} className="p-2.5 text-white hover:bg-[#e86629] transition-colors flex items-center justify-center">
             <Minus className="w-[18px] h-[18px]" strokeWidth={2.5} />
           </button>
         </div>
 
         {/* Action Controls */}
-        <button className="p-2.5 bg-white text-slate-600 rounded-full shadow-md hover:bg-slate-50 hover:text-slate-800 transition-colors flex items-center justify-center border border-white/60">
-          <Target className="w-[18px] h-[18px]" strokeWidth={2.5} />
+        <button 
+          onClick={locateMe}
+          disabled={isLocating}
+          className="p-2.5 bg-white text-slate-600 rounded-full shadow-md hover:bg-slate-50 hover:text-slate-800 transition-colors flex items-center justify-center border border-white/60"
+        >
+          {isLocating ? (
+             <Loader2 className="w-[18px] h-[18px] animate-spin text-[#F6753B]" strokeWidth={2.5} />
+          ) : (
+             <Target className="w-[18px] h-[18px]" strokeWidth={2.5} />
+          )}
         </button>
-        <button className="p-2.5 bg-white text-slate-600 rounded-full shadow-md hover:bg-slate-50 hover:text-slate-800 transition-colors flex items-center justify-center border border-white/60">
+        <button 
+          onClick={cycleLayer}
+          className="p-2.5 bg-white text-slate-600 rounded-full shadow-md hover:bg-slate-50 hover:text-slate-800 transition-colors flex items-center justify-center border border-white/60 relative group"
+        >
           <Layers className="w-[18px] h-[18px]" strokeWidth={2.5} />
+          {/* Tooltip to show active layer */}
+          <span className="absolute right-full mr-3 whitespace-nowrap bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            {MAP_LAYERS.find(l => l.id === activeLayer)?.label || 'Layers'}
+          </span>
         </button>
       </div>
     </div>

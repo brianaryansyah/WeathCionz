@@ -122,10 +122,19 @@ export default function MapCanvas() {
     window.addEventListener('resize', onResize)
     window.addEventListener('orientationchange', onResize)
     window.visualViewport?.addEventListener('resize', onResize)
+
+    // Zoom event listeners from external controls
+    const onZoomIn = () => map.zoomTo(map.getZoom() + 1, { duration: 300 })
+    const onZoomOut = () => map.zoomTo(map.getZoom() - 1, { duration: 300 })
+    window.addEventListener('map-zoom-in', onZoomIn)
+    window.addEventListener('map-zoom-out', onZoomOut)
+
     return () => {
       window.removeEventListener('resize', onResize)
       window.removeEventListener('orientationchange', onResize)
       window.visualViewport?.removeEventListener('resize', onResize)
+      window.removeEventListener('map-zoom-in', onZoomIn)
+      window.removeEventListener('map-zoom-out', onZoomOut)
     }
   }, [])
 
