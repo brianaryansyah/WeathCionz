@@ -20,11 +20,8 @@ export default function TemperatureChart({ forecastList = [] }) {
       
       slots = list.map((item, idx) => {
         const date = new Date(item.dt * 1000);
-        const hour = date.getHours();
-        let label = 'Morning';
-        if (hour >= 12 && hour < 17) label = 'Afternoon';
-        else if (hour >= 17 && hour < 21) label = 'Evening';
-        else if (hour >= 21 || hour < 6) label = 'Night';
+        // Format time like "14:00" or "02:00"
+        const label = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
         
         let value = '';
         if (mode === 'temp') value = `${Math.round(item.main.temp)}°`;
