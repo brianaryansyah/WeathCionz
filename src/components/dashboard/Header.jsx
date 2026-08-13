@@ -1,7 +1,36 @@
-import React from 'react';
-import { Search, CalendarDays, MessageSquare, Bell } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, CalendarDays, MessageSquare, Bell, Loader2 } from 'lucide-react';
+import { useWeatherStore, USER_ZOOM } from '../../store/useWeatherStore';
+import { geocodeCity } from '../../services/weatherApi';
 
 export default function Header() {
+  const [query, setQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const locate = useWeatherStore((s) => s.locate);
+
+  const handleSearch = async (e) => {
+    e.preventDefault();
+    if (!query.trim() || isSearching) return;
+    
+    setIsSearching(true);
+    try {
+      const results = await geocodeCity(query);
+      if (results && results.length > 0) {
+        const topResult = results[0];
+        // Ensure bounds exist or default zoom
+        const focus = { bounds: topResult.bounds, zoom: topResult.bounds ? undefined : 11 };
+        locate({ lat: topResult.lat, lon: topResult.lon }, topResult.name, focus);
+        setQuery('');
+      } else {
+        alert('Location not found. Please try another search term.');
+      }
+    } catch (err) {
+      console.error('Search failed:', err);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
   return (
     <div className="flex items-center justify-between w-full h-14">
       {/* Profile Section */}
@@ -20,16 +49,25 @@ export default function Header() {
       </div>
 
       {/* Search Bar */}
-      <div className="flex-1 max-w-[400px] mx-8">
-        <div className="relative flex items-center w-full h-11 bg-white rounded-full px-5 shadow-sm border border-slate-100/60">
+      <form onSubmit={handleSearch} className="flex-1 max-w-[400px] mx-8 relative">
+        <div className="relative flex items-center w-full h-11 bg-white rounded-full px-5 shadow-sm border border-slate-100/60 transition-colors focus-within:border-orange-500/50 focus-within:ring-2 focus-within:ring-orange-500/20">
           <input 
             type="text" 
             placeholder="Search Here..." 
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            disabled={isSearching}
             className="w-full h-full bg-transparent border-none outline-none text-slate-700 placeholder:text-slate-400 text-[13px] font-medium"
           />
-          <Search className="w-[18px] h-[18px] text-slate-400 ml-2" />
+          <button type="submit" disabled={isSearching} className="ml-2">
+            {isSearching ? (
+              <Loader2 className="w-[18px] h-[18px] text-orange-500 animate-spin" />
+            ) : (
+              <Search className="w-[18px] h-[18px] text-slate-400 hover:text-orange-500 transition-colors" />
+            )}
+          </button>
         </div>
-      </div>
+      </form>
 
       {/* Action Icons */}
       <div className="flex items-center gap-4">
