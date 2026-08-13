@@ -1,11 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import WeatherIcon from '../WeatherIcon';
+import { fetchCurrentWeather } from '../../services/weatherApi';
+
+const STATIC_CITIES = [
+  { name: 'New York', lat: 40.7128, lon: -74.0060 },
+  { name: 'London', lat: 51.5074, lon: -0.1278 },
+];
 
 export default function CityCards() {
-  const cities = [
-    { name: 'New York', condition: 'Sunny', high: '22', low: '19', iconCode: '01d' },
-    { name: 'London', condition: 'Bright', high: '24', low: '26', iconCode: '02d' },
-  ];
+  const [cities, setCities] = useState([
+    { name: 'New York', condition: 'Loading...', high: '--', low: '--', iconCode: '01d' },
+    { name: 'London', condition: 'Loading...', high: '--', low: '--', iconCode: '02d' },
+  ]);
+
+  useEffect(() => {
+    async function loadCities() {
+      try {
+        const results = await Promise.all(
+          STATIC_CITIES.map(async (c) => {
+            const data = await fetchCurrentWeather({ lat: c.lat, lon: c.lon });
+            return {
+              name: c.name,
+              condition: data.weather[0].main,
+              high: Math.round(data.main.temp_max),
+              low: Math.round(data.main.temp_min),
+              iconCode: data.weather[0].icon,
+            };
+          })
+        );
+        setCities(results);
+      } catch (err) {
+        console.error('Failed to load city cards', err);
+      }
+    }
+    loadCities();
+  }, []);
 
   return (
     <div className="flex flex-col gap-3">
