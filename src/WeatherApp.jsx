@@ -96,7 +96,7 @@ export default function WeatherApp() {
 
         {activeTab === 'calendar' && (
           <div className="col-span-12">
-            <ExpandedForecastTable />
+            <ExpandedForecastTable isOpen={true} onClose={() => setActiveTab('dashboard')} />
           </div>
         )}
       </DashboardLayout>
