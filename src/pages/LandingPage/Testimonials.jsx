@@ -10,7 +10,7 @@ const testimonials = [
   {
     name: 'David Chen',
     role: 'Daily Commuter',
-    content: 'Finally, a weather app that doesn\'t look like a spreadsheet from 2010. The glassmorphism UI is stunning.'
+    content: 'Finally, a weather app that prioritizes clarity. The interface is stunning without being overwhelming.'
   },
   {
     name: 'Elena Rodriguez',
@@ -21,20 +21,20 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-24 px-6 relative z-10">
+    <section className="py-24 px-6 relative z-10 bg-background">
       <div className="container max-w-5xl mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-sage-dark mb-6">
-            Loved by <span className="text-sage-main">Weather Enthusiasts</span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-6">
+            Loved by <span className="text-primary">Professionals</span>
           </h2>
-          <p className="text-lg text-sage-dark/80 max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what our beta users are saying about the new standard in weather tracking.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Don't just take our word for it. Here's what our users are saying about the new standard in weather tracking.
           </p>
         </motion.div>
 
@@ -42,23 +42,23 @@ export default function Testimonials() {
           {testimonials.map((testimonial, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ delay: i * 0.05, duration: 0.4 }}
-              className="glass-panel p-8 rounded-3xl relative"
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              className="minimal-card p-8 relative"
             >
-              <Quote className="w-10 h-10 text-sage-main/20 absolute top-6 right-6 opacity-50" />
+              <Quote className="w-8 h-8 text-primary/10 absolute top-6 right-6" />
               <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-full bg-sage-light/40 flex items-center justify-center text-sage-main font-bold text-xl">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xl">
                   {testimonial.name[0]}
                 </div>
                 <div>
-                  <h4 className="text-sage-dark font-bold">{testimonial.name}</h4>
-                  <p className="text-sage-dark/60 text-sm">{testimonial.role}</p>
+                  <h4 className="text-foreground font-semibold">{testimonial.name}</h4>
+                  <p className="text-muted-foreground text-sm">{testimonial.role}</p>
                 </div>
               </div>
-              <p className="text-sage-dark/80 leading-relaxed italic">
+              <p className="text-foreground/80 leading-relaxed italic">
                 &quot;{testimonial.content}&quot;
               </p>
             </motion.div>

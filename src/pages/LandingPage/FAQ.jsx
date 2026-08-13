@@ -21,19 +21,19 @@ export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(null)
 
   return (
-    <section id="faq" className="py-24 px-6 relative z-10">
+    <section id="faq" className="py-24 px-6 relative z-10 bg-background">
       <div className="container max-w-3xl mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-sage-dark mb-6">
-            Frequently Asked <span className="text-sage-main">Questions</span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-6">
+            Frequently Asked <span className="text-primary">Questions</span>
           </h2>
-          <p className="text-lg text-sage-dark/80 max-w-2xl mx-auto">
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Everything you need to know about WeathCionz and how it works.
           </p>
         </motion.div>
@@ -47,19 +47,19 @@ export default function FAQ() {
                 layout
                 initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                className="glass-panel overflow-hidden rounded-2xl transition-all"
+                viewport={{ once: true, margin: "-50px" }}
+                className="bg-white border border-border overflow-hidden rounded-xl shadow-sm transition-all"
               >
                 <button
                   onClick={() => setOpenIndex(isOpen ? null : i)}
                   className="w-full px-8 py-6 flex items-center justify-between text-left focus:outline-none"
                 >
-                  <span className="text-lg font-bold font-display text-sage-dark pr-8">{faq.q}</span>
+                  <span className="text-lg font-bold font-display text-foreground pr-8">{faq.q}</span>
                   <motion.div
                     animate={{ rotate: isOpen ? 180 : 0 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <ChevronDown className="w-5 h-5 text-sage-main" />
+                    <ChevronDown className="w-5 h-5 text-muted-foreground" />
                   </motion.div>
                 </button>
                 <AnimatePresence>
@@ -70,7 +70,7 @@ export default function FAQ() {
                       exit={{ height: 0, opacity: 0 }}
                       className="px-8 pb-6"
                     >
-                      <p className="text-sage-dark/80 leading-relaxed">
+                      <p className="text-muted-foreground leading-relaxed">
                         {faq.a}
                       </p>
                     </motion.div>
