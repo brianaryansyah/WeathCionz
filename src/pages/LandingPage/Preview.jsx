@@ -46,36 +46,36 @@ export default function Preview() {
   // Next 3 days
   const daily = forecast?.daily?.slice(0, 3) || []
   return (
-    <section id="preview" className="py-24 px-6 relative z-10 bg-sage-50">
+    <section id="preview" className="py-24 px-6 relative z-10 bg-background">
       <div className="container max-w-5xl mx-auto">
         <motion.div 
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-5xl font-bold font-display text-sage-dark mb-6">
-            A Glimpse into <span className="text-sage-main">Tomorrow</span>
+          <h2 className="text-3xl md:text-5xl font-bold font-display text-foreground mb-6">
+            A Glimpse into <span className="text-primary">Tomorrow</span>
           </h2>
-          <p className="text-lg text-sage-dark/80 max-w-2xl mx-auto mb-10">
-            Experience our stunning glassmorphism interface that adapts seamlessly to current weather conditions.
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10">
+            Experience our stunning interactive interface that adapts seamlessly to current weather conditions.
           </p>
 
           <form onSubmit={handleSearch} className="max-w-2xl mx-auto relative group mb-8">
-            <div className="absolute inset-y-0 left-0 pl-6 sm:pl-8 flex items-center pointer-events-none text-sage-main/60 group-focus-within:text-sage-main transition-colors">
+            <div className="absolute inset-y-0 left-0 pl-6 sm:pl-8 flex items-center pointer-events-none text-muted-foreground group-focus-within:text-primary transition-colors">
               <Search className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="block w-full pl-16 sm:pl-20 pr-32 sm:pr-40 py-4 sm:py-5 text-base sm:text-xl rounded-full bg-white border-2 border-sage-main/20 text-sage-dark placeholder:text-sage-dark/40 focus:outline-none focus:border-sage-main focus:ring-4 focus:ring-sage-main/10 transition-all shadow-xl shadow-sage-main/5"
+              className="block w-full pl-16 sm:pl-20 pr-32 sm:pr-40 py-4 sm:py-5 text-base sm:text-xl rounded-full bg-white border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all shadow-sm hover:shadow-md"
               placeholder="Search for a city, region, or village..."
             />
             <button
               type="submit"
-              className="absolute right-2 sm:right-2.5 top-2 sm:top-2.5 bottom-2 sm:bottom-2.5 px-6 sm:px-8 bg-sage-main hover:bg-sage-dark text-white rounded-full font-bold flex items-center gap-2 transition-colors shadow-md"
+              className="absolute right-2 sm:right-2.5 top-2 sm:top-2.5 bottom-2 sm:bottom-2.5 px-6 sm:px-8 btn-primary flex items-center gap-2"
             >
               <span>Search</span>
               <ArrowRight className="w-5 h-5 hidden sm:block" />
