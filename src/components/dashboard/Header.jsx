@@ -35,25 +35,33 @@ export default function Header() {
 
   // Fetch suggestions with debounce
   useEffect(() => {
-    const delayDebounce = setTimeout(async () => {
+    let active = true;
+    const timer = setTimeout(async () => {
       if (query.trim().length >= 2) {
-        setIsTyping(true);
+        setIsSearching(true);
         try {
           const results = await geocodeCity(query);
-          setSuggestions(results || []);
-          setShowDropdown(true);
+          if (active) {
+            setSuggestions(results || []);
+            setShowDropdown(true);
+          }
         } catch (err) {
-          console.error(err);
+          console.error('Geocoding error:', err);
         } finally {
-          setIsTyping(false);
+          if (active) setIsSearching(false);
         }
       } else {
-        setSuggestions([]);
-        setShowDropdown(false);
+        if (active) {
+          setSuggestions([]);
+          setShowDropdown(false);
+        }
       }
     }, 400);
 
-    return () => clearTimeout(delayDebounce);
+    return () => {
+      active = false;
+      clearTimeout(timer);
+    };
   }, [query]);
 
   const selectLocation = (result) => {
