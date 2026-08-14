@@ -297,10 +297,10 @@ export async function geocodeCity(query) {
     return null;
   };
 
-  let results = await fetchNominatim(normalizedQuery);
+  let results = await fetchArcGIS(normalizedQuery);
   if (results) return results;
 
-  results = await fetchArcGIS(normalizedQuery);
+  results = await fetchNominatim(normalizedQuery);
   if (results) return results;
 
   let words = normalizedQuery.trim().split(/[\s,]+/);
