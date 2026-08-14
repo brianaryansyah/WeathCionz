@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
-import { groupForecastByDay, iconUrl, formatTemp } from '../utils/weatherUtils'
+import { iconUrl, formatTemp, formatDay } from '../utils/weatherUtils'
 
 export default function ExpandedForecastTable({ isOpen, onClose }) {
   const coords = useWeatherStore((s) => s.coords)
