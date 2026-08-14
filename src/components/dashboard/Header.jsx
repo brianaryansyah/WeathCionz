@@ -116,7 +116,6 @@ export default function Header() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onFocus={() => { if (suggestions.length > 0) setShowDropdown(true) }}
-            disabled={isSearching}
             className="w-full h-full bg-transparent border-none outline-none text-slate-700 placeholder:text-slate-400 text-[13px] font-medium"
           />
           <button type="submit" disabled={isSearching || isTyping} className="ml-2">
