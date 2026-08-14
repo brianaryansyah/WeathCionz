@@ -28,8 +28,8 @@ export default function MapCard({ temp = '25', day = 'Monday', desc = 'Mostly Su
         </div>
       </Suspense>
 
-      {/* Floating Info Pill (Bottom Center) */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 bg-white/95 backdrop-blur-md rounded-[20px] px-7 py-3.5 flex items-center gap-4 shadow-lg border border-white/60 min-w-[220px]">
+      {/* Floating Info Pill (Bottom Center) with gentle floating animation */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 bg-white/95 backdrop-blur-md rounded-[20px] px-7 py-3.5 flex items-center gap-4 shadow-xl border border-white/80 min-w-[220px] hover:scale-105 transition-transform duration-300 animate-[bounce_3s_ease-in-out_infinite]">
         <span className="text-[26px] font-bold text-slate-900 tracking-tight">{temp}°C</span>
         <div className="flex flex-col border-l border-slate-200 pl-4">
           <span className="text-[13px] font-bold text-slate-800 leading-tight">{day}</span>
