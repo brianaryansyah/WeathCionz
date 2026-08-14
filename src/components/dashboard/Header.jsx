@@ -22,26 +22,56 @@ export default function Header() {
   // Format time without seconds for a cleaner look
   const timeString = time.split(':').slice(0, 2).join(':');
 
+  // Fetch suggestions with debounce
+  useEffect(() => {
+    const delayDebounce = setTimeout(async () => {
+      if (query.trim().length >= 2) {
+        setIsTyping(true);
+        try {
+          const results = await geocodeCity(query);
+          setSuggestions(results || []);
+          setShowDropdown(true);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setIsTyping(false);
+        }
+      } else {
+        setSuggestions([]);
+        setShowDropdown(false);
+      }
+    }, 400);
+
+    return () => clearTimeout(delayDebounce);
+  }, [query]);
+
+  const selectLocation = (result) => {
+    const focus = { bounds: result.bounds, zoom: result.bounds ? undefined : 11 };
+    locate({ lat: result.lat, lon: result.lon }, result.name, focus);
+    setQuery('');
+    setShowDropdown(false);
+  };
+
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim() || isSearching) return;
     
-    setIsSearching(true);
-    try {
-      const results = await geocodeCity(query);
-      if (results && results.length > 0) {
-        const topResult = results[0];
-        // Ensure bounds exist or default zoom
-        const focus = { bounds: topResult.bounds, zoom: topResult.bounds ? undefined : 11 };
-        locate({ lat: topResult.lat, lon: topResult.lon }, topResult.name, focus);
-        setQuery('');
-      } else {
-        alert('Location not found. Please try another search term.');
+    if (suggestions.length > 0) {
+      selectLocation(suggestions[0]);
+    } else {
+      setIsSearching(true);
+      try {
+        const results = await geocodeCity(query);
+        if (results && results.length > 0) {
+          selectLocation(results[0]);
+        } else {
+          alert('Location not found. Please try another search term.');
+        }
+      } catch (err) {
+        console.error('Search failed:', err);
+      } finally {
+        setIsSearching(false);
       }
-    } catch (err) {
-      console.error('Search failed:', err);
-    } finally {
-      setIsSearching(false);
     }
   };
 
