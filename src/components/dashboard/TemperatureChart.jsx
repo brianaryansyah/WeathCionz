@@ -1,49 +1,47 @@
 import React, { useState, useMemo } from 'react';
 import { Thermometer, SlidersHorizontal, Umbrella } from 'lucide-react';
-import WeatherIcon from '../WeatherIcon';
+import { ResponsiveContainer, AreaChart, Area, XAxis, Tooltip, LineChart, Line, BarChart, Bar } from 'recharts';
 
 export default function TemperatureChart({ forecastList = [] }) {
   const [mode, setMode] = useState('temp'); // 'temp', 'wind', 'precip'
 
-  // Process forecastList into 4 slots: Morning, Afternoon, Evening, Night
+  // Process forecastList into chart data (next 8 hours)
   const chartData = useMemo(() => {
-    let slots = [
-      { label: 'Morning', value: '20°', icon: '04d', active: false, offset: 'mt-[42px]' },
-      { label: 'Afternoon', value: '24°', icon: '01d', active: true, offset: 'mt-[10px]' },
-      { label: 'Evening', value: '28°', icon: '02d', active: false, offset: 'mt-0' },
-      { label: 'Night', value: '22°', icon: '10n', active: false, offset: 'mt-[30px]' },
-    ];
-
-    if (forecastList?.length >= 4) {
-      const list = forecastList.slice(0, 4);
-      const offsets = ['mt-[42px]', 'mt-[10px]', 'mt-0', 'mt-[30px]'];
+    if (!forecastList || forecastList.length === 0) return [];
+    
+    return forecastList.slice(0, 8).map(item => {
+      const date = new Date(item.dt * 1000);
+      const timeLabel = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
       
-      slots = list.map((item, idx) => {
-        const date = new Date(item.dt * 1000);
-        // Format time like "14:00" or "02:00"
-        const label = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
-        
-        let value = '';
-        if (mode === 'temp') value = `${Math.round(item.main.temp)}°`;
-        else if (mode === 'wind') value = `${Math.round(item.wind?.speed || 0)} km/h`;
-        else if (mode === 'precip') value = `${Math.round((item.pop || 0) * 100)}%`;
+      return {
+        time: timeLabel,
+        temp: Math.round(item.main.temp),
+        wind: Math.round(item.wind?.speed || 0),
+        precip: Math.round((item.pop || 0) * 100),
+      };
+    });
+  }, [forecastList]);
 
-        return {
-          label,
-          value,
-          icon: item.weather[0].icon,
-          active: idx === 1,
-          offset: offsets[idx]
-        };
-      });
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      let val = payload[0].value;
+      let unit = mode === 'temp' ? '°C' : mode === 'wind' ? ' km/h' : '%';
+      return (
+        <div className="bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.15)] border border-slate-100">
+          <p className="text-[13px] font-bold text-slate-500 mb-1">{label}</p>
+          <p className="text-[18px] font-extrabold text-slate-800">
+            {val}<span className="text-[14px] text-slate-400 font-bold">{unit}</span>
+          </p>
+        </div>
+      );
     }
-    return slots;
-  }, [forecastList, mode]);
+    return null;
+  };
 
   return (
-    <div className="col-span-12 lg:col-span-6 bg-white rounded-[24px] p-7 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between border border-slate-100/60 min-h-[300px]">
+    <div className="col-span-12 lg:col-span-6 bg-white rounded-[24px] p-7 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between border border-slate-100/60 min-h-[300px] relative overflow-hidden">
       {/* Header */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-6 relative z-10">
         <h2 className="text-[19px] font-bold text-slate-800 leading-tight">
           How is the<br/>{mode === 'temp' ? 'temperature' : mode === 'wind' ? 'wind speed' : 'precipitation'} today?
         </h2>
@@ -72,23 +70,40 @@ export default function TemperatureChart({ forecastList = [] }) {
       </div>
 
       {/* Chart Area */}
-      <div className="flex-1 flex w-full relative pt-2">
-        {chartData.map((item, index) => (
-          <div key={index} className="flex-1 flex flex-col items-center justify-end relative border-l border-slate-100/50 first:border-transparent">
-            {/* Icon Floating at relative height */}
-            <div className={`absolute top-0 w-full flex justify-center ${item.offset}`}>
-              <div className={`w-[42px] h-[42px] flex items-center justify-center rounded-full transition-colors ${item.active ? 'bg-[#1a2333] shadow-md' : 'bg-slate-50'}`}>
-                <WeatherIcon code={item.icon} className="w-7 h-7" />
-              </div>
-            </div>
-
-            {/* Labels at bottom */}
-            <div className="flex flex-col items-center mt-auto pb-1 pt-24">
-              <span className="text-[15px] font-bold text-slate-800">{item.value}</span>
-              <span className="text-[12px] font-medium text-slate-400 mt-1">{item.label}</span>
-            </div>
-          </div>
-        ))}
+      <div className="flex-1 w-full min-h-[180px] -ml-2">
+        <ResponsiveContainer width="100%" height="100%">
+          {mode === 'temp' ? (
+            <AreaChart data={chartData} margin={{ top: 20, right: 10, left: 10, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#F6753B" stopOpacity={0.3}/>
+                  <stop offset="95%" stopColor="#F6753B" stopOpacity={0}/>
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 600, fill: '#94a3b8' }} dy={10} />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }} />
+              <Area type="monotone" dataKey="temp" stroke="#F6753B" strokeWidth={4} fillOpacity={1} fill="url(#colorTemp)" activeDot={{ r: 6, fill: '#F6753B', stroke: '#fff', strokeWidth: 3 }} />
+            </AreaChart>
+          ) : mode === 'wind' ? (
+            <LineChart data={chartData} margin={{ top: 20, right: 10, left: 10, bottom: 0 }}>
+              <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 600, fill: '#94a3b8' }} dy={10} />
+              <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }} />
+              <Line type="monotone" dataKey="wind" stroke="#0ea5e9" strokeWidth={4} strokeDasharray="6 6" dot={{ r: 4, fill: '#0ea5e9' }} activeDot={{ r: 6, fill: '#0ea5e9', stroke: '#fff', strokeWidth: 3 }} />
+            </LineChart>
+          ) : (
+            <BarChart data={chartData} margin={{ top: 20, right: 10, left: 10, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorPrecip" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.8}/>
+                  <stop offset="100%" stopColor="#60a5fa" stopOpacity={0.3}/>
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="time" axisLine={false} tickLine={false} tick={{ fontSize: 12, fontWeight: 600, fill: '#94a3b8' }} dy={10} />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: '#f1f5f9' }} />
+              <Bar dataKey="precip" fill="url(#colorPrecip)" radius={[6, 6, 0, 0]} barSize={32} minPointSize={4} />
+            </BarChart>
+          )}
+        </ResponsiveContainer>
       </div>
     </div>
   );
