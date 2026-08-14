@@ -6,9 +6,13 @@ import { useNow } from '../../hooks/useNow';
 
 export default function Header() {
   const [query, setQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const locate = useWeatherStore((s) => s.locate);
   const { now, time } = useNow();
+  const dropdownRef = React.useRef(null);
 
   const hour = now.getHours();
   let greeting = 'Good Evening';
