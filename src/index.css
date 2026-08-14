@@ -142,18 +142,24 @@
 
   /* Minimal custom scrollbar */
   ::-webkit-scrollbar {
-    height: 6px;
-    width: 6px;
+    height: 8px;
+    width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--color-border);
+    background: rgba(0,0,0,0.02);
     border-radius: 10px;
   }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.4);
+    border-radius: 10px;
+    border: 2px solid var(--color-background);
+  }
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-muted-foreground);
+    background: rgba(148, 163, 184, 0.7);
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    height: 4px;
+    width: 4px;
   }
 
   /* MapLibre custom styles */
