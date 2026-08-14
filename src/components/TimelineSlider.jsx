@@ -127,13 +127,13 @@ export default function TimelineSlider({ variant = 'desktop' }) {
               {isActive && (
                 <motion.span
                   layoutId={variant === 'dock' ? 'timeline-active-dock' : 'timeline-active'}
-                  className="absolute inset-0 rounded-2xl border border-sky-400/60 bg-gradient-to-b from-sky-400/50 to-white/60 shadow-[0_8px_24px_-6px_rgba(2,132,199,0.5)]"
+                  className="absolute inset-0 rounded-2xl bg-gradient-to-b from-orange-400/30 to-orange-100/10 shadow-[0_4px_24px_rgba(249,115,22,0.4)] border border-orange-300/50"
                   transition={{ type: 'spring', stiffness: 300, damping: 28 }}
                 />
               )}
               <span
                 className={`relative text-[11px] font-medium ${
-                  isActive ? 'text-sky-900' : 'text-ink-600'
+                  isActive ? 'text-orange-700' : 'text-ink-600'
                 }`}
               >
                 {label}
