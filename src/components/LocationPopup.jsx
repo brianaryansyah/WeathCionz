@@ -13,11 +13,19 @@ export default function LocationPopup({ source = 'gps', onRetry }) {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className="absolute inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-md"
+      className="absolute inset-0 z-[100] flex items-center justify-center bg-slate-900/40 backdrop-blur-md"
       role="alertdialog"
       aria-labelledby="location-popup-title"
     >
-      <div className="glass flex flex-col items-center gap-4 rounded-3xl px-8 py-6 text-center shadow-2xl">
+      <motion.div
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.9, y: 20 }}
+        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        className="glass relative flex flex-col items-center gap-6 rounded-[2rem] px-10 py-12 text-center shadow-2xl border border-white/40 bg-white/70 overflow-hidden max-w-sm w-full mx-4"
+      >
+        {/* Background glow */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
         <div className="relative flex h-12 w-12 items-center justify-center">
           <div className="absolute inset-0 animate-ping rounded-full bg-sky-500/30" />
           <svg className="relative h-6 w-6 animate-pulse text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
