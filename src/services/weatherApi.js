@@ -284,8 +284,8 @@ export async function geocodeCity(query) {
             type: c.attributes?.Addr_type === 'City' ? 'city' : 'street',
             bounds: c.extent
               ? [
-                  [c.extent.ymin, c.extent.xmin],
-                  [c.extent.ymax, c.extent.xmax],
+                  [c.extent.xmin, c.extent.ymin],
+                  [c.extent.xmax, c.extent.ymax],
                 ]
               : null,
           }));
