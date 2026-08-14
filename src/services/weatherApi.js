@@ -296,6 +296,13 @@ export async function geocodeCity(query) {
   results = await fetchArcGIS(query);
   if (results) return results;
 
+  let words = query.trim().split(/[\s,]+/);
+  while (words.length > 1 && !results) {
+    words.shift(); 
+    results = await fetchNominatim(words.join(' '));
+  }
+  if (results) return results;
+
   try {
     const res = await fetch(buildUrl('/geo/1.0/direct', { q: query, limit: 6 }));
     if (res.ok) return await res.json();
