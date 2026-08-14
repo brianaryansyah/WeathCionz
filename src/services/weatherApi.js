@@ -261,7 +261,39 @@ export async function geocodeCity(query) {
     return null;
   };
 
+  const fetchArcGIS = async (q) => {
+    try {
+      const url = `https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/findAddressCandidates?f=json&singleLine=${encodeURIComponent(q)}&maxLocations=6&outFields=Match_addr,Addr_type,Region,Country`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.candidates && data.candidates.length > 0) {
+          return data.candidates.map((c) => ({
+            name: c.address.split(',')[0],
+            state: c.attributes?.Region || c.address.split(',')[1]?.trim() || '',
+            country: c.attributes?.Country || '',
+            lat: c.location.y,
+            lon: c.location.x,
+            type: c.attributes?.Addr_type === 'City' ? 'city' : 'street',
+            bounds: c.extent
+              ? [
+                  [c.extent.ymin, c.extent.xmin],
+                  [c.extent.ymax, c.extent.xmax],
+                ]
+              : null,
+          }));
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  };
+
   let results = await fetchNominatim(query);
+  if (results) return results;
+
+  results = await fetchArcGIS(query);
   if (results) return results;
 
   try {
