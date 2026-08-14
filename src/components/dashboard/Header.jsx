@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, CalendarDays, MessageSquare, Bell, Loader2, User } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Search, CalendarDays, MessageSquare, Bell, Loader2, User, MapPin } from 'lucide-react';
 import { useWeatherStore } from '../../store/useWeatherStore';
 import { geocodeCity } from '../../services/weatherApi';
 import { useNow } from '../../hooks/useNow';
@@ -21,6 +21,17 @@ export default function Header() {
 
   // Format time without seconds for a cleaner look
   const timeString = time.split(':').slice(0, 2).join(':');
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Fetch suggestions with debounce
   useEffect(() => {
