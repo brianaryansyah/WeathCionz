@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { iconUrl, formatTemp, formatDay } from '../utils/weatherUtils'
+import { Droplet, Wind, CalendarDays, X } from 'lucide-react'
 
 export default function ExpandedForecastTable({ isOpen, onClose }) {
   const coords = useWeatherStore((s) => s.coords)
@@ -21,10 +22,8 @@ export default function ExpandedForecastTable({ isOpen, onClose }) {
         max: day.main.temp_max,
         icon: day.weather[0]?.icon,
         description: day.weather[0]?.description,
-        // Mocking humidity/wind for daily since open-meteo daily payload is simplified
-        minHum: Math.floor(Math.random() * 20) + 40,
-        maxHum: Math.floor(Math.random() * 20) + 70,
-        maxWind: Math.floor(Math.random() * 8) + 2
+        pop: Math.round((day.pop || 0) * 100), // Precipitation probability %
+        wind: day.wind?.speed || 0 // Max wind speed m/s
       };
     });
   }, [forecast?.daily]);
@@ -36,11 +35,11 @@ export default function ExpandedForecastTable({ isOpen, onClose }) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-12"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-10"
         >
           {/* Backdrop */}
           <div 
-            className="absolute inset-0 bg-slate-950/60 backdrop-blur-md" 
+            className="absolute inset-0 bg-slate-900/70 backdrop-blur-md" 
             onClick={onClose}
             aria-hidden="true"
           />
@@ -51,105 +50,119 @@ export default function ExpandedForecastTable({ isOpen, onClose }) {
             animate={{ scale: 1, y: 0, opacity: 1 }}
             exit={{ scale: 0.95, y: 20, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="glass relative flex max-h-full w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-2xl"
+            className="relative flex max-h-full w-full max-w-[1200px] flex-col overflow-hidden rounded-[2rem] border border-white/20 bg-slate-900/60 shadow-2xl backdrop-blur-xl"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-white/10 bg-white/10 px-6 py-5 lg:px-8">
-              <div>
-                <h2 className="font-display text-xl font-bold text-ink-950 lg:text-2xl drop-shadow-sm">
-                  Prakiraan Cuaca Detail 7 Hari
-                </h2>
-                <p className="mt-1 text-sm font-medium text-ink-800">
-                  {locationName}
-                </p>
+            <div className="flex items-center justify-between border-b border-white/10 px-6 py-6 lg:px-8 bg-white/5">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center justify-center w-12 h-12 bg-[#F6753B]/20 rounded-xl text-[#F6753B]">
+                  <CalendarDays className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="font-display text-xl font-bold text-white lg:text-2xl drop-shadow-sm">
+                    7-Day Forecast Calendar
+                  </h2>
+                  <p className="mt-1 text-sm font-medium text-slate-300">
+                    {locationName}
+                  </p>
+                </div>
               </div>
               <button
                 onClick={onClose}
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-black/5 text-ink-800 transition-colors hover:bg-black/10 hover:text-ink-950"
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 hover:text-white"
                 aria-label="Tutup"
               >
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            {/* Table Content */}
-            <div className="overflow-x-auto p-6 lg:p-8">
-              <div className="min-w-[800px]">
-                {/* Table Header (Days) */}
-                <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${daysWithDetails.length}, minmax(0, 1fr))` }}>
-                  {daysWithDetails.map((day) => (
-                    <div key={day.key} className="flex flex-col items-center justify-center border-b border-white/20 pb-4">
-                      <span className="text-sm font-bold uppercase tracking-wider text-sky-900 drop-shadow-sm">
-                        {day.label}
-                      </span>
-                      <span className="mt-1 text-xs font-medium text-ink-700">
-                        {new Date(day.date * 1000).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Table Body (Location Row) */}
-                <motion.div 
-                  initial="hidden"
-                  animate="show"
-                  variants={{
-                    hidden: { opacity: 0 },
-                    show: {
-                      opacity: 1,
-                      transition: { staggerChildren: 0.1, delayChildren: 0.2 }
-                    }
-                  }}
-                  className="mt-6 grid gap-4" 
-                  style={{ gridTemplateColumns: `repeat(${daysWithDetails.length}, minmax(0, 1fr))` }}
-                >
-                  {daysWithDetails.map((day) => (
+            {/* Calendar Grid */}
+            <div className="overflow-x-auto p-6 lg:p-8 custom-scrollbar">
+              <motion.div 
+                initial="hidden"
+                animate="show"
+                variants={{
+                  hidden: { opacity: 0 },
+                  show: {
+                    opacity: 1,
+                    transition: { staggerChildren: 0.05, delayChildren: 0.1 }
+                  }
+                }}
+                className="flex lg:grid gap-4 min-w-[max-content] lg:min-w-0"
+                style={{ gridTemplateColumns: `repeat(${Math.max(1, daysWithDetails.length)}, minmax(0, 1fr))` }}
+              >
+                {daysWithDetails.map((day, index) => {
+                  const dateObj = new Date(day.date * 1000);
+                  const isToday = index === 0;
+                  return (
                     <motion.div 
                       key={day.key} 
                       variants={{
-                        hidden: { opacity: 0, y: 30 },
-                        show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+                        hidden: { opacity: 0, scale: 0.9, y: 20 },
+                        show: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
                       }}
-                      className="glass-inner glass-hover flex flex-col items-center rounded-2xl p-4 text-center"
+                      className={`flex flex-col rounded-[1.5rem] p-4 lg:p-5 w-[160px] lg:w-auto relative group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${isToday ? 'bg-gradient-to-b from-[#F6753B]/90 to-[#F6753B]/70 border-[#F6753B]' : 'bg-white/5 hover:bg-white/10 border-white/10'} border`}
                     >
-                      <img
-                        src={iconUrl(day.icon)}
-                        alt={day.description}
-                        className="h-16 w-16 drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]"
-                        loading="lazy"
-                      />
-                      <span className="mt-2 text-xs font-bold capitalize text-ink-900">
-                        {day.description || 'Cerah'}
-                      </span>
+                      {/* Background Glow Effect */}
+                      <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity" />
                       
-                      <div className="mt-4 flex w-full flex-col gap-2">
-                        <div className="flex flex-col items-center rounded-xl bg-sky-500/10 py-2">
-                          <span className="text-[10px] font-semibold uppercase tracking-wider text-sky-800">Suhu</span>
-                          <span className="font-display text-sm font-bold text-ink-950">
-                            {formatTemp(day.min)} - {formatTemp(day.max)} °C
-                          </span>
-                        </div>
-                        
-                        <div className="flex flex-col items-center rounded-xl bg-cyan-500/10 py-2">
-                          <span className="text-[10px] font-semibold uppercase tracking-wider text-cyan-800">Kelembapan</span>
-                          <span className="font-display text-sm font-bold text-ink-950">
-                            {day.minHum} - {day.maxHum} %
-                          </span>
-                        </div>
+                      {/* Day & Date Header */}
+                      <div className="flex flex-col items-center mb-3">
+                        <span className={`text-[13px] font-bold uppercase tracking-widest ${isToday ? 'text-white' : 'text-slate-400'}`}>
+                          {day.label}
+                        </span>
+                        <span className={`text-[20px] font-display font-extrabold mt-0.5 ${isToday ? 'text-white' : 'text-slate-100'}`}>
+                          {dateObj.getDate()} {dateObj.toLocaleDateString('id-ID', { month: 'short' })}
+                        </span>
+                      </div>
+                      
+                      <div className="flex-1 w-full h-[1px] bg-white/10 mb-4" />
 
-                        <div className="flex flex-col items-center rounded-xl bg-teal-500/10 py-2">
-                          <span className="text-[10px] font-semibold uppercase tracking-wider text-teal-800">Angin</span>
-                          <span className="font-display text-sm font-bold text-ink-950">
-                            {day.maxWind.toFixed(1)} m/s
+                      {/* Icon & Condition */}
+                      <div className="flex flex-col items-center flex-1">
+                        <div className={`relative flex items-center justify-center w-16 h-16 rounded-full mb-2 ${isToday ? 'bg-white/20' : 'bg-white/5'}`}>
+                          <img
+                            src={iconUrl(day.icon)}
+                            alt={day.description}
+                            className="w-14 h-14 drop-shadow-[0_8px_16px_rgba(0,0,0,0.3)]"
+                            loading="lazy"
+                          />
+                        </div>
+                        <span className={`text-[13px] font-bold capitalize text-center leading-tight h-10 flex items-center justify-center ${isToday ? 'text-white' : 'text-slate-200'}`}>
+                          {day.description || 'Cerah'}
+                        </span>
+                      </div>
+
+                      {/* Temperature Range */}
+                      <div className="flex flex-col items-center mt-4">
+                        <span className={`text-[28px] font-bold leading-none ${isToday ? 'text-white' : 'text-white'}`}>
+                          {formatTemp(day.max)}°
+                        </span>
+                        <span className={`text-[14px] font-semibold mt-1 ${isToday ? 'text-white/80' : 'text-slate-400'}`}>
+                          L: {formatTemp(day.min)}°
+                        </span>
+                      </div>
+
+                      {/* Footer Metrics (Rain & Wind) */}
+                      <div className={`flex items-center justify-between mt-5 pt-4 border-t ${isToday ? 'border-white/20' : 'border-white/10'}`}>
+                        <div className="flex items-center gap-1.5" title="Chance of Rain">
+                          <Droplet className={`w-3.5 h-3.5 ${isToday ? 'text-white' : 'text-sky-400'}`} />
+                          <span className={`text-[12px] font-bold ${isToday ? 'text-white' : 'text-slate-300'}`}>
+                            {day.pop}%
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5" title="Max Wind Speed">
+                          <Wind className={`w-3.5 h-3.5 ${isToday ? 'text-white' : 'text-teal-400'}`} />
+                          <span className={`text-[12px] font-bold ${isToday ? 'text-white' : 'text-slate-300'}`}>
+                            {day.wind.toFixed(1)} <span className="text-[10px] opacity-70">m/s</span>
                           </span>
                         </div>
                       </div>
+
                     </motion.div>
-                  ))}
-                </motion.div>
-              </div>
+                  );
+                })}
+              </motion.div>
             </div>
           </motion.div>
         </motion.div>
