@@ -88,26 +88,53 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Search Bar */}
-      <form onSubmit={handleSearch} className="flex-1 max-w-[400px] mx-8 relative">
-        <div className="relative flex items-center w-full h-11 bg-white rounded-full px-5 shadow-sm border border-slate-100/60 transition-colors focus-within:border-orange-500/50 focus-within:ring-2 focus-within:ring-orange-500/20">
+      {/* Search Bar with Autocomplete */}
+      <div className="flex-1 max-w-[400px] mx-8 relative" ref={dropdownRef}>
+        <form onSubmit={handleSearch} className="relative flex items-center w-full h-11 bg-white rounded-full px-5 shadow-sm border border-slate-100/60 transition-colors focus-within:border-orange-500/50 focus-within:ring-2 focus-within:ring-orange-500/20">
           <input 
             type="text" 
             placeholder="Search Here..." 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
+            onFocus={() => { if (suggestions.length > 0) setShowDropdown(true) }}
             disabled={isSearching}
             className="w-full h-full bg-transparent border-none outline-none text-slate-700 placeholder:text-slate-400 text-[13px] font-medium"
           />
-          <button type="submit" disabled={isSearching} className="ml-2">
-            {isSearching ? (
+          <button type="submit" disabled={isSearching || isTyping} className="ml-2">
+            {(isSearching || isTyping) ? (
               <Loader2 className="w-[18px] h-[18px] text-orange-500 animate-spin" />
             ) : (
               <Search className="w-[18px] h-[18px] text-slate-400 hover:text-orange-500 transition-colors" />
             )}
           </button>
-        </div>
-      </form>
+        </form>
+
+        {/* Autocomplete Dropdown */}
+        {showDropdown && suggestions.length > 0 && (
+          <div className="absolute top-full left-0 right-0 mt-3 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-slate-100/80 overflow-hidden z-[60]">
+            <div className="max-h-[320px] overflow-y-auto py-2 custom-scrollbar">
+              {suggestions.map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => selectLocation(item)}
+                  className="w-full flex items-center gap-4 px-5 py-3 hover:bg-slate-50/80 transition-colors text-left"
+                >
+                  <div className="flex items-center justify-center w-9 h-9 rounded-full bg-slate-100/80 text-slate-500 shrink-0 shadow-sm border border-slate-200/50">
+                    <MapPin className="w-4 h-4 text-orange-500" strokeWidth={2.5} />
+                  </div>
+                  <div className="flex flex-col overflow-hidden">
+                    <span className="text-[14px] font-bold text-slate-800 truncate leading-tight">{item.name}</span>
+                    <span className="text-[12px] font-medium text-slate-500 truncate mt-0.5">
+                      {[item.state, item.country].filter(Boolean).join(', ')}
+                    </span>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Action Icons */}
       <div className="flex items-center gap-4">
