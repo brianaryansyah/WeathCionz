@@ -34,25 +34,26 @@ export default function LocationPopup({ source = 'gps', onRetry }) {
             <MapPin className="h-7 w-7 text-white" strokeWidth={2.5} />
           </div>
         </div>
-        <div className="animate-pulse">
-          <h3 className="font-display text-lg font-semibold text-ink-950">
-            {isIp ? 'Menentukan Lokasi Perkiraan' : 'Mendeteksi Lokasi Anda'}
+        <div className="z-10">
+          <h3 id="location-popup-title" className="font-display text-2xl font-bold text-slate-800">
+            {isIp ? 'Menentukan Lokasi...' : 'Mendeteksi Lokasi Anda'}
           </h3>
-          <p className="mt-1 max-w-xs text-sm text-ink-600">
+          <p className="mt-2 text-[14px] text-slate-500 leading-relaxed font-medium">
             {isIp
-              ? 'GPS belum aktif, jadi kami memakai perkiraan dari jaringan Anda. Klik "Coba lagi" dan izinkan akses lokasi untuk hasil yang presisi.'
-              : 'Akurasi tinggi untuk cuaca di tempat Anda sekarang'}
+              ? 'Mencari estimasi lokasi melalui jaringan. Izinkan akses GPS untuk hasil yang sangat presisi.'
+              : 'Mohon tunggu sebentar, kami sedang menyinkronkan cuaca di tempat Anda.'}
           </p>
         </div>
+
         {isIp && onRetry && (
           <button
             onClick={onRetry}
-            className="btn-primary rounded-full px-5 py-2 text-sm"
+            className="z-10 mt-2 rounded-full bg-slate-900 px-7 py-3 text-[13px] font-bold tracking-wide text-white transition-all hover:bg-slate-800 hover:scale-105 hover:shadow-xl active:scale-95"
           >
-            Coba lagi
+            Coba Lagi dengan GPS
           </button>
         )}
-      </div>
+      </motion.div>
     </motion.div>
   )
 }
