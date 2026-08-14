@@ -224,41 +224,53 @@ export function focusForSearch(result) {
  * @returns {Promise<Array<object>>} list of geocoding matches
  */
 export async function geocodeCity(query) {
-  if (!query.trim()) return []
-  try {
-    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=jsonv2&limit=6&addressdetails=1&accept-language=en`
-    const res = await fetch(url, {
-      headers: { Accept: 'application/json' },
-    })
-    if (res.ok) {
-      const data = await res.json()
-      return data.map((r) => {
-        const a = r.address || {}
-        const name =
-          r.name || a.village || a.town || a.city || a.hamlet || r.display_name?.split(',')[0]
-        return {
-          name,
-          state: a.state || a.state_district || a.county || '',
-          country: a.country || '',
-          lat: parseFloat(r.lat),
-          lon: parseFloat(r.lon),
-          type: r.type || 'city',
-          bounds: r.boundingbox
-            ? [
-                [parseFloat(r.boundingbox[2]), parseFloat(r.boundingbox[0])],
-                [parseFloat(r.boundingbox[3]), parseFloat(r.boundingbox[1])],
-              ]
-            : null,
-        }
-      })
-    }
-  } catch {
-    // fall through to OWM
-  }
+  if (!query.trim()) return [];
 
-  const res = await fetch(buildUrl('/geo/1.0/direct', { q: query, limit: 6 }))
-  if (!res.ok) throw new Error(`Geocoding request failed (${res.status})`)
-  return res.json()
+  const fetchNominatim = async (q) => {
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=jsonv2&limit=6&addressdetails=1&accept-language=en`;
+      const res = await fetch(url, {
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (data && data.length > 0) {
+          return data.map((r) => {
+            const a = r.address || {};
+            const name = r.name || a.village || a.town || a.city || a.hamlet || r.display_name?.split(',')[0];
+            return {
+              name,
+              state: a.state || a.state_district || a.county || '',
+              country: a.country || '',
+              lat: parseFloat(r.lat),
+              lon: parseFloat(r.lon),
+              type: r.type || 'city',
+              bounds: r.boundingbox
+                ? [
+                    [parseFloat(r.boundingbox[2]), parseFloat(r.boundingbox[0])],
+                    [parseFloat(r.boundingbox[3]), parseFloat(r.boundingbox[1])],
+                  ]
+                : null,
+            };
+          });
+        }
+      }
+    } catch {
+      // ignore
+    }
+    return null;
+  };
+
+  let results = await fetchNominatim(query);
+  if (results) return results;
+
+  try {
+    const res = await fetch(buildUrl('/geo/1.0/direct', { q: query, limit: 6 }));
+    if (res.ok) return await res.json();
+  } catch {
+    // ignore
+  }
+  return [];
 }
 
 /**
