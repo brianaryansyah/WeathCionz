@@ -346,7 +346,7 @@ export async function reverseGeocode({ lat, lon }) {
         a.country,
       ].filter(Boolean)
       const label = dedupeAddress(parts).join(', ')
-      if (label) return label
+      if (label) return { label, countryCode: a.country_code?.toUpperCase() || 'ID' }
     }
   } catch {
     // fall through to OWM
@@ -356,7 +356,8 @@ export async function reverseGeocode({ lat, lon }) {
   if (!res.ok) return null
   const [match] = await res.json()
   if (!match) return null
-  return [match.name, match.state, match.country].filter(Boolean).join(', ')
+  const label = [match.name, match.state, match.country].filter(Boolean).join(', ')
+  return { label, countryCode: match.country || 'ID' }
 }
 
 /** Removes consecutive duplicate address parts (e.g. city repeated). */

@@ -42,11 +42,54 @@ function persistLocation(coords, name) {
   }
 }
 
+/** Recommends 2 major cities based on country code. */
+export function getRecommendedCities(countryCode) {
+  const dict = {
+    'ID': [
+      { name: 'Jakarta', lat: -6.2088, lon: 106.8456 },
+      { name: 'Bandung', lat: -6.9175, lon: 107.6191 },
+    ],
+    'MY': [
+      { name: 'Kuala Lumpur', lat: 3.1390, lon: 101.6869 },
+      { name: 'Penang', lat: 5.4141, lon: 100.3288 },
+    ],
+    'SG': [
+      { name: 'Singapore', lat: 1.3521, lon: 103.8198 },
+      { name: 'Johor Bahru', lat: 1.4927, lon: 103.7414 },
+    ],
+    'US': [
+      { name: 'New York', lat: 40.7128, lon: -74.0060 },
+      { name: 'Los Angeles', lat: 34.0522, lon: -118.2437 },
+    ],
+    'GB': [
+      { name: 'London', lat: 51.5074, lon: -0.1278 },
+      { name: 'Manchester', lat: 53.4808, lon: -2.2426 },
+    ],
+    'AU': [
+      { name: 'Sydney', lat: -33.8688, lon: 151.2093 },
+      { name: 'Melbourne', lat: -37.8136, lon: 144.9631 },
+    ],
+  };
+  return dict[countryCode] || [
+    { name: 'New York', lat: 40.7128, lon: -74.0060 },
+    { name: 'London', lat: 51.5074, lon: -0.1278 },
+  ];
+}
+
 const last = restoreLastLocation()
+// Retrieve saved favorite cities, or fallback to Indonesia defaults as starting point
+const savedFavorites = (() => {
+  try {
+    const raw = localStorage.getItem('weathcionz:favorite-cities');
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+})();
 
 export const useWeatherStore = create((set, get) => ({
   coords: last ? { lat: last.lat, lon: last.lon } : { lat: DEFAULT_CITY.lat, lon: DEFAULT_CITY.lon },
   locationName: last?.name || DEFAULT_CITY.name,
+  countryCode: last?.country || 'ID', // default ID
+  favoriteCities: savedFavorites || getRecommendedCities(last?.country || 'ID'),
   accuracy: last?.accuracy ?? null,
   activeLayer: 'temp',
   selectedIndex: 0,
@@ -60,11 +103,24 @@ export const useWeatherStore = create((set, get) => ({
   setActiveLayer: (layer) => set({ activeLayer: layer }),
   setSelectedIndex: (index) => set({ selectedIndex: index }),
 
-  locate: (coords, name, focus = null) => {
-    persistLocation(coords, name)
+  setFavoriteCities: (cities) => {
+    set({ favoriteCities: cities });
+    try {
+      localStorage.setItem('weathcionz:favorite-cities', JSON.stringify(cities));
+    } catch {}
+  },
+
+  locate: (coords, name, focus = null, country = null) => {
+    persistLocation(coords, name) // could be updated to store country too, keeping simple for now
+    const currentFavs = get().favoriteCities;
+    // If user has not manually set favorites yet, automatically recommend based on new country
+    if (!savedFavorites && country) {
+       set({ favoriteCities: getRecommendedCities(country) });
+    }
     set({
       coords,
       locationName: name || (coords.lat === DEFAULT_CITY.lat && coords.lon === DEFAULT_CITY.lon ? DEFAULT_CITY.name : 'Your Location'),
+      countryCode: country || get().countryCode,
       selectedIndex: 0,
       focus,
     })
@@ -72,12 +128,9 @@ export const useWeatherStore = create((set, get) => ({
 
   /**
    * Resolves the user's position (GPS first, IP fallback), reverse-geocodes
-   * a display name and stores the result. After a GPS fix it keeps a live
-   * watcher running so the position sharpens automatically as accuracy
-   * improves. Used on mount and by the "Locate Me" button.
+   * a display name and stores the result.
    */
   locateMe: async () => {
-    // Stop any previous watcher before starting a new resolution.
     const prevWatch = get()._stopWatch
     if (prevWatch) {
       prevWatch()
@@ -89,15 +142,28 @@ export const useWeatherStore = create((set, get) => ({
       const { lat, lon, accuracy, source } = await locateCurrentPosition()
       const coords = { lat, lon }
       let name = null
+      let country = 'ID'
       try {
-        name = await reverseGeocode(coords)
+        const rev = await reverseGeocode(coords)
+        if (rev) {
+          name = rev.label
+          country = rev.countryCode || 'ID'
+        }
       } catch {
         name = null
       }
-      persistLocation(coords, name)
+      
+      const label = typeof name === 'string' ? name : (name?.label || 'Your Location');
+      persistLocation(coords, label)
+      
+      if (!savedFavorites) {
+        set({ favoriteCities: getRecommendedCities(country) });
+      }
+
       set({
         coords,
-        locationName: name || 'Your Location',
+        locationName: label,
+        countryCode: country,
         accuracy,
         selectedIndex: 0,
         focus: { zoom: USER_ZOOM },
@@ -105,18 +171,14 @@ export const useWeatherStore = create((set, get) => ({
         locateSource: source,
       })
 
-      // Keep refining the GPS fix live so the marker settles on the
-      // exact position instead of the first coarse reading.
       if (source === 'gps') {
         const stop = startWatch((fix) => {
           const cur = get()
-          if (cur.isLocating) return // not while the overlay is up
+          if (cur.isLocating) return
           set({ coords: { lat: fix.lat, lon: fix.lon }, accuracy: fix.accuracy })
         })
         set({ _stopWatch: stop })
       } else {
-        // Hold the overlay briefly when only an approximate (IP) fix was
-        // found, so the user sees the retry prompt.
         await new Promise((res) => setTimeout(res, 2500))
         set({ isLocating: false })
       }
