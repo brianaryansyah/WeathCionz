@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import WeatherIcon from '../WeatherIcon';
 import { useWeatherStore } from '../../store/useWeatherStore';
+import { Wind } from 'lucide-react';
 
 export default function AirQualityCard() {
   const coords = useWeatherStore((s) => s.coords);
@@ -22,31 +22,79 @@ export default function AirQualityCard() {
   }, [coords]);
 
   let label = 'Good Air Quality';
-  if (aqi > 50) label = 'Moderate Quality';
-  if (aqi > 100) label = 'Unhealthy for Sensitive';
-  if (aqi > 150) label = 'Unhealthy';
-  if (aqi > 200) label = 'Very Unhealthy';
-  if (aqi > 300) label = 'Hazardous';
+  let color = '#10b981'; // Green
+  
+  if (aqi > 50) { label = 'Moderate'; color = '#eab308'; } // Yellow
+  if (aqi > 100) { label = 'Unhealthy for Sensitive'; color = '#f97316'; } // Orange
+  if (aqi > 150) { label = 'Unhealthy'; color = '#ef4444'; } // Red
+  if (aqi > 200) { label = 'Very Unhealthy'; color = '#a855f7'; } // Purple
+  if (aqi > 300) { label = 'Hazardous'; color = '#881337'; } // Dark Red
 
   const displayAqi = aqi !== null ? aqi : '--';
+  const progress = aqi !== null ? Math.min((aqi / 300) * 100, 100) : 0;
+  
+  // SVG Circle properties
+  const size = 110;
+  const strokeWidth = 10;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = radius * 2 * Math.PI;
+  const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="bg-[#1a2333] rounded-[24px] p-6 relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.1)] min-h-[160px] flex flex-col justify-between mt-3">
-      {/* Background Star Details */}
-      <div className="absolute top-8 left-[40%] w-1.5 h-1.5 bg-[#F6753B] rounded-full shadow-[0_0_10px_2px_rgba(246,117,59,0.6)]"></div>
-      <div className="absolute top-1/2 right-[30%] w-1.5 h-1.5 bg-[#d5f088] rounded-full shadow-[0_0_10px_1px_rgba(213,240,136,0.6)] opacity-80"></div>
-      <div className="absolute bottom-8 left-[25%] w-1 h-1 bg-white/60 rounded-full"></div>
+    <div className="bg-[#1a2333] rounded-[24px] p-6 relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.1)] min-h-[160px] flex items-center justify-between mt-3 group">
       
-      <h3 className="text-[17px] font-semibold text-white relative z-10">Air Quality</h3>
+      {/* Background Glow based on AQI */}
+      <div 
+        className="absolute inset-0 opacity-10 transition-colors duration-1000" 
+        style={{ background: `radial-gradient(circle at right, ${color} 0%, transparent 70%)` }}
+      />
       
-      <div className="relative z-10 mt-6">
-        <span className="block text-[13px] font-medium text-slate-400">{label}</span>
-        <span className="block text-[16px] font-bold text-white mt-0.5">{displayAqi} AQI</span>
+      <div className="flex flex-col relative z-10 h-full justify-center">
+        <div className="flex items-center gap-2 mb-3">
+          <Wind className="w-5 h-5 text-white/70" />
+          <h3 className="text-[17px] font-semibold text-white">Air Quality</h3>
+        </div>
+        
+        <div>
+          <span className="block text-[13px] font-medium text-slate-400 max-w-[120px] leading-tight mb-1">{label}</span>
+          <div className="flex items-baseline gap-1">
+            <span className="text-[28px] font-bold text-white leading-none">{displayAqi}</span>
+            <span className="text-[14px] font-bold text-white/50">AQI</span>
+          </div>
+        </div>
       </div>
 
-      {/* Illustration */}
-      <div className="absolute bottom-[-16px] right-[-16px] w-[140px] h-[140px] pointer-events-none opacity-95 drop-shadow-2xl">
-        <WeatherIcon code={aqi > 100 ? "50d" : "10n"} className="w-full h-full" />
+      {/* Circular Gauge */}
+      <div className="relative z-10 flex items-center justify-center" style={{ width: size, height: size }}>
+        <svg width={size} height={size} className="transform -rotate-90">
+          {/* Background Track */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke="rgba(255,255,255,0.1)"
+            strokeWidth={strokeWidth}
+          />
+          {/* Progress Indicator */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke={color}
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            strokeLinecap="round"
+            className="transition-all duration-1000 ease-out"
+          />
+        </svg>
+        {/* Center Dot */}
+        <div 
+          className="absolute w-3 h-3 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-colors duration-1000"
+          style={{ backgroundColor: color }}
+        />
       </div>
     </div>
   );
