@@ -134,9 +134,9 @@ function buildForecast(seedStr) {
 /** In-memory cache so repeated calls within a minute return the same data. */
 const cache = new Map()
 
-/** Stable key: coordinates + the current 60-second window. */
+/** Stable key: coordinates only, so weather doesn't flicker/change every minute. */
 function currentSeedKey(lat, lon) {
-  return `${lat.toFixed(4)},${lon.toFixed(4)},${Math.floor(Date.now() / 60000)}`
+  return `${lat.toFixed(4)},${lon.toFixed(4)}`
 }
 
 /**
