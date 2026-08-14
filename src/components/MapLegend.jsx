@@ -30,16 +30,22 @@ export default function MapLegend({ variant = 'desktop' }) {
   const ticks = TICKS[layer.id]
 
   const card = (
-    <div className="glass glass-hover rounded-2xl px-4 py-3 shadow-xl backdrop-blur-md border border-white/20">
-      <p className="mb-2 flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-ink-950">
-        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: layer.color }} />
-        {layer.label}
-      </p>
-      <div className="h-3 w-40 rounded-full shadow-inner" style={{ background: GRADIENTS[layer.id] }} />
-      <div className="mt-1.5 flex w-40 justify-between text-[10px] font-medium text-ink-700">
-        {ticks.map((tick) => (
-          <span key={tick}>{tick}</span>
-        ))}
+    <div className="bg-white/80 backdrop-blur-xl rounded-[18px] p-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-white flex flex-col gap-3 min-w-[200px] transition-transform hover:scale-105 duration-300">
+      <div className="flex items-center gap-2">
+        <div className="relative flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 shadow-inner">
+          <span className="w-2.5 h-2.5 rounded-full shadow-sm" style={{ backgroundColor: layer.color }} />
+        </div>
+        <span className="text-[12px] font-bold uppercase tracking-widest text-slate-800">
+          {layer.label}
+        </span>
+      </div>
+      <div className="flex flex-col gap-1.5">
+        <div className="h-2 w-full rounded-full shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)]" style={{ background: GRADIENTS[layer.id] }} />
+        <div className="flex w-full justify-between text-[10px] font-semibold text-slate-500">
+          {ticks.map((tick) => (
+            <span key={tick}>{tick}</span>
+          ))}
+        </div>
       </div>
     </div>
   )
