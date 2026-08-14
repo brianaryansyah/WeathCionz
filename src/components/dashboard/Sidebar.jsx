@@ -1,5 +1,6 @@
 import React from 'react';
 import { Cloud, LayoutDashboard, MapPin, CalendarDays } from 'lucide-react';
+import { motion } from 'motion/react';
 
 export default function Sidebar({ activeTab, setActiveTab }) {
   const menuItems = [
@@ -25,16 +26,28 @@ export default function Sidebar({ activeTab, setActiveTab }) {
             <button 
               key={item.id}
               onClick={() => setActiveTab(item.id)}
-              className={`relative flex items-center justify-center w-12 h-12 rounded-[14px] transition-all ${
+              className={`relative flex items-center justify-center w-12 h-12 rounded-[14px] transition-colors z-10 ${
                 isActive 
-                  ? 'text-orange-500 bg-orange-50/80 shadow-sm' 
+                  ? 'text-orange-500' 
                   : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
               }`}
             >
+              {isActive && (
+                <motion.div
+                  layoutId="active-sidebar-pill"
+                  className="absolute inset-0 bg-orange-50/80 rounded-[14px] -z-10 shadow-sm border border-orange-100/50"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
               <Icon className="w-[22px] h-[22px]" strokeWidth={2.5} />
+              
               {/* Active Indicator Line */}
               {isActive && (
-                <div className="absolute -left-4 w-1.5 h-8 bg-orange-500 rounded-r-md" />
+                <motion.div 
+                  layoutId="active-sidebar-indicator"
+                  className="absolute -left-4 w-1.5 h-8 bg-orange-500 rounded-r-md shadow-[2px_0_8px_rgba(249,115,22,0.4)]" 
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
               )}
             </button>
           );
