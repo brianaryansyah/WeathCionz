@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, CalendarDays, MessageSquare, Bell, Loader2, User, MapPin } from 'lucide-react';
+import { Search, CalendarDays, MessageSquare, Bell, Loader2, User, MapPin, Sun, Moon } from 'lucide-react';
 import { useWeatherStore } from '../../store/useWeatherStore';
 import { geocodeCity } from '../../services/weatherApi';
 import { useNow } from '../../hooks/useNow';
@@ -15,6 +15,7 @@ export default function Header() {
   const dropdownRef = React.useRef(null);
 
   const hour = now.getHours();
+  const isNight = hour < 6 || hour >= 18;
   let greeting = 'Good Evening';
   if (hour >= 5 && hour < 12) greeting = 'Good Morning';
   else if (hour >= 12 && hour < 17) greeting = 'Good Afternoon';
@@ -103,7 +104,14 @@ export default function Header() {
         </div>
         <div className="flex flex-col">
           <span className="text-[13px] text-slate-500 font-medium">{timeString}</span>
-          <span className="text-[17px] font-bold text-slate-900 leading-tight">{greeting}!</span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[17px] font-bold text-slate-900 leading-tight">{greeting}!</span>
+            {isNight ? (
+              <Moon className="w-[18px] h-[18px] text-indigo-500 fill-indigo-500/20" />
+            ) : (
+              <Sun className="w-[18px] h-[18px] text-orange-500 fill-orange-500/20" />
+            )}
+          </div>
         </div>
       </div>
 
