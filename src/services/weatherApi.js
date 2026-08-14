@@ -110,7 +110,7 @@ export async function fetchCurrentWeather({ lat, lon }) {
  * Fetches hourly & daily forecast for a coordinate using Open-Meteo.
  */
 export async function fetchForecast({ lat, lon }) {
-  const url = `${OPEN_METEO_URL}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,precipitation_probability,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max&timezone=auto`
+  const url = `${OPEN_METEO_URL}?latitude=${lat}&longitude=${lon}&hourly=temperature_2m,weather_code,precipitation_probability,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,weather_code,precipitation_probability_max,wind_speed_10m_max&timezone=auto`
   const res = await fetch(url)
   if (!res.ok) throw new Error(`Forecast request failed (${res.status})`)
 
@@ -142,6 +142,8 @@ export async function fetchForecast({ lat, lon }) {
   const dCodes = data.daily?.weather_code || []
   const dMax = data.daily?.temperature_2m_max || []
   const dMin = data.daily?.temperature_2m_min || []
+  const dPop = data.daily?.precipitation_probability_max || []
+  const dWind = data.daily?.wind_speed_10m_max || []
   
   const daily = (data.daily?.time || []).map((tStr, i) => {
     const timeSec = new Date(tStr).getTime() / 1000
@@ -153,6 +155,10 @@ export async function fetchForecast({ lat, lon }) {
         temp_max: Math.round(dMax[i]),
         temp_min: Math.round(dMin[i]),
       },
+      wind: {
+        speed: dWind[i] ? Number((dWind[i] / 3.6).toFixed(1)) : 0,
+      },
+      pop: (dPop[i] || 0) / 100,
       weather: [{ icon: w.icon, description: w.desc }],
     }
   })
