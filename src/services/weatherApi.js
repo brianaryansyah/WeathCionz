@@ -226,6 +226,13 @@ export function focusForSearch(result) {
 export async function geocodeCity(query) {
   if (!query.trim()) return [];
 
+  // Normalize common Indonesian prefixes to match database standards
+  const normalizedQuery = query
+    .replace(/SMA Negeri\s/gi, 'SMAN ')
+    .replace(/SMP Negeri\s/gi, 'SMPN ')
+    .replace(/SD Negeri\s/gi, 'SDN ')
+    .replace(/Jalan\s/gi, 'Jl. ');
+
   const fetchNominatim = async (q) => {
     try {
       const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=jsonv2&limit=6&addressdetails=1&accept-language=en`;
@@ -290,13 +297,13 @@ export async function geocodeCity(query) {
     return null;
   };
 
-  let results = await fetchNominatim(query);
+  let results = await fetchNominatim(normalizedQuery);
   if (results) return results;
 
-  results = await fetchArcGIS(query);
+  results = await fetchArcGIS(normalizedQuery);
   if (results) return results;
 
-  let words = query.trim().split(/[\s,]+/);
+  let words = normalizedQuery.trim().split(/[\s,]+/);
   while (words.length > 1 && !results) {
     words.shift(); 
     results = await fetchNominatim(words.join(' '));
@@ -304,7 +311,7 @@ export async function geocodeCity(query) {
   if (results) return results;
 
   try {
-    const res = await fetch(buildUrl('/geo/1.0/direct', { q: query, limit: 6 }));
+    const res = await fetch(buildUrl('/geo/1.0/direct', { q: normalizedQuery, limit: 6 }));
     if (res.ok) return await res.json();
   } catch {
     // ignore
