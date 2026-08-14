@@ -1,4 +1,5 @@
 import { motion } from 'motion/react'
+import { MapPin } from 'lucide-react'
 
 /**
  * Fullscreen overlay shown while the app resolves the user's position.
@@ -26,12 +27,12 @@ export default function LocationPopup({ source = 'gps', onRetry }) {
       >
         {/* Background glow */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/60 to-transparent pointer-events-none" />
-        <div className="relative flex h-12 w-12 items-center justify-center">
-          <div className="absolute inset-0 animate-ping rounded-full bg-sky-500/30" />
-          <svg className="relative h-6 w-6 animate-pulse text-sky-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
+        <div className="relative flex h-24 w-24 items-center justify-center z-10">
+          <div className="absolute inset-0 animate-ping rounded-full bg-orange-500/20" style={{ animationDuration: '2s' }} />
+          <div className="absolute inset-4 animate-ping rounded-full bg-orange-500/40" style={{ animationDuration: '2s', animationDelay: '0.5s' }} />
+          <div className="relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-tr from-orange-400 to-orange-500 shadow-[0_8px_16px_rgba(249,115,22,0.3)] border-2 border-white">
+            <MapPin className="h-7 w-7 text-white" strokeWidth={2.5} />
+          </div>
         </div>
         <div className="animate-pulse">
           <h3 className="font-display text-lg font-semibold text-ink-950">
