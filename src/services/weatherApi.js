@@ -282,7 +282,7 @@ export async function geocodeCity(query) {
             lat: c.location.y,
             lon: c.location.x,
             type: c.attributes?.Addr_type === 'City' ? 'city' : 'street',
-            bounds: c.extent
+            bounds: (c.extent && Math.abs(c.extent.xmax - c.extent.xmin) < 0.05)
               ? [
                   [c.extent.xmin, c.extent.ymin],
                   [c.extent.xmax, c.extent.ymax],
