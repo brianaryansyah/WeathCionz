@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, CalendarDays, MessageSquare, Bell, Loader2 } from 'lucide-react';
+import { Search, CalendarDays, MessageSquare, Bell, Loader2, User } from 'lucide-react';
 import { useWeatherStore } from '../../store/useWeatherStore';
 import { geocodeCity } from '../../services/weatherApi';
 import { useNow } from '../../hooks/useNow';
@@ -45,12 +45,8 @@ export default function Header() {
     <div className="flex items-center justify-between w-full h-14">
       {/* Profile Section */}
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-200 shadow-sm border border-slate-100">
-          <img 
-            src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sajibur&backgroundColor=e2e8f0" 
-            alt="Profile" 
-            className="w-full h-full object-cover"
-          />
+        <div className="flex items-center justify-center w-12 h-12 rounded-full overflow-hidden bg-gradient-to-tr from-sky-400 to-blue-600 shadow-[0_4px_12px_rgba(14,165,233,0.3)] border-2 border-white text-white">
+          <User className="w-6 h-6" strokeWidth={2.5} />
         </div>
         <div className="flex flex-col">
           <span className="text-[13px] text-slate-500 font-medium">{timeString}</span>
