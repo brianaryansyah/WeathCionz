@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Pencil, Loader2, Search, Check, X } from 'lucide-react';
 import WeatherIcon from '../WeatherIcon';
 import { fetchCurrentWeather, geocodeCity } from '../../services/weatherApi';
 import { useWeatherStore } from '../../store/useWeatherStore';
 
 export default function CityCards() {
-  const favoriteCities = useWeatherStore(s => s.favoriteCities) || [];
+  const favoriteCitiesRaw = useWeatherStore(s => s.favoriteCities);
+  const favoriteCities = useMemo(() => favoriteCitiesRaw || [], [favoriteCitiesRaw]);
   const setFavoriteCities = useWeatherStore(s => s.setFavoriteCities);
   const [cityData, setCityData] = useState([]);
   const [editingIdx, setEditingIdx] = useState(null);
