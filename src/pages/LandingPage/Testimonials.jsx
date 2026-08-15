@@ -34,7 +34,7 @@ export default function Testimonials() {
             Loved by <span className="text-primary">Professionals</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Don't just take our word for it. Here's what our users are saying about the new standard in weather tracking.
+            Don&apos;t just take our word for it. Here&apos;s what our users are saying about the new standard in weather tracking.
           </p>
         </motion.div>
 
