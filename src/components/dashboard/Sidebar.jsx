@@ -18,37 +18,44 @@ export default function Sidebar({ activeTab, setActiveTab }) {
       </div>
 
       {/* Nav Items */}
-      <div className="flex-1 w-full flex flex-col items-center gap-6">
+      <nav className="flex-1 flex flex-col items-center gap-6 mt-8 w-full">
         {menuItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeTab === item.id;
+          
           return (
-            <button 
+            <button
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`relative flex items-center justify-center w-12 h-12 rounded-[14px] transition-colors z-10 ${
+              onClick={() => setActiveTab?.(item.id)}
+              className={`relative flex items-center justify-center w-14 h-14 rounded-2xl transition-all duration-300 group ${
                 isActive 
-                  ? 'text-orange-500' 
-                  : 'text-slate-400 hover:text-slate-600 hover:bg-slate-50'
+                  ? 'text-orange-500 shadow-sm' 
+                  : 'text-slate-400 hover:text-slate-700 hover:bg-slate-50'
               }`}
+              title={item.label}
             >
+              {/* Active Indicator Glow */}
               {isActive && (
                 <motion.div
                   layoutId="active-sidebar-pill"
-                  className="absolute inset-0 bg-orange-50/80 rounded-[14px] -z-10 shadow-sm border border-orange-100/50"
+                  className="absolute inset-0 bg-orange-50/90 rounded-2xl shadow-[inset_0_2px_4px_rgba(255,255,255,0.8)] border border-orange-100/50"
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
-              <Icon className="w-[22px] h-[22px]" strokeWidth={2.5} />
               
-              {/* Active Indicator Line */}
+              {/* Active Pill Indicator */}
               {isActive && (
                 <motion.div 
                   layoutId="active-sidebar-indicator"
-                  className="absolute -left-4 w-1.5 h-8 bg-orange-500 rounded-r-md shadow-[2px_0_8px_rgba(249,115,22,0.4)]" 
+                  className="absolute -left-6 w-1.5 h-8 bg-orange-500 rounded-r-full shadow-[0_0_8px_rgba(249,115,22,0.6)]" 
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
+              
+              <Icon 
+                className={`w-[24px] h-[24px] relative z-10 transition-transform duration-300 ${isActive ? 'scale-110 drop-shadow-sm' : 'group-hover:scale-110'}`} 
+                strokeWidth={isActive ? 2.5 : 2} 
+              />
             </button>
           );
         })}
