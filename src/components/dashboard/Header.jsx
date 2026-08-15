@@ -94,6 +94,14 @@ export default function Header({ setActiveTab }) {
     setShowDropdown(false);
   };
 
+  const handleBmkgClick = () => {
+    if (!bmkgData || !bmkgData.Coordinates) return;
+    const [lat, lon] = bmkgData.Coordinates.split(',').map(Number);
+    // Auto focus map to the earthquake epicenter
+    locate({ lat, lon }, bmkgData.Wilayah || 'Pusat Gempa', { zoom: 7 });
+    setShowNotifications(false);
+  };
+
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!query.trim() || isSearching) return;
@@ -204,7 +212,10 @@ export default function Header({ setActiveTab }) {
               <div className="max-h-[360px] overflow-y-auto p-4 custom-scrollbar">
                 <div className="flex flex-col gap-3">
                   {bmkgData ? (
-                    <div className="p-4 bg-red-50/80 rounded-xl border border-red-100 shadow-sm relative overflow-hidden group">
+                    <button 
+                      onClick={handleBmkgClick}
+                      className="p-4 bg-red-50/80 rounded-xl border border-red-100 shadow-sm relative overflow-hidden group hover:bg-red-100/80 transition-colors text-left w-full cursor-pointer"
+                    >
                       <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500" />
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-2">
@@ -232,10 +243,11 @@ export default function Header({ setActiveTab }) {
                         </p>
                       </div>
                       
-                      <div className="mt-3 pt-3 border-t border-red-100/60">
+                      <div className="mt-3 pt-3 border-t border-red-100/60 flex items-center justify-between">
                         <span className="text-[12px] font-bold text-red-600">{bmkgData.Potensi}</span>
+                        <span className="text-[10px] font-bold text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">LIHAT PETA ↗</span>
                       </div>
-                    </div>
+                    </button>
                   ) : (
                     <div className="p-3 bg-amber-50 rounded-xl border border-amber-100">
                       <div className="flex items-center gap-2 mb-2">
