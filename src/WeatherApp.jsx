@@ -43,7 +43,7 @@ export default function WeatherApp() {
   // 5. Tomorrow Forecast
   const tomorrow = forecast?.daily?.[1] || forecast?.daily?.[0]
   const tomorrowTemp = tomorrow ? Math.round(tomorrow.main.temp_max) : '25'
-  const tomorrowDesc = tomorrow ? tomorrow.weather[0].main : 'Rainy'
+  const tomorrowDesc = tomorrow ? tomorrow.weather[0].description : 'Rainy'
   const tomorrowIcon = tomorrow ? tomorrow.weather[0].icon : '10d'
 
   return (
