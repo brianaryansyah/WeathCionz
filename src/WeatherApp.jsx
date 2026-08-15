@@ -50,7 +50,7 @@ export default function WeatherApp() {
     <>
       <DashboardLayout 
         sidebar={<Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />} 
-        header={<Header />}
+        header={<Header setActiveTab={setActiveTab} />}
       >
         {activeTab === 'dashboard' && (
           <>
