@@ -27,11 +27,14 @@ export default function TemperatureChart({ forecastList = [] }) {
       let val = payload[0].value;
       let unit = mode === 'temp' ? '°C' : mode === 'wind' ? ' km/h' : '%';
       return (
-        <div className="bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.15)] border border-slate-100">
-          <p className="text-[13px] font-bold text-slate-500 mb-1">{label}</p>
-          <p className="text-[18px] font-extrabold text-slate-800">
-            {val}<span className="text-[14px] text-slate-400 font-bold">{unit}</span>
-          </p>
+        <div className="bg-white/95 backdrop-blur-xl p-4 rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-slate-100/80 transform -translate-y-2">
+          <p className="text-[12px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">{label}</p>
+          <div className="flex items-baseline gap-1">
+            <p className="text-[24px] font-black text-slate-800 leading-none">
+              {val}
+            </p>
+            <span className="text-[14px] text-slate-400 font-bold">{unit}</span>
+          </div>
         </div>
       );
     }
