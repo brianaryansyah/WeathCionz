@@ -116,16 +116,21 @@ export default function MapCanvas() {
   // Keep the canvas in sync with the viewport so the globe always fills
   // the screen — handles mobile browser chrome, rotation and resize.
   useEffect(() => {
-    const map = mapRef.current
-    if (!map) return
-    const onResize = () => map.resize()
+    const onResize = () => mapRef.current?.resize?.()
     window.addEventListener('resize', onResize)
     window.addEventListener('orientationchange', onResize)
     window.visualViewport?.addEventListener('resize', onResize)
 
     // Zoom event listeners from external controls
-    const onZoomIn = () => map.zoomTo(map.getZoom() + 1, { duration: 300 })
-    const onZoomOut = () => map.zoomTo(map.getZoom() - 1, { duration: 300 })
+    const onZoomIn = () => {
+      const map = mapRef.current?.getMap?.() || mapRef.current
+      if (map) map.zoomTo(map.getZoom() + 1, { duration: 300 })
+    }
+    const onZoomOut = () => {
+      const map = mapRef.current?.getMap?.() || mapRef.current
+      if (map) map.zoomTo(map.getZoom() - 1, { duration: 300 })
+    }
+    
     window.addEventListener('map-zoom-in', onZoomIn)
     window.addEventListener('map-zoom-out', onZoomOut)
 
@@ -143,9 +148,9 @@ export default function MapCanvas() {
   // Cinematic fly/fit-to when coordinates change. On mobile the target is
   // offset upward so the marker stays visible above the bottom sheet.
   useEffect(() => {
-    const map = mapRef.current
+    const map = mapRef.current?.getMap?.() || mapRef.current
     if (!map || !coords) return
-    const vh = map.getContainer().clientHeight || window.innerHeight
+    const vh = map.getContainer ? map.getContainer().clientHeight : window.innerHeight
     const isMobile = window.innerWidth < 1024
     const offset = [0, 0] // Map exactly in the center
     const duration = 2200
@@ -198,9 +203,9 @@ export default function MapCanvas() {
         maxPitch={70}
       >
         {/* 3D Globe Native Thermal Weather Overlay Layer */}
-        <Source key={`grid-${activeLayer}`} id="weather-grid" type="geojson" data={gridGeoJson}>
+        <Source id="weather-grid" type="geojson" data={gridGeoJson}>
           <Layer
-            id={`globe-thermal-layer-${activeLayer}`}
+            id="globe-thermal-layer"
             type="circle"
             paint={{
               'circle-radius': ['interpolate', ['exponential', 1.4], ['zoom'], 1, 60, 4, 130, 8, 300, 12, 700],
