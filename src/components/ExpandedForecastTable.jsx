@@ -53,13 +53,6 @@ export default function ExpandedForecastTable({ isOpen, onClose }) {
                 </p>
               </div>
             </div>
-            <button
-              onClick={onClose}
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-500 shadow-sm transition-colors hover:bg-slate-50 hover:text-slate-800"
-              aria-label="Tutup"
-            >
-              <X className="w-5 h-5" />
-            </button>
           </div>
 
           {/* Calendar Grid */}
