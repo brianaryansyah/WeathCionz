@@ -107,12 +107,13 @@ export const useWeatherStore = create((set, get) => ({
     set({ favoriteCities: cities });
     try {
       localStorage.setItem('weathcionz:favorite-cities', JSON.stringify(cities));
-    } catch {}
+    } catch (err) {
+      console.warn('Failed to save favorites', err);
+    }
   },
 
   locate: (coords, name, focus = null, country = null) => {
     persistLocation(coords, name) // could be updated to store country too, keeping simple for now
-    const currentFavs = get().favoriteCities;
     // If user has not manually set favorites yet, automatically recommend based on new country
     if (!savedFavorites && country) {
        set({ favoriteCities: getRecommendedCities(country) });
