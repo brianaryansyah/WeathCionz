@@ -186,13 +186,13 @@ export default function Header({ setActiveTab }) {
 
       {/* Action Icons */}
       <div className="flex items-center gap-4">
-        <button onClick={() => setActiveTab?.('calendar')} className="flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
-          <CalendarDays className="w-[18px] h-[18px]" strokeWidth={2.5} />
+        <button onClick={() => setActiveTab?.('calendar')} className="flex items-center justify-center w-11 h-11 bg-slate-50 rounded-full shadow-sm border border-slate-200/60 text-slate-700 hover:text-sky-600 hover:bg-sky-50 transition-all hover:scale-105 active:scale-95 group">
+          <CalendarDays className="w-5 h-5 group-hover:drop-shadow-sm" strokeWidth={2.5} />
         </button>
         <div className="relative" ref={notifDropdownRef}>
-          <button onClick={() => setShowNotifications(!showNotifications)} className="relative flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
-            <Bell className="w-[18px] h-[18px]" strokeWidth={2.5} />
-            <span className="absolute top-[10px] right-[10px] w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+          <button onClick={() => setShowNotifications(!showNotifications)} className="relative flex items-center justify-center w-11 h-11 bg-slate-50 rounded-full shadow-sm border border-slate-200/60 text-slate-700 hover:text-red-600 hover:bg-red-50 transition-all hover:scale-105 active:scale-95 group">
+            <Bell className="w-5 h-5 group-hover:drop-shadow-sm" strokeWidth={2.5} />
+            <span className="absolute top-[8px] right-[10px] w-2.5 h-2.5 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.6)] animate-pulse border-2 border-white"></span>
           </button>
           
           {showNotifications && (
