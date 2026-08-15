@@ -20,19 +20,21 @@ export default function TomorrowCard({
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] bg-orange-400/20 rounded-full blur-[40px] pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
 
       {/* Decorative Rain lines in background */}
-      <div className="absolute inset-0 z-0 opacity-[0.1] pointer-events-none overflow-hidden mix-blend-overlay">
-        {[...Array(15)].map((_, i) => (
-          <div 
-            key={i} 
-            className="absolute w-px h-[60px] bg-slate-900 rotate-[15deg] group-hover:translate-y-4 transition-transform duration-1000"
-            style={{ 
-              left: `${Math.random() * 120}%`, 
-              top: `${Math.random() * 120 - 20}%`,
-              opacity: Math.random() * 0.4 + 0.1
-            }}
-          />
-        ))}
-      </div>
+      {(iconCode.startsWith('09') || iconCode.startsWith('10') || iconCode.startsWith('11')) && (
+        <div className="absolute inset-0 z-0 opacity-[0.1] pointer-events-none overflow-hidden mix-blend-overlay">
+          {[...Array(15)].map((_, i) => (
+            <div 
+              key={i} 
+              className="absolute w-px h-[60px] bg-slate-900 rotate-[15deg] group-hover:translate-y-4 transition-transform duration-1000"
+              style={{ 
+                left: `${Math.random() * 120}%`, 
+                top: `${Math.random() * 120 - 20}%`,
+                opacity: Math.random() * 0.4 + 0.1
+              }}
+            />
+          ))}
+        </div>
+      )}
 
       {/* Main Illustration Area */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[180px] h-[180px] pointer-events-none opacity-90 drop-shadow-xl z-0 flex items-center justify-center mt-6 translate-x-4 group-hover:scale-110 transition-transform duration-500">
