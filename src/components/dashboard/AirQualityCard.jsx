@@ -41,39 +41,39 @@ export default function AirQualityCard() {
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="bg-[#1a2333] rounded-[24px] p-6 relative overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.1)] min-h-[160px] flex items-center justify-between mt-3 group">
+    <div className="bg-white/80 backdrop-blur-xl rounded-[24px] p-6 relative overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-white/60 min-h-[160px] flex items-center justify-between mt-3 group transition-transform duration-500 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
       
       {/* Background Glow based on AQI */}
       <div 
-        className="absolute inset-0 opacity-10 transition-colors duration-1000" 
+        className="absolute inset-0 opacity-20 transition-colors duration-1000 group-hover:opacity-30" 
         style={{ background: `radial-gradient(circle at right, ${color} 0%, transparent 70%)` }}
       />
       
       <div className="flex flex-col relative z-10 h-full justify-center">
         <div className="flex items-center gap-2 mb-3">
-          <Wind className="w-5 h-5 text-white/70" />
-          <h3 className="text-[17px] font-semibold text-white">Air Quality</h3>
+          <Wind className="w-5 h-5 text-slate-500" />
+          <h3 className="text-[17px] font-bold text-slate-800">Air Quality</h3>
         </div>
         
         <div>
-          <span className="block text-[13px] font-medium text-slate-400 max-w-[120px] leading-tight mb-1">{label}</span>
+          <span className="block text-[13px] font-bold text-slate-500 max-w-[120px] leading-tight mb-1">{label}</span>
           <div className="flex items-baseline gap-1">
-            <span className="text-[28px] font-bold text-white leading-none">{displayAqi}</span>
-            <span className="text-[14px] font-bold text-white/50">AQI</span>
+            <span className="text-[28px] font-black text-slate-900 leading-none">{displayAqi}</span>
+            <span className="text-[14px] font-bold text-slate-400">AQI</span>
           </div>
         </div>
       </div>
 
       {/* Circular Gauge */}
       <div className="relative z-10 flex items-center justify-center" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90">
+        <svg width={size} height={size} className="transform -rotate-90 drop-shadow-md">
           {/* Background Track */}
           <circle
             cx={size / 2}
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="rgba(255,255,255,0.1)"
+            stroke="rgba(0,0,0,0.05)"
             strokeWidth={strokeWidth}
           />
           {/* Progress Indicator */}
@@ -87,14 +87,20 @@ export default function AirQualityCard() {
             strokeDasharray={circumference}
             strokeDashoffset={offset}
             strokeLinecap="round"
-            className="transition-all duration-1000 ease-out"
+            className="transition-all duration-1000 ease-out drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
           />
         </svg>
-        {/* Center Dot */}
-        <div 
-          className="absolute w-3 h-3 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)] transition-colors duration-1000"
-          style={{ backgroundColor: color }}
-        />
+        {/* Center Pulsing Dot */}
+        <div className="absolute flex items-center justify-center">
+          <div 
+            className="absolute w-4 h-4 rounded-full animate-ping opacity-75"
+            style={{ backgroundColor: color }}
+          />
+          <div 
+            className="relative w-3 h-3 rounded-full shadow-sm border-2 border-white"
+            style={{ backgroundColor: color }}
+          />
+        </div>
       </div>
     </div>
   );
