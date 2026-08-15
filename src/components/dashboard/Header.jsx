@@ -8,11 +8,13 @@ export default function Header({ setActiveTab }) {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
-  const [isTyping, setIsTyping] = useState(false);
   const locate = useWeatherStore((s) => s.locate);
+  const locationName = useWeatherStore((s) => s.locationName);
   const { now, time } = useNow();
-  const dropdownRef = React.useRef(null);
+  const dropdownRef = useRef(null);
+  const notifDropdownRef = useRef(null);
 
   const hour = now.getHours();
   const isNight = hour < 6 || hour >= 18;
@@ -28,6 +30,9 @@ export default function Header({ setActiveTab }) {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setShowDropdown(false);
+      }
+      if (notifDropdownRef.current && !notifDropdownRef.current.contains(event.target)) {
+        setShowNotifications(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -126,8 +131,8 @@ export default function Header({ setActiveTab }) {
             onFocus={() => { if (suggestions.length > 0) setShowDropdown(true) }}
             className="w-full h-full bg-transparent border-none outline-none text-slate-700 placeholder:text-slate-400 text-[13px] font-medium"
           />
-          <button type="submit" disabled={isSearching || isTyping} className="ml-2">
-            {(isSearching || isTyping) ? (
+          <button type="submit" disabled={isSearching} className="ml-2">
+            {isSearching ? (
               <Loader2 className="w-[18px] h-[18px] text-orange-500 animate-spin" />
             ) : (
               <Search className="w-[18px] h-[18px] text-slate-400 hover:text-orange-500 transition-colors" />
@@ -167,10 +172,34 @@ export default function Header({ setActiveTab }) {
         <button onClick={() => setActiveTab?.('calendar')} className="flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
           <CalendarDays className="w-[18px] h-[18px]" strokeWidth={2.5} />
         </button>
-        <button onClick={() => alert('Notifications feature coming soon!')} className="relative flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
-          <Bell className="w-[18px] h-[18px]" strokeWidth={2.5} />
-          <span className="absolute top-[10px] right-[10px] w-2 h-2 bg-slate-800 rounded-full"></span>
-        </button>
+        <div className="relative" ref={notifDropdownRef}>
+          <button onClick={() => setShowNotifications(!showNotifications)} className="relative flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
+            <Bell className="w-[18px] h-[18px]" strokeWidth={2.5} />
+            <span className="absolute top-[10px] right-[10px] w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+          </button>
+          
+          {showNotifications && (
+            <div className="absolute top-full right-0 mt-3 w-80 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-slate-100/80 overflow-hidden z-[60]">
+              <div className="p-4 border-b border-slate-100/80 bg-slate-50/50">
+                <h3 className="font-bold text-slate-800 text-[14px]">Peringatan Dini BMKG</h3>
+              </div>
+              <div className="max-h-[320px] overflow-y-auto p-4 custom-scrollbar">
+                <div className="flex flex-col gap-3">
+                  <div className="p-3 bg-red-50 rounded-xl border border-red-100">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                      <span className="text-[12px] font-bold text-red-700">Cuaca Ekstrem</span>
+                    </div>
+                    <p className="text-[13px] text-slate-700 font-medium leading-relaxed">
+                      Berpotensi terjadi Hujan Sedang-Lebat yang dapat disertai Kilat/Petir dan Angin Kencang di wilayah <strong className="text-slate-900">{locationName || 'saat ini'}</strong>.
+                    </p>
+                    <span className="text-[11px] text-slate-500 mt-2 block">Pembaruan Realtime</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
