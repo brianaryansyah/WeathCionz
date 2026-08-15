@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, keepPreviousData } from '@tanstack/react-query'
 import { fetchCurrentWeather, fetchForecast, hasLiveApi } from '../services/weatherApi'
 import { getDemoWeather, clearDemoCache } from '../data/demoWeather'
 import { useWeatherStore } from '../store/useWeatherStore'
@@ -28,6 +28,7 @@ export function useWeatherData(coords) {
     staleTime: 60 * 1000, // 1 minute freshness
     refetchInterval: 60 * 1000,
     retry: 2,
+    placeholderData: keepPreviousData,
   })
 
   const forecast = useQuery({
@@ -37,6 +38,7 @@ export function useWeatherData(coords) {
     staleTime: 5 * 60 * 1000, // 5 minutes forecast freshness
     refetchInterval: 5 * 60 * 1000,
     retry: 2,
+    placeholderData: keepPreviousData,
   })
 
   const demo = getDemoWeather({ ...coords, name: locationName })
