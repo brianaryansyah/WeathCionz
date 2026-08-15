@@ -11,7 +11,7 @@ export default function WeatherNowCard({
   iconCode = '02d' 
 }) {
   return (
-    <div className="col-span-12 lg:col-span-5 rounded-[2rem] p-7 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-[#c1e6e4] via-[#d3e9db] to-[#f6dbce] shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] min-h-[340px] border border-white/40 transition-all duration-500 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] group">
+    <div className="col-span-12 lg:col-span-5 rounded-[2rem] p-7 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-[#c1e6e4] via-[#d3e9db] to-[#f6dbce] bg-[length:200%_200%] animate-gradient shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] min-h-[340px] border border-white/40 transition-all duration-500 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] group">
       {/* Location Pill */}
       <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-2.5 rounded-full self-start shadow-sm border border-white/60">
         <MapPin className="w-4 h-4 text-slate-700" />

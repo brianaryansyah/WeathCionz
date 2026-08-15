@@ -162,6 +162,26 @@
     width: 4px;
   }
 
+  /* Weather UI Premium Animations */
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  .animate-gradient {
+    animation: gradient 12s ease infinite;
+  }
+
+  @keyframes rain-fall {
+    0% { transform: translateY(-100px) rotate(15deg); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateY(400px) rotate(15deg); opacity: 0; }
+  }
+  .animate-rain {
+    animation: rain-fall linear infinite;
+  }
+
   /* MapLibre custom styles */
   .maplibregl-popup-content {
     background: #ffffff;

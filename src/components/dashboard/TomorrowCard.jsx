@@ -21,15 +21,16 @@ export default function TomorrowCard({
 
       {/* Decorative Rain lines in background */}
       {(iconCode.startsWith('09') || iconCode.startsWith('10') || iconCode.startsWith('11')) && (
-        <div className="absolute inset-0 z-0 opacity-[0.1] pointer-events-none overflow-hidden mix-blend-overlay">
+        <div className="absolute inset-0 z-0 opacity-20 pointer-events-none overflow-hidden mix-blend-overlay">
           {[...Array(15)].map((_, i) => (
             <div 
               key={i} 
-              className="absolute w-px h-[60px] bg-slate-900 rotate-[15deg] group-hover:translate-y-4 transition-transform duration-1000"
+              className="absolute w-[2px] h-[60px] bg-slate-900 rounded-full animate-rain"
               style={{ 
                 left: `${Math.random() * 120}%`, 
-                top: `${Math.random() * 120 - 20}%`,
-                opacity: Math.random() * 0.4 + 0.1
+                top: `-20%`,
+                animationDuration: `${Math.random() * 1 + 0.8}s`,
+                animationDelay: `${Math.random() * 2}s`
               }}
             />
           ))}
