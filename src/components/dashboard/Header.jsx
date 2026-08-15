@@ -4,7 +4,7 @@ import { useWeatherStore } from '../../store/useWeatherStore';
 import { geocodeCity } from '../../services/weatherApi';
 import { useNow } from '../../hooks/useNow';
 
-export default function Header() {
+export default function Header({ setActiveTab }) {
   const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -164,13 +164,13 @@ export default function Header() {
 
       {/* Action Icons */}
       <div className="flex items-center gap-4">
-        <button className="flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
+        <button onClick={() => setActiveTab?.('calendar')} className="flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
           <CalendarDays className="w-[18px] h-[18px]" strokeWidth={2.5} />
         </button>
-        <button className="flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
+        <button onClick={() => alert('Message feature coming soon!')} className="flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
           <MessageSquare className="w-[18px] h-[18px]" strokeWidth={2.5} />
         </button>
-        <button className="relative flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
+        <button onClick={() => alert('Notifications feature coming soon!')} className="relative flex items-center justify-center w-11 h-11 bg-white rounded-full shadow-sm border border-slate-100/60 text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors">
           <Bell className="w-[18px] h-[18px]" strokeWidth={2.5} />
           <span className="absolute top-[10px] right-[10px] w-2 h-2 bg-slate-800 rounded-full"></span>
         </button>
