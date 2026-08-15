@@ -81,7 +81,7 @@ export default function GlobeAnimation({ className = "" }) {
           
           // --- User Location HTML Marker ---
           htmlElementsData={userLocation ? [userLocation] : []}
-          htmlElement={d => {
+          htmlElement={() => {
             const el = document.createElement('div');
             el.innerHTML = `
               <div style="display: flex; flex-direction: column; align-items: center; pointer-events: none; transform: translate(-50%, -50%);">
