@@ -24,7 +24,7 @@ export default function DashboardLayout({ sidebar, header, children }) {
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden relative">
         {/* Header */}
-        <header className="w-full px-8 py-6 z-10 sticky top-0 bg-[#f3f6f8]/80 backdrop-blur-md">
+        <header className="w-full px-8 py-6 z-50 sticky top-0 bg-[#f3f6f8]/80 backdrop-blur-md">
           {header}
         </header>
 
