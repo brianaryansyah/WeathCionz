@@ -3,9 +3,9 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { iconUrl, formatTemp, formatDay } from '../utils/weatherUtils'
-import { Droplet, Wind, CalendarDays, X } from 'lucide-react'
+import { Droplet, Wind, CalendarDays } from 'lucide-react'
 
-export default function ExpandedForecastTable({ isOpen, onClose }) {
+export default function ExpandedForecastTable({ isOpen }) {
   const coords = useWeatherStore((s) => s.coords)
   const locationName = useWeatherStore((s) => s.locationName)
   const { forecast } = useWeatherData(coords)
