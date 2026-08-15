@@ -1,4 +1,4 @@
-import { CloudRain, Sun, Wind, CloudLightning, Droplets, Map } from 'lucide-react'
+import { Sun, Wind, Map, CloudLightning, Droplets } from 'lucide-react'
 
 export default function InfiniteMarquee() {
   const items = [
