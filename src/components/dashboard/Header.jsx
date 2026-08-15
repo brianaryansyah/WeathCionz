@@ -9,6 +9,7 @@ export default function Header({ setActiveTab }) {
   const [suggestions, setSuggestions] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [bmkgData, setBmkgData] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const locate = useWeatherStore((s) => s.locate);
   const locationName = useWeatherStore((s) => s.locationName);
@@ -69,6 +70,22 @@ export default function Header({ setActiveTab }) {
       clearTimeout(timer);
     };
   }, [query]);
+
+  // Fetch real-time BMKG Earthquake data
+  useEffect(() => {
+    async function fetchBmkg() {
+      try {
+        const response = await fetch('https://data.bmkg.go.id/DataMKG/TEWS/autogempa.json');
+        if (response.ok) {
+          const data = await response.json();
+          setBmkgData(data?.Infogempa?.gempa);
+        }
+      } catch (err) {
+        console.warn('Failed to fetch BMKG realtime data', err);
+      }
+    }
+    fetchBmkg();
+  }, []);
 
   const selectLocation = (result) => {
     const focus = { bounds: result.bounds, zoom: result.bounds ? undefined : 11 };
@@ -179,22 +196,58 @@ export default function Header({ setActiveTab }) {
           </button>
           
           {showNotifications && (
-            <div className="absolute top-full right-0 mt-3 w-80 bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-slate-100/80 overflow-hidden z-[60]">
-              <div className="p-4 border-b border-slate-100/80 bg-slate-50/50">
+            <div className="absolute top-full right-0 mt-3 w-[340px] bg-white/95 backdrop-blur-md rounded-2xl shadow-[0_12px_40px_rgba(0,0,0,0.12)] border border-slate-100/80 overflow-hidden z-[60] origin-top-right animate-in fade-in zoom-in duration-200">
+              <div className="p-4 border-b border-slate-100/80 bg-slate-50/50 flex items-center justify-between">
                 <h3 className="font-bold text-slate-800 text-[14px]">Peringatan Dini BMKG</h3>
+                {bmkgData && <span className="text-[10px] font-bold px-2 py-1 bg-red-100 text-red-600 rounded-full">LIVE</span>}
               </div>
-              <div className="max-h-[320px] overflow-y-auto p-4 custom-scrollbar">
+              <div className="max-h-[360px] overflow-y-auto p-4 custom-scrollbar">
                 <div className="flex flex-col gap-3">
-                  <div className="p-3 bg-red-50 rounded-xl border border-red-100">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                      <span className="text-[12px] font-bold text-red-700">Cuaca Ekstrem</span>
+                  {bmkgData ? (
+                    <div className="p-4 bg-red-50/80 rounded-xl border border-red-100 shadow-sm relative overflow-hidden group">
+                      <div className="absolute top-0 right-0 w-24 h-24 bg-red-500/5 rounded-full -translate-y-1/2 translate-x-1/2 group-hover:scale-150 transition-transform duration-500" />
+                      <div className="flex items-start justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+                          <span className="text-[13px] font-bold text-red-700">Gempa Bumi Terkini</span>
+                        </div>
+                        <span className="text-[11px] font-bold text-red-600/80">{bmkgData.Tanggal}</span>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-3 mb-3">
+                        <div className="bg-white/60 rounded-lg p-2.5 border border-red-50">
+                          <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Magnitude</span>
+                          <span className="text-[16px] font-black text-slate-800">{bmkgData.Magnitude} <span className="text-[12px] font-bold text-slate-500">SR</span></span>
+                        </div>
+                        <div className="bg-white/60 rounded-lg p-2.5 border border-red-50">
+                          <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Kedalaman</span>
+                          <span className="text-[16px] font-black text-slate-800">{bmkgData.Kedalaman}</span>
+                        </div>
+                      </div>
+                      
+                      <div className="mb-2">
+                        <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-0.5">Pusat Gempa</span>
+                        <p className="text-[13px] text-slate-700 font-semibold leading-snug">
+                          {bmkgData.Wilayah}
+                        </p>
+                      </div>
+                      
+                      <div className="mt-3 pt-3 border-t border-red-100/60">
+                        <span className="text-[12px] font-bold text-red-600">{bmkgData.Potensi}</span>
+                      </div>
                     </div>
-                    <p className="text-[13px] text-slate-700 font-medium leading-relaxed">
-                      Berpotensi terjadi Hujan Sedang-Lebat yang dapat disertai Kilat/Petir dan Angin Kencang di wilayah <strong className="text-slate-900">{locationName || 'saat ini'}</strong>.
-                    </p>
-                    <span className="text-[11px] text-slate-500 mt-2 block">Pembaruan Realtime</span>
-                  </div>
+                  ) : (
+                    <div className="p-3 bg-amber-50 rounded-xl border border-amber-100">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
+                        <span className="text-[12px] font-bold text-amber-700">Cuaca Ekstrem</span>
+                      </div>
+                      <p className="text-[13px] text-slate-700 font-medium leading-relaxed">
+                        Berpotensi terjadi Hujan Sedang-Lebat yang dapat disertai Kilat/Petir dan Angin Kencang di wilayah <strong className="text-slate-900">{locationName || 'saat ini'}</strong>.
+                      </p>
+                      <span className="text-[11px] text-slate-500 mt-2 block">Pembaruan Sistem</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
