@@ -59,7 +59,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
             </button>
           );
         })}
-      </div>
+        </nav>
     </div>
   );
 }
