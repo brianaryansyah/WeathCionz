@@ -4,6 +4,7 @@ import { useWeatherStore } from '../store/useWeatherStore'
 import { useWeatherData } from '../hooks/useWeatherData'
 import { iconUrl, formatTemp, formatDay } from '../utils/weatherUtils'
 import { Droplet, Wind, CalendarDays } from 'lucide-react'
+import WeatherIcon from './WeatherIcon'
 
 export default function ExpandedForecastTable({ isOpen }) {
   const coords = useWeatherStore((s) => s.coords)
@@ -99,15 +100,10 @@ export default function ExpandedForecastTable({ isOpen }) {
 
                     {/* Icon & Condition */}
                     <div className="flex flex-col items-center flex-1">
-                      <div className={`relative flex items-center justify-center w-16 h-16 rounded-full mb-2 ${isToday ? 'bg-white/20' : 'bg-slate-50 border border-slate-100'}`}>
-                        <img
-                          src={iconUrl(day.icon)}
-                          alt={day.description}
-                          className="w-14 h-14 drop-shadow-[0_8px_16px_rgba(0,0,0,0.15)]"
-                          loading="lazy"
-                        />
+                      <div className={`relative flex items-center justify-center w-[72px] h-[72px] rounded-full mb-3 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] transition-transform duration-300 group-hover:scale-110 ${isToday ? 'bg-white shadow-[0_8px_20px_-6px_rgba(255,255,255,0.4)]' : 'bg-gradient-to-tr from-slate-50 to-slate-100 border border-slate-200'}`}>
+                        <WeatherIcon code={day.icon} className="w-[46px] h-[46px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.12)]" />
                       </div>
-                      <span className={`text-[13px] font-bold capitalize text-center leading-tight h-10 flex items-center justify-center ${isToday ? 'text-white' : 'text-slate-700'}`}>
+                      <span className={`text-[14px] font-bold capitalize text-center leading-tight h-10 flex items-center justify-center ${isToday ? 'text-white' : 'text-slate-800'}`}>
                         {day.description || 'Cerah'}
                       </span>
                     </div>
