@@ -57,7 +57,7 @@ export default function ExpandedForecastTable({ isOpen }) {
           </div>
 
           {/* Calendar Grid */}
-          <div className="overflow-x-auto p-6 lg:p-8 custom-scrollbar">
+          <div className="overflow-x-auto p-5 lg:p-6 custom-scrollbar snap-x snap-mandatory">
             <motion.div 
               initial="hidden"
               animate="show"
@@ -68,7 +68,7 @@ export default function ExpandedForecastTable({ isOpen }) {
                   transition: { staggerChildren: 0.05, delayChildren: 0.1 }
                 }
               }}
-              className="flex lg:grid gap-4 min-w-[max-content] lg:min-w-0"
+              className="flex lg:grid gap-3 lg:gap-4 w-max lg:w-full min-w-full"
               style={{ gridTemplateColumns: `repeat(${Math.max(1, daysWithDetails.length)}, minmax(0, 1fr))` }}
             >
               {daysWithDetails.map((day, index) => {
@@ -81,55 +81,55 @@ export default function ExpandedForecastTable({ isOpen }) {
                       hidden: { opacity: 0, scale: 0.9, y: 20 },
                       show: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
                     }}
-                    className={`flex flex-col rounded-[1.5rem] p-4 lg:p-5 w-[160px] lg:w-auto relative group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${isToday ? 'bg-gradient-to-b from-[#F6753B] to-[#E55A1F] border-[#F6753B] shadow-[#F6753B]/20' : 'bg-white hover:bg-slate-50 border-slate-100 shadow-sm'} border`}
+                    className={`flex flex-col rounded-[1.25rem] lg:rounded-[1.5rem] p-4 w-[140px] lg:w-auto shrink-0 snap-center relative group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${isToday ? 'bg-gradient-to-b from-[#F6753B] to-[#E55A1F] border-[#F6753B] shadow-[#F6753B]/20' : 'bg-white hover:bg-slate-50 border-slate-100 shadow-sm'} border`}
                   >
                     {/* Background Glow Effect */}
                     <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity" />
                     
                     {/* Day & Date Header */}
-                    <div className="flex flex-col items-center mb-3">
-                      <span className={`text-[13px] font-bold uppercase tracking-widest ${isToday ? 'text-white/90' : 'text-slate-500'}`}>
+                    <div className="flex flex-col items-center mb-2">
+                      <span className={`text-[12px] font-bold uppercase tracking-widest ${isToday ? 'text-white/90' : 'text-slate-500'}`}>
                         {day.label}
                       </span>
-                      <span className={`text-[20px] font-display font-extrabold mt-0.5 ${isToday ? 'text-white' : 'text-slate-900'}`}>
+                      <span className={`text-[16px] lg:text-[18px] font-display font-extrabold mt-0.5 ${isToday ? 'text-white' : 'text-slate-900'}`}>
                         {dateObj.getDate()} {dateObj.toLocaleDateString('id-ID', { month: 'short' })}
                       </span>
                     </div>
                     
-                    <div className={`flex-1 w-full h-[1px] mb-4 ${isToday ? 'bg-white/20' : 'bg-slate-100'}`} />
+                    <div className={`flex-1 w-full h-[1px] mb-3 ${isToday ? 'bg-white/20' : 'bg-slate-100'}`} />
 
                     {/* Icon & Condition */}
                     <div className="flex flex-col items-center flex-1">
-                      <div className={`relative flex items-center justify-center w-[72px] h-[72px] rounded-full mb-3 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] transition-transform duration-300 group-hover:scale-110 ${isToday ? 'bg-white shadow-[0_8px_20px_-6px_rgba(255,255,255,0.4)]' : 'bg-gradient-to-tr from-slate-50 to-slate-100 border border-slate-200'}`}>
-                        <WeatherIcon code={day.icon} className="w-[46px] h-[46px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.12)]" />
+                      <div className={`relative flex items-center justify-center w-[56px] h-[56px] lg:w-[64px] lg:h-[64px] rounded-full mb-2 shadow-[0_8px_20px_-6px_rgba(0,0,0,0.1)] transition-transform duration-300 group-hover:scale-110 ${isToday ? 'bg-white shadow-[0_8px_20px_-6px_rgba(255,255,255,0.4)]' : 'bg-gradient-to-tr from-slate-50 to-slate-100 border border-slate-200'}`}>
+                        <WeatherIcon code={day.icon} className="w-[36px] h-[36px] lg:w-[40px] lg:h-[40px] drop-shadow-[0_4px_8px_rgba(0,0,0,0.12)]" />
                       </div>
-                      <span className={`text-[14px] font-bold capitalize text-center leading-tight h-10 flex items-center justify-center ${isToday ? 'text-white' : 'text-slate-800'}`}>
+                      <span className={`text-[13px] font-bold capitalize text-center leading-tight h-8 flex items-center justify-center ${isToday ? 'text-white' : 'text-slate-800'}`}>
                         {day.description || 'Cerah'}
                       </span>
                     </div>
 
                     {/* Temperature Range */}
-                    <div className="flex flex-col items-center mt-4">
-                      <span className={`text-[28px] font-bold leading-none ${isToday ? 'text-white' : 'text-slate-900'}`}>
+                    <div className="flex flex-col items-center mt-3">
+                      <span className={`text-[24px] lg:text-[28px] font-bold leading-none ${isToday ? 'text-white' : 'text-slate-900'}`}>
                         {formatTemp(day.max)}°
                       </span>
-                      <span className={`text-[14px] font-semibold mt-1 ${isToday ? 'text-white/80' : 'text-slate-500'}`}>
+                      <span className={`text-[12px] lg:text-[14px] font-semibold mt-1 ${isToday ? 'text-white/80' : 'text-slate-500'}`}>
                         L: {formatTemp(day.min)}°
                       </span>
                     </div>
 
                     {/* Footer Metrics (Rain & Wind) */}
-                    <div className={`flex items-center justify-between mt-5 pt-4 border-t ${isToday ? 'border-white/20' : 'border-slate-100'}`}>
+                    <div className={`flex items-center justify-between mt-4 pt-3 border-t ${isToday ? 'border-white/20' : 'border-slate-100'}`}>
                       <div className="flex items-center gap-1.5" title="Chance of Rain">
                         <Droplet className={`w-3.5 h-3.5 ${isToday ? 'text-white' : 'text-sky-500'}`} />
-                        <span className={`text-[12px] font-bold ${isToday ? 'text-white' : 'text-slate-600'}`}>
+                        <span className={`text-[11px] lg:text-[12px] font-bold ${isToday ? 'text-white' : 'text-slate-600'}`}>
                           {day.pop}%
                         </span>
                       </div>
                       <div className="flex items-center gap-1.5" title="Max Wind Speed">
                         <Wind className={`w-3.5 h-3.5 ${isToday ? 'text-white' : 'text-teal-500'}`} />
-                        <span className={`text-[12px] font-bold ${isToday ? 'text-white' : 'text-slate-600'}`}>
-                          {day.wind.toFixed(1)} <span className="text-[10px] opacity-70">m/s</span>
+                        <span className={`text-[11px] lg:text-[12px] font-bold ${isToday ? 'text-white' : 'text-slate-600'}`}>
+                          {day.wind.toFixed(1)} <span className="text-[9px] lg:text-[10px] opacity-70">m/s</span>
                         </span>
                       </div>
                     </div>
