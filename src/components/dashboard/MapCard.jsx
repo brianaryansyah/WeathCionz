@@ -62,16 +62,7 @@ export default function MapCard({ temp = '25', day = 'Monday', desc = 'Mostly Su
              <Target className="w-[18px] h-[18px]" strokeWidth={2.5} />
           )}
         </button>
-        <button 
-          onClick={cycleLayer}
-          className="p-2.5 bg-white text-slate-600 rounded-full shadow-md hover:bg-slate-50 hover:text-slate-800 transition-colors flex items-center justify-center border border-white/60 relative group"
-        >
-          <Layers className="w-[18px] h-[18px]" strokeWidth={2.5} />
-          {/* Tooltip to show active layer */}
-          <span className="absolute right-full mr-3 whitespace-nowrap bg-slate-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            {MAP_LAYERS.find(l => l.id === activeLayer)?.label || 'Layers'}
-          </span>
-        </button>
+
       </div>
     </div>
   );
