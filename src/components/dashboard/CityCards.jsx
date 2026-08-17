@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { Pencil, Loader2, Search, Check, X } from 'lucide-react';
 import WeatherIcon from '../WeatherIcon';
 import { fetchCurrentWeather, geocodeCity } from '../../services/weatherApi';
+import DOMPurify from 'dompurify';
 import { useWeatherStore } from '../../store/useWeatherStore';
 
 export default function CityCards() {
@@ -44,13 +45,14 @@ export default function CityCards() {
   }, [favoriteCities]);
 
   const handleSaveEdit = async (idx) => {
-    if (!editQuery.trim()) {
+    const cleanQuery = DOMPurify.sanitize(editQuery.trim());
+    if (!cleanQuery) {
       setEditingIdx(null);
       return;
     }
     setIsSearching(true);
     try {
-      const results = await geocodeCity(editQuery);
+      const results = await geocodeCity(cleanQuery);
       if (results && results.length > 0) {
         const newCity = results[0];
         const newFavs = [...favoriteCities];
@@ -69,13 +71,14 @@ export default function CityCards() {
   };
 
   const handleAddCity = async () => {
-    if (!addQuery.trim()) {
+    const cleanQuery = DOMPurify.sanitize(addQuery.trim());
+    if (!cleanQuery) {
       setIsAdding(false);
       return;
     }
     setIsSearching(true);
     try {
-      const results = await geocodeCity(addQuery);
+      const results = await geocodeCity(cleanQuery);
       if (results && results.length > 0) {
         const newCity = results[0];
         const newFavs = [...favoriteCities, { name: newCity.name, lat: newCity.lat, lon: newCity.lon }];
