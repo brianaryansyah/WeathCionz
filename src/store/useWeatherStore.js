@@ -15,7 +15,6 @@ export const MAP_LAYERS = [
   { id: 'precip', label: 'Hujan', tile: 'precipitation_new', color: '#38bdf8' },
   { id: 'clouds', label: 'Awan', tile: 'clouds_new', color: '#94a3b8' },
   { id: 'wind', label: 'Angin', tile: 'wind_new', color: '#2dd4bf' },
-  { id: 'pressure', label: 'Tekanan', tile: 'pressure_new', color: '#fbbf24' },
 ]
 
 /** Reads the last known position from localStorage, if any. */
