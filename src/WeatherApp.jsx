@@ -95,8 +95,22 @@ export default function WeatherApp() {
         )}
 
         {activeTab === 'calendar' && (
-          <div className="col-span-12">
+          <div className="col-span-12 flex flex-col gap-8 min-h-[700px]">
             <ExpandedForecastTable isOpen={true} onClose={() => setActiveTab('dashboard')} />
+            <div className="grid grid-cols-12 gap-6 w-full">
+               <div className="col-span-12 xl:col-span-8">
+                  <TemperatureChart forecastList={forecastList} />
+               </div>
+               <div className="col-span-12 xl:col-span-4 flex flex-col gap-6">
+                 <TomorrowCard 
+                   locationName={locationName}
+                   temp={tomorrowTemp}
+                   desc={tomorrowDesc}
+                   iconCode={tomorrowIcon}
+                 />
+                 <AirQualityCard />
+               </div>
+            </div>
           </div>
         )}
       </DashboardLayout>
