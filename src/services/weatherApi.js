@@ -1,5 +1,5 @@
 // OpenWeatherMap is still used for geocoding (Open-Meteo powers the weather)
-const OWM_KEY = import.meta.env?.VITE_OWM_KEY || 'b6907d289e10d714a6e88b30761fae22'
+const OWM_KEY = import.meta.env?.VITE_OWM_KEY || '';
 const API_BASE = import.meta.env?.VITE_API_BASE || ''
 const OWM_HOST = 'https://api.openweathermap.org'
 
