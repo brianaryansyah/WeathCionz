@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, CalendarDays, Bell, Loader2, User, MapPin, Sun, Moon } from 'lucide-react';
+import { Search, CalendarDays, Bell, Loader2, MapPin, Sun, Moon } from 'lucide-react';
 import { useWeatherStore } from '../../store/useWeatherStore';
 import { geocodeCity } from '../../services/weatherApi';
 import { useNow } from '../../hooks/useNow';
