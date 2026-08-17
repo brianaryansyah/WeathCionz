@@ -31,8 +31,8 @@ export default function DashboardLayout({ sidebar, header, children }) {
         </div>
       </main>
 
-      {/* Sidebar - Mobile Bottom, Desktop Left */}
-      <aside className="fixed bottom-0 left-0 w-full h-[76px] lg:static lg:w-[100px] lg:h-full flex-shrink-0 bg-white/95 lg:bg-white/80 backdrop-blur-xl border-t lg:border-t-0 lg:border-r border-slate-200 lg:border-slate-100 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] lg:shadow-[2px_0_15px_rgba(0,0,0,0.02)] z-[60] order-2 lg:order-1">
+      {/* Sidebar - Mobile Bottom Floating Pill, Desktop Left */}
+      <aside className="fixed bottom-5 left-5 right-5 h-[72px] lg:bottom-0 lg:left-0 lg:right-auto lg:w-[100px] lg:h-full flex-shrink-0 bg-[#151515] lg:bg-white/80 lg:backdrop-blur-xl lg:border-r lg:border-slate-100 shadow-[0_8px_32px_rgba(0,0,0,0.2)] lg:shadow-[2px_0_15px_rgba(0,0,0,0.02)] z-[60] order-2 lg:order-1 rounded-full lg:rounded-none border border-white/10 lg:border-none">
         {sidebar}
       </aside>
     </div>
