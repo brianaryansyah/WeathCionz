@@ -120,6 +120,7 @@ export default function AirQualityCard() {
             </div>
           </div>
         </div>
+      </div>
     </div>
   );
 }
