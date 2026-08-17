@@ -11,7 +11,7 @@ export default function AirQualityCard() {
       if (!coords) return;
       try {
         const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${coords.lat}&longitude=${coords.lon}&current=us_aqi`;
-        const res = await fetch(url);
+        const res = await fetch(url, { cache: 'no-store' });
         const data = await res.json();
         setAqi(data.current?.us_aqi);
       } catch (err) {
