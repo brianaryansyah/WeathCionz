@@ -43,9 +43,9 @@ export default function TomorrowCard({
       </div>
 
       {/* Bottom Text */}
-      <div className="relative z-10 mt-auto bg-white/40 backdrop-blur-md self-start px-4 py-2 rounded-2xl border border-white/50 shadow-sm">
+      <div className="relative z-10 mt-auto self-start pt-4">
         <span className="text-[32px] font-bold text-slate-900 block leading-none tracking-tighter">{temp}°C</span>
-        <span className="text-[13px] font-semibold text-slate-600 capitalize mt-1 block">{desc}</span>
+        <span className="text-[14px] font-medium text-slate-600 capitalize mt-1.5 block">{desc}</span>
       </div>
     </div>
   );
