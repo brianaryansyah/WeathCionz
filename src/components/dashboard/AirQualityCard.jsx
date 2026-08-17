@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useWeatherStore } from '../../store/useWeatherStore';
-import { Wind } from 'lucide-react';
+import { Wind, Loader2 } from 'lucide-react';
 
 export default function AirQualityCard() {
   const coords = useWeatherStore((s) => s.coords);
   const [aqi, setAqi] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchAqi() {
       if (!coords) return;
+      setIsLoading(true);
       try {
         const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${coords.lat}&longitude=${coords.lon}&current=us_aqi`;
         const res = await fetch(url, { cache: 'no-store' });
@@ -16,6 +18,8 @@ export default function AirQualityCard() {
         setAqi(data.current?.us_aqi);
       } catch (err) {
         console.error('Failed to fetch AQI', err);
+      } finally {
+        setIsLoading(false);
       }
     }
     fetchAqi();
@@ -53,6 +57,7 @@ export default function AirQualityCard() {
         <div className="flex items-center gap-2 mb-3">
           <Wind className="w-5 h-5 text-slate-500" />
           <h3 className="text-[17px] font-bold text-slate-800">Air Quality</h3>
+          {isLoading && <Loader2 className="w-4 h-4 text-slate-400 animate-spin ml-auto" />}
         </div>
         
         <div>
