@@ -129,9 +129,6 @@ export default function Header({ setActiveTab }) {
     <div className="flex items-center justify-between w-full h-14">
       {/* Profile Section */}
       <div className="flex items-center gap-4">
-        <div className="flex items-center justify-center w-12 h-12 rounded-full overflow-hidden bg-gradient-to-tr from-sky-400 to-blue-600 shadow-[0_4px_12px_rgba(14,165,233,0.3)] border-2 border-white text-white">
-          <User className="w-6 h-6" strokeWidth={2.5} />
-        </div>
         <div className="flex flex-col">
           <span className="text-[13px] text-slate-500 font-medium">{timeString}</span>
           <div className="flex items-center gap-1.5">
