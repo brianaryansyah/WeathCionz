@@ -39,7 +39,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 <motion.div
                   layoutId="active-sidebar-pill"
                   className="absolute inset-0 bg-orange-50/90 rounded-2xl shadow-[inset_0_2px_4px_rgba(255,255,255,0.8)] border border-orange-100/50"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
                 />
               )}
               
@@ -48,7 +48,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
                 <motion.div 
                   layoutId="active-sidebar-indicator"
                   className="absolute -left-6 w-1.5 h-8 bg-orange-500 rounded-r-full shadow-[0_0_8px_rgba(249,115,22,0.6)]" 
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  transition={{ type: "tween", duration: 0.3, ease: "easeOut" }}
                 />
               )}
               
