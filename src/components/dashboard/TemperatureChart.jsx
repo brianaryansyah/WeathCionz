@@ -73,7 +73,7 @@ export default function TemperatureChart({ forecastList = [] }) {
       </div>
 
       {/* Chart Area */}
-      <div className="flex-1 w-full min-h-[180px] -ml-2">
+      <div className="w-full h-[220px] mt-4 -ml-2">
         <ResponsiveContainer width="100%" height="100%">
           {mode === 'temp' ? (
             <AreaChart data={chartData} margin={{ top: 20, right: 10, left: 10, bottom: 0 }}>
