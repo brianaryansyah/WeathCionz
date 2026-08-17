@@ -246,15 +246,10 @@ export default function Header({ setActiveTab }) {
                       </div>
                     </button>
                   ) : (
-                    <div className="p-3 bg-amber-50 rounded-xl border border-amber-100">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-                        <span className="text-[12px] font-bold text-amber-700">Cuaca Ekstrem</span>
-                      </div>
-                      <p className="text-[13px] text-slate-700 font-medium leading-relaxed">
-                        Berpotensi terjadi Hujan Sedang-Lebat yang dapat disertai Kilat/Petir dan Angin Kencang di wilayah <strong className="text-slate-900">{locationName || 'saat ini'}</strong>.
+                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 text-center">
+                      <p className="text-[13px] text-slate-500 font-medium">
+                        Saat ini tidak ada peringatan dini.
                       </p>
-                      <span className="text-[11px] text-slate-500 mt-2 block">Pembaruan Sistem</span>
                     </div>
                   )}
                 </div>
