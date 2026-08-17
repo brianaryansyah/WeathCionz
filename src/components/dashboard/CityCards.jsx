@@ -12,6 +12,8 @@ export default function CityCards() {
   const [editingIdx, setEditingIdx] = useState(null);
   const [editQuery, setEditQuery] = useState('');
   const [isSearching, setIsSearching] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
+  const [addQuery, setAddQuery] = useState('');
 
   useEffect(() => {
     async function loadCities() {
@@ -63,6 +65,30 @@ export default function CityCards() {
       setIsSearching(false);
       setEditingIdx(null);
       setEditQuery('');
+    }
+  };
+
+  const handleAddCity = async () => {
+    if (!addQuery.trim()) {
+      setIsAdding(false);
+      return;
+    }
+    setIsSearching(true);
+    try {
+      const results = await geocodeCity(addQuery);
+      if (results && results.length > 0) {
+        const newCity = results[0];
+        const newFavs = [...favoriteCities, { name: newCity.name, lat: newCity.lat, lon: newCity.lon }];
+        setFavoriteCities(newFavs);
+      } else {
+        alert('City not found. Please try another name.');
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSearching(false);
+      setIsAdding(false);
+      setAddQuery('');
     }
   };
 
@@ -133,6 +159,50 @@ export default function CityCards() {
           </div>
         );
       })}
+      {/* Add New City Box */}
+      {isAdding ? (
+        <div className="bg-white rounded-[24px] p-5 flex items-center shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100/60 min-h-[96px]">
+          <div className="flex items-center w-full gap-3 animate-in fade-in zoom-in duration-200">
+            <div className="w-[42px] h-[42px] bg-slate-50 rounded-full flex items-center justify-center shrink-0 border border-slate-100">
+              <Search className="w-5 h-5 text-slate-400" />
+            </div>
+            <input 
+              type="text" 
+              autoFocus
+              placeholder="Enter city name..." 
+              value={addQuery}
+              onChange={(e) => setAddQuery(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') handleAddCity(); if (e.key === 'Escape') setIsAdding(false); }}
+              disabled={isSearching}
+              className="flex-1 bg-transparent border-none outline-none text-[15px] font-bold text-slate-800 placeholder:text-slate-300 placeholder:font-medium"
+            />
+            {isSearching ? (
+              <Loader2 className="w-5 h-5 animate-spin text-orange-500 shrink-0" />
+            ) : (
+              <div className="flex items-center gap-1 shrink-0">
+                <button onClick={() => setIsAdding(false)} className="p-2 text-slate-400 hover:text-red-500 transition-colors">
+                  <X className="w-5 h-5" strokeWidth={2.5} />
+                </button>
+                <button onClick={handleAddCity} className="p-2 text-orange-500 hover:text-orange-600 transition-colors bg-orange-50 rounded-full">
+                  <Check className="w-5 h-5" strokeWidth={2.5} />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <button 
+          onClick={() => { setIsAdding(true); setAddQuery(''); }}
+          className="bg-transparent border-2 border-dashed border-slate-200 rounded-[24px] p-5 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:border-orange-200 hover:bg-orange-50/50 transition-all min-h-[96px] group"
+        >
+          <div className="flex items-center gap-2 font-semibold">
+            <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-orange-100 flex items-center justify-center transition-colors">
+              <span className="text-xl leading-none mb-0.5">+</span>
+            </div>
+            Add City
+          </div>
+        </button>
+      )}
     </div>
   );
 }
