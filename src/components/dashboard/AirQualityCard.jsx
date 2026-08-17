@@ -4,7 +4,7 @@ import { Wind, Loader2 } from 'lucide-react';
 
 export default function AirQualityCard() {
   const coords = useWeatherStore((s) => s.coords);
-  const [aqi, setAqi] = useState(null);
+  const [data, setData] = useState({ aqi: null, pm25: null, pm10: null });
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -12,10 +12,14 @@ export default function AirQualityCard() {
       if (!coords) return;
       setIsLoading(true);
       try {
-        const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${coords.lat}&longitude=${coords.lon}&current=us_aqi`;
+        const url = `https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${coords.lat}&longitude=${coords.lon}&current=us_aqi,pm2_5,pm10`;
         const res = await fetch(url, { cache: 'no-store' });
-        const data = await res.json();
-        setAqi(data.current?.us_aqi);
+        const result = await res.json();
+        setData({
+          aqi: result.current?.us_aqi,
+          pm25: result.current?.pm2_5,
+          pm10: result.current?.pm10
+        });
       } catch (err) {
         console.error('Failed to fetch AQI', err);
       } finally {
@@ -24,6 +28,8 @@ export default function AirQualityCard() {
     }
     fetchAqi();
   }, [coords]);
+
+  const { aqi, pm25, pm10 } = data;
 
   let label = 'Good Air Quality';
   let color = '#10b981'; // Green
@@ -53,60 +59,67 @@ export default function AirQualityCard() {
         style={{ background: `radial-gradient(circle at right, ${color} 0%, transparent 70%)` }}
       />
       
-      <div className="flex flex-col relative z-10 h-full justify-center">
+      <div className="flex flex-col relative z-10 h-full justify-center w-full">
         <div className="flex items-center gap-2 mb-3">
           <Wind className="w-5 h-5 text-slate-500" />
           <h3 className="text-[17px] font-bold text-slate-800">Air Quality</h3>
           {isLoading && <Loader2 className="w-4 h-4 text-slate-400 animate-spin ml-auto" />}
         </div>
         
-        <div>
-          <span className="block text-[13px] font-bold text-slate-500 max-w-[120px] leading-tight mb-1">{label}</span>
-          <div className="flex items-baseline gap-1">
-            <span className="text-[28px] font-black text-slate-900 leading-none">{displayAqi}</span>
-            <span className="text-[14px] font-bold text-slate-400">AQI</span>
+        <div className="flex items-end justify-between w-full">
+          <div>
+            <span className="block text-[13px] font-bold text-slate-500 max-w-[120px] leading-tight mb-1">{label}</span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-[28px] font-black text-slate-900 leading-none">{displayAqi}</span>
+              <span className="text-[14px] font-bold text-slate-400">AQI</span>
+            </div>
+            {pm25 !== null && (
+              <div className="flex items-center gap-3 mt-3 text-[11px] font-bold text-slate-400">
+                <span>PM2.5: <span className="text-slate-600">{pm25}</span></span>
+                <span>PM10: <span className="text-slate-600">{pm10}</span></span>
+              </div>
+            )}
+          </div>
+
+          {/* Circular Gauge */}
+          <div className="relative z-10 flex items-center justify-center shrink-0" style={{ width: size, height: size }}>
+            <svg width={size} height={size} className="transform -rotate-90 drop-shadow-md">
+              {/* Background Track */}
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke="rgba(0,0,0,0.05)"
+                strokeWidth={strokeWidth}
+              />
+              {/* Progress Indicator */}
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke={color}
+                strokeWidth={strokeWidth}
+                strokeDasharray={circumference}
+                strokeDashoffset={offset}
+                strokeLinecap="round"
+                className="transition-all duration-1000 ease-out drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
+              />
+            </svg>
+            {/* Center Pulsing Dot */}
+            <div className="absolute flex items-center justify-center">
+              <div 
+                className="absolute w-4 h-4 rounded-full animate-ping opacity-75"
+                style={{ backgroundColor: color }}
+              />
+              <div 
+                className="relative w-3 h-3 rounded-full shadow-sm border-2 border-white"
+                style={{ backgroundColor: color }}
+              />
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Circular Gauge */}
-      <div className="relative z-10 flex items-center justify-center" style={{ width: size, height: size }}>
-        <svg width={size} height={size} className="transform -rotate-90 drop-shadow-md">
-          {/* Background Track */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke="rgba(0,0,0,0.05)"
-            strokeWidth={strokeWidth}
-          />
-          {/* Progress Indicator */}
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={radius}
-            fill="none"
-            stroke={color}
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={offset}
-            strokeLinecap="round"
-            className="transition-all duration-1000 ease-out drop-shadow-[0_4px_8px_rgba(0,0,0,0.1)]"
-          />
-        </svg>
-        {/* Center Pulsing Dot */}
-        <div className="absolute flex items-center justify-center">
-          <div 
-            className="absolute w-4 h-4 rounded-full animate-ping opacity-75"
-            style={{ backgroundColor: color }}
-          />
-          <div 
-            className="relative w-3 h-3 rounded-full shadow-sm border-2 border-white"
-            style={{ backgroundColor: color }}
-          />
-        </div>
-      </div>
     </div>
   );
 }
