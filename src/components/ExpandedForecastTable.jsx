@@ -36,7 +36,7 @@ export default function ExpandedForecastTable({ isOpen }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+          transition={{ type: 'tween', duration: 0.3, ease: 'easeOut' }}
           className="w-full flex flex-col bg-white shadow-sm border border-slate-100/60 rounded-[2rem] overflow-hidden relative"
         >
           {/* Header */}
@@ -79,12 +79,10 @@ export default function ExpandedForecastTable({ isOpen }) {
                     key={day.key} 
                     variants={{
                       hidden: { opacity: 0, scale: 0.9, y: 20 },
-                      show: { opacity: 1, scale: 1, y: 0, transition: { type: 'spring', stiffness: 100 } }
+                      show: { opacity: 1, scale: 1, y: 0, transition: { type: 'tween', duration: 0.3, ease: 'easeOut' } }
                     }}
-                    className={`flex flex-col rounded-[1.25rem] lg:rounded-[1.5rem] p-4 w-[140px] lg:w-auto shrink-0 snap-center relative group overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${isToday ? 'bg-gradient-to-b from-[#F6753B] to-[#E55A1F] border-[#F6753B] shadow-[#F6753B]/20' : 'bg-white hover:bg-slate-50 border-slate-100 shadow-sm'} border`}
+                    className={`flex flex-col p-4 w-[140px] lg:w-auto shrink-0 snap-center relative group overflow-hidden transition-all duration-300 hover:-translate-y-1 ${isToday ? 'bg-gradient-to-b from-[#F6753B] to-[#E55A1F] rounded-[1.25rem] lg:rounded-[1.5rem] shadow-lg shadow-[#F6753B]/20' : 'bg-transparent border-r border-slate-100 last:border-none'}`}
                   >
-                    {/* Background Glow Effect */}
-                    <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-5 transition-opacity" />
                     
                     {/* Day & Date Header */}
                     <div className="flex flex-col items-center mb-2">
