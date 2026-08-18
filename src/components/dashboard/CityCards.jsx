@@ -101,7 +101,7 @@ export default function CityCards() {
         const data = cityData[idx] || { name: city.name, condition: 'Loading...', high: '--', low: '--', iconCode: '01d' };
         
         return (
-          <div key={idx} className="bg-white rounded-[24px] p-5 flex items-center justify-between shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100/60 min-h-[96px] relative group overflow-hidden">
+          <div key={idx} className="bg-white rounded-[24px] p-4 md:p-5 flex items-center justify-between shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100/60 min-h-[96px] relative group overflow-hidden">
             
             {editingIdx === idx ? (
               <div className="flex items-center w-full gap-3 animate-in fade-in zoom-in duration-200">
@@ -164,7 +164,7 @@ export default function CityCards() {
       })}
       {/* Add New City Box */}
       {isAdding ? (
-        <div className="bg-white rounded-[24px] p-5 flex items-center shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100/60 min-h-[96px]">
+        <div className="bg-white rounded-[24px] p-4 md:p-5 flex items-center shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] border border-slate-100/60 min-h-[96px]">
           <div className="flex items-center w-full gap-3 animate-in fade-in zoom-in duration-200">
             <div className="w-[42px] h-[42px] bg-slate-50 rounded-full flex items-center justify-center shrink-0 border border-slate-100">
               <Search className="w-5 h-5 text-slate-400" />
@@ -196,7 +196,7 @@ export default function CityCards() {
       ) : (
         <button 
           onClick={() => { setIsAdding(true); setAddQuery(''); }}
-          className="bg-transparent border-2 border-dashed border-slate-200 rounded-[24px] p-5 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:border-orange-200 hover:bg-orange-50/50 transition-all min-h-[96px] group"
+          className="bg-transparent border-2 border-dashed border-slate-200 rounded-[24px] p-4 md:p-5 flex items-center justify-center text-slate-400 hover:text-orange-500 hover:border-orange-200 hover:bg-orange-50/50 transition-all min-h-[96px] group"
         >
           <div className="flex items-center gap-2 font-semibold">
             <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-orange-100 flex items-center justify-center transition-colors">
