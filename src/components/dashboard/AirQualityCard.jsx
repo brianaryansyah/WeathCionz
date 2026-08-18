@@ -51,7 +51,7 @@ export default function AirQualityCard() {
   const offset = circumference - (progress / 100) * circumference;
 
   return (
-    <div className="bg-white/80 backdrop-blur-xl rounded-[24px] p-6 relative overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-white/60 min-h-[160px] flex items-center justify-between mt-3 group transition-transform duration-500 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
+    <div className="bg-white/80 backdrop-blur-xl rounded-[24px] p-4 md:p-6 relative overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-white/60 min-h-[160px] flex items-center justify-between mt-3 group transition-transform duration-500 hover:-translate-y-1 hover:shadow-[0_15px_40px_rgba(0,0,0,0.1)]">
       
       {/* Background Glow based on AQI */}
       <div 
