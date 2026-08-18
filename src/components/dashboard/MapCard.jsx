@@ -20,7 +20,7 @@ export default function MapCard({ temp = '25', day = 'Monday', desc = 'Mostly Su
   };
 
   return (
-    <div className="col-span-12 lg:col-span-7 rounded-[2rem] relative overflow-hidden bg-sky-200 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] min-h-[340px] border border-white/40">
+    <div className="col-span-12 lg:col-span-7 rounded-[2rem] relative overflow-hidden bg-sky-200 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] min-h-[250px] md:min-h-[340px] border border-white/40">
       {/* Map Background */}
       <Suspense fallback={<div className="absolute inset-0 bg-sky-200 animate-pulse" />}>
         <div className="absolute inset-0 pointer-events-auto">
@@ -29,11 +29,11 @@ export default function MapCard({ temp = '25', day = 'Monday', desc = 'Mostly Su
       </Suspense>
 
       {/* Floating Info Pill (Bottom Center) with gentle floating animation */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 bg-white/95 backdrop-blur-md rounded-[20px] px-7 py-3.5 flex items-center gap-4 shadow-xl border border-white/80 min-w-[220px] hover:scale-105 transition-transform duration-300 animate-[bounce_3s_ease-in-out_infinite]">
-        <span className="text-[26px] font-bold text-slate-900 tracking-tight">{temp}°C</span>
-        <div className="flex flex-col border-l border-slate-200 pl-4">
-          <span className="text-[13px] font-bold text-slate-800 leading-tight">{day}</span>
-          <span className="text-[12px] font-medium text-slate-500">{desc}</span>
+      <div className="absolute bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-10 bg-white/95 backdrop-blur-md rounded-[20px] px-5 py-2.5 md:px-7 md:py-3.5 flex items-center gap-3 md:gap-4 shadow-xl border border-white/80 min-w-[200px] md:min-w-[220px] hover:scale-105 transition-transform duration-300 animate-[bounce_3s_ease-in-out_infinite]">
+        <span className="text-[22px] md:text-[26px] font-bold text-slate-900 tracking-tight">{temp}°C</span>
+        <div className="flex flex-col border-l border-slate-200 pl-3 md:pl-4">
+          <span className="text-[12px] md:text-[13px] font-bold text-slate-800 leading-tight">{day}</span>
+          <span className="text-[11px] md:text-[12px] font-medium text-slate-500">{desc}</span>
         </div>
       </div>
 
