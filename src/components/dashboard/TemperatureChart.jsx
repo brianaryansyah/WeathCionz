@@ -42,7 +42,7 @@ export default function TemperatureChart({ forecastList = [] }) {
   };
 
   return (
-    <div className="col-span-12 lg:col-span-6 bg-white rounded-[24px] p-7 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between border border-slate-100/60 min-h-[300px] relative overflow-hidden">
+    <div className="col-span-12 lg:col-span-6 bg-white rounded-[24px] p-5 md:p-7 shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] flex flex-col justify-between border border-slate-100/60 min-h-[300px] relative overflow-hidden">
       {/* Header */}
       <div className="flex justify-between items-center mb-6 relative z-10">
         <h2 className="text-[19px] font-bold text-slate-800 leading-tight">
