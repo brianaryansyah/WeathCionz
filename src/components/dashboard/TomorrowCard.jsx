@@ -8,7 +8,7 @@ export default function TomorrowCard({
   iconCode = '10d'
 }) {
   return (
-    <div className="col-span-12 lg:col-span-3 bg-gradient-to-br from-white/70 to-white/30 backdrop-blur-xl border border-white/60 rounded-[24px] p-7 relative overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[300px] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] group">
+    <div className="col-span-12 lg:col-span-3 bg-gradient-to-br from-white/70 to-white/30 backdrop-blur-xl border border-white/60 rounded-[24px] p-5 md:p-7 relative overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.04)] flex flex-col justify-between min-h-[300px] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] group">
       
       {/* Top Text */}
       <div className="relative z-10">
