@@ -11,7 +11,7 @@ export default function WeatherNowCard({
   iconCode = '02d' 
 }) {
   return (
-    <div className="col-span-12 lg:col-span-5 rounded-[2rem] p-7 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-[#c1e6e4] via-[#d3e9db] to-[#f6dbce] bg-[length:200%_200%] animate-gradient shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] min-h-[340px] border border-white/40 transition-all duration-500 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] group">
+    <div className="col-span-12 lg:col-span-5 rounded-[2rem] p-5 md:p-7 flex flex-col justify-between relative overflow-hidden bg-gradient-to-br from-[#c1e6e4] via-[#d3e9db] to-[#f6dbce] bg-[length:200%_200%] animate-gradient shadow-[0_2px_10px_-4px_rgba(0,0,0,0.05)] min-h-[340px] border border-white/40 transition-all duration-500 hover:-translate-y-1 hover:scale-[1.01] hover:shadow-[0_20px_40px_-10px_rgba(0,0,0,0.15)] group">
       {/* Location Pill */}
       <div className="inline-flex items-center gap-2 bg-white/70 backdrop-blur-md px-4 py-2.5 rounded-full self-start shadow-sm border border-white/60">
         <MapPin className="w-4 h-4 text-slate-700" />
@@ -21,32 +21,32 @@ export default function WeatherNowCard({
       {/* Main Info */}
       <div className="mt-6 flex justify-between items-end relative z-10 w-full">
         <div className="flex flex-col">
-          <h2 className="text-[28px] font-semibold text-slate-800 tracking-tight leading-none mb-1">Weather</h2>
+          <h2 className="text-[24px] md:text-[28px] font-semibold text-slate-800 tracking-tight leading-none mb-1">Weather</h2>
           <span className="text-[13px] text-slate-500 font-medium mb-5">Now</span>
           
-          <div className="text-[64px] font-bold text-slate-800 leading-none tracking-tighter">
+          <div className="text-[56px] md:text-[64px] font-bold text-slate-800 leading-none tracking-tighter">
             {temp}°C
           </div>
-          <div className="text-[13px] text-slate-500 font-medium mt-3">
+          <div className="text-[13px] text-slate-500 font-medium mt-2 md:mt-3">
             Feels like {feelsLike}°C
           </div>
         </div>
 
         {/* Right side stats */}
-        <div className="flex gap-3 mb-2">
-          <div className="bg-[#d5f088] rounded-2xl p-4 flex flex-col items-center justify-center w-[90px] h-[90px] shadow-sm border border-[#cbf078]">
-            <span className="text-[11px] font-medium text-slate-600 mb-1">Visibility</span>
-            <span className="text-sm font-bold text-slate-900">{visibility} Km</span>
+        <div className="flex gap-2 md:gap-3 mb-2">
+          <div className="bg-[#d5f088] rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center w-[80px] h-[80px] md:w-[90px] md:h-[90px] shadow-sm border border-[#cbf078]">
+            <span className="text-[10px] md:text-[11px] font-medium text-slate-600 mb-1">Visibility</span>
+            <span className="text-[12px] md:text-sm font-bold text-slate-900">{visibility} Km</span>
           </div>
-          <div className="bg-white rounded-2xl p-4 flex flex-col items-center justify-center w-[90px] h-[90px] shadow-sm border border-white">
-            <span className="text-[11px] font-medium text-slate-500 mb-1">Humidity</span>
-            <span className="text-sm font-bold text-slate-900">{humidity}%</span>
+          <div className="bg-white rounded-2xl p-3 md:p-4 flex flex-col items-center justify-center w-[80px] h-[80px] md:w-[90px] md:h-[90px] shadow-sm border border-white">
+            <span className="text-[10px] md:text-[11px] font-medium text-slate-500 mb-1">Humidity</span>
+            <span className="text-[12px] md:text-sm font-bold text-slate-900">{humidity}%</span>
           </div>
         </div>
       </div>
 
       {/* Weather Illustration */}
-      <div className="absolute top-0 right-0 w-[280px] h-[280px] pointer-events-none opacity-90 drop-shadow-2xl flex items-center justify-center translate-x-12 -translate-y-8">
+      <div className="absolute top-0 right-0 w-[220px] h-[220px] md:w-[280px] md:h-[280px] pointer-events-none opacity-90 drop-shadow-2xl flex items-center justify-center translate-x-12 -translate-y-4 md:-translate-y-8">
         <WeatherIcon code={iconCode} className="w-full h-full" />
       </div>
     </div>
