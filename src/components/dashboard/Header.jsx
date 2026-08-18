@@ -126,25 +126,38 @@ export default function Header({ setActiveTab }) {
   };
 
   return (
-    <div className="flex items-center justify-between w-full h-14">
+    <div className="flex items-center justify-between w-full h-auto min-h-[56px] flex-wrap md:flex-nowrap gap-y-3">
       {/* Profile Section */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto justify-between md:justify-start">
         <div className="flex flex-col">
-          <span className="text-[13px] text-slate-500 font-medium">{timeString}</span>
+          <span className="text-[12px] md:text-[13px] text-slate-500 font-medium">{timeString}</span>
           <div className="flex items-center gap-1.5">
-            <span className="text-[17px] font-bold text-slate-900 leading-tight">{greeting}!</span>
+            <span className="text-[15px] md:text-[17px] font-bold text-slate-900 leading-tight">{greeting}!</span>
             {isNight ? (
-              <Moon className="w-[18px] h-[18px] text-indigo-500 fill-indigo-500/20" />
+              <Moon className="w-[16px] h-[16px] md:w-[18px] md:h-[18px] text-indigo-500 fill-indigo-500/20" />
             ) : (
-              <Sun className="w-[18px] h-[18px] text-orange-500 fill-orange-500/20" />
+              <Sun className="w-[16px] h-[16px] md:w-[18px] md:h-[18px] text-orange-500 fill-orange-500/20" />
             )}
+          </div>
+        </div>
+        
+        {/* Action Icons (Moved here for mobile) */}
+        <div className="flex md:hidden items-center gap-2">
+          <button onClick={() => setActiveTab?.('calendar')} className="flex items-center justify-center w-9 h-9 bg-slate-50 rounded-full shadow-sm border border-slate-200/60 text-slate-700 hover:text-sky-600 hover:bg-sky-50 transition-all hover:scale-105 active:scale-95 group">
+            <CalendarDays className="w-4 h-4 group-hover:drop-shadow-sm" strokeWidth={2.5} />
+          </button>
+          <div className="relative" ref={notifDropdownRef}>
+            <button onClick={() => setShowNotifications(!showNotifications)} className="relative flex items-center justify-center w-9 h-9 bg-slate-50 rounded-full shadow-sm border border-slate-200/60 text-slate-700 hover:text-red-600 hover:bg-red-50 transition-all hover:scale-105 active:scale-95 group">
+              <Bell className="w-4 h-4 group-hover:drop-shadow-sm" strokeWidth={2.5} />
+              <span className="absolute top-[6px] right-[8px] w-2 h-2 bg-red-500 rounded-full shadow-[0_0_8px_rgba(239,68,68,0.6)] animate-pulse border border-white"></span>
+            </button>
           </div>
         </div>
       </div>
 
       {/* Search Bar with Autocomplete */}
-      <div className="flex-1 max-w-[400px] mx-8 relative" ref={dropdownRef}>
-        <form onSubmit={handleSearch} className="relative flex items-center w-full h-11 bg-white rounded-full px-5 shadow-sm border border-slate-100/60 transition-colors focus-within:border-orange-500/50 focus-within:ring-2 focus-within:ring-orange-500/20">
+      <div className="flex-1 w-full md:max-w-[400px] md:mx-8 relative order-last md:order-none" ref={dropdownRef}>
+        <form onSubmit={handleSearch} className="relative flex items-center w-full h-10 md:h-11 bg-white rounded-full px-4 md:px-5 shadow-sm border border-slate-100/60 transition-colors focus-within:border-orange-500/50 focus-within:ring-2 focus-within:ring-orange-500/20">
           <input 
             type="text" 
             placeholder="Search Here..." 
@@ -155,9 +168,9 @@ export default function Header({ setActiveTab }) {
           />
           <button type="submit" disabled={isSearching} className="ml-2">
             {isSearching ? (
-              <Loader2 className="w-[18px] h-[18px] text-orange-500 animate-spin" />
+              <Loader2 className="w-[16px] h-[16px] md:w-[18px] md:h-[18px] text-orange-500 animate-spin" />
             ) : (
-              <Search className="w-[18px] h-[18px] text-slate-400 hover:text-orange-500 transition-colors" />
+              <Search className="w-[16px] h-[16px] md:w-[18px] md:h-[18px] text-slate-400 hover:text-orange-500 transition-colors" />
             )}
           </button>
         </form>
@@ -189,8 +202,8 @@ export default function Header({ setActiveTab }) {
         )}
       </div>
 
-      {/* Action Icons */}
-      <div className="flex items-center gap-4">
+      {/* Action Icons (Desktop) */}
+      <div className="hidden md:flex items-center gap-4">
         <button onClick={() => setActiveTab?.('calendar')} className="flex items-center justify-center w-11 h-11 bg-slate-50 rounded-full shadow-sm border border-slate-200/60 text-slate-700 hover:text-sky-600 hover:bg-sky-50 transition-all hover:scale-105 active:scale-95 group">
           <CalendarDays className="w-5 h-5 group-hover:drop-shadow-sm" strokeWidth={2.5} />
         </button>
